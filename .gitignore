@@ -1,0 +1,12 @@
+asm
+corewar
+vm_champs
+a.out
+resources_corewar.pdf
+corewar.fr.pdf
+COREWAR.xlsx
+COREWAR.ru.en.xlsx
+42.*
+*.o
+*/.DS_Store
+.DS_Store
