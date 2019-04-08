@@ -1,13 +1,22 @@
+
+# executable files
 asm
 corewar
-vm_champs
 a.out
+
+# compilation files
+*.o
+*.a
+
+# system files
+*.DS_Store
+*._*
+*.swp
+
+# other files
+vm_champs
 resources_corewar.pdf
 corewar.fr.pdf
 COREWAR.xlsx
 COREWAR.ru.en.xlsx
 42.*
-*.o
-*/.DS_Store
-.DS_Store
-libft/libft.a
