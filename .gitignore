@@ -10,3 +10,4 @@ COREWAR.ru.en.xlsx
 *.o
 */.DS_Store
 .DS_Store
+libft/libft.a
