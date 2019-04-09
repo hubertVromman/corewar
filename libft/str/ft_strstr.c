@@ -14,15 +14,19 @@
 
 char	*ft_strstr(const char *haystack, const char *needle)
 {
+	size_t	len;
 	int		count;
+	char	*hay;
 
-	count = 0;
 	if (!*needle)
 		return ((char *)haystack);
 	if (!*haystack)
 		return (NULL);
-	while (haystack[count] && needle[count] && haystack[count] == needle[count])
-		count++;
-	return ((!needle[count]) ? (char*)haystack :
-			ft_strstr(haystack + 1, needle));
+	len = ft_strlen(needle);
+	hay = (char *)haystack;
+	count = -1;
+	while (hay[++count])
+		if (!strncmp(hay + count, needle, len))
+			return (hay + count);
+	return (NULL);
 }

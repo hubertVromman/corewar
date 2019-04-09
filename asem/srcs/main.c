@@ -38,6 +38,30 @@ int		exit_func(int exit_code, int dp_usage, t_a *all)
 	exit(exit_code);
 }
 
+int		print_general_error(t_file *file)
+{
+	ft_printf("%s: <b bred>error:</> %>", file->s_name, 2);
+	return (0);
+}
+
+int		error_func(t_file *file, int error_code)
+{
+	print_general_error(file);
+	if (error_code == NOT_S_FILE)
+		ft_printf("not a .s file\n%>", 2);
+	else if (error_code == OPEN_FAIL)
+		ft_printf("open failed\n%>", 2);
+	else if (error_code == NOT_CREATE)
+		ft_printf("could not create %s\n%>", file->cor_name, 2);
+	else if (error_code == NAME_TOO_LONG)
+		ft_printf("program name too long (max size : %d)\n%>", PROG_NAME_LENGTH, 2);
+	else if (error_code == NAME_NOT_FOUND)
+		ft_printf("program name not found\n%>", 2);
+	else
+		ft_printf("undifined error\n%>", 2);
+	return (-1);
+}
+
 int		get_flags(int ac, char **av, t_a *all)
 {
 	int		i;
@@ -54,7 +78,7 @@ int		get_flags(int ac, char **av, t_a *all)
 			j = 0;
 			while (av[i][++j])
 			{
-				if ((k = ft_indexof(OP, av[i][j])))
+				if ((k = ft_indexof(OP, av[i][j])) == -1)
 					exit_func(-1, 1, all);
 				all->flags[k] = 1;
 			}
@@ -78,22 +102,55 @@ char	*get_cor_name(char *file)
 	return (new_name);
 }
 
+int		little_to_big_endian(int little)
+{
+	int		big;
+
+	big = ((little >> 24) & 0xff) |
+		((little >> 8) & 0xff00) |
+		((little << 8) & 0xff0000) |
+		((little << 24) & 0xff000000);
+	return (big);
+}
+
+char	*get_name(char *data)
+{
+	int		offset;
+	char	*name_ptr;
+
+	if (!(name_ptr = ft_strstr(data, ".name")))
+		return (NULL);
+	while (name_ptr > data && *name_ptr != '\n')
+		name_ptr--;
+	name_ptr = ft_strsub(name_ptr, 0, 100);
+	offset = 0;
+	return (name_ptr);
+}
+
 int		create_header(t_a *all, t_file *file)
 {
+	int		magic;
+	int		offset;
+
+	magic = little_to_big_endian(COREWAR_EXEC_MAGIC);
 	file->header = ft_memalloc(all->header_size);
-	ft_memcpy(file->header, "hello\n", 6);
+	ft_memcpy(file->header, &magic, 4);
+	offset = 4;
+	if (!(file->prog_name = get_name(file->s_file_content)))
+		return (error_func(all->file, NAME_NOT_FOUND));
+	else if (ft_strlen(file->prog_name) > PROG_NAME_LENGTH)
+		return (error_func(all->file, NAME_TOO_LONG));
+	ft_memcpy(file->header + offset, file->prog_name, ft_strlen(file->prog_name));
+
 	return (0);
 }
 
-int		file_get_content(t_file *file)
+int		read_file(t_file *file)
 {
 	int ret;
 
 	if ((file->s_fd = open(file->s_name, O_RDONLY)) == -1)
-	{
-		ft_printf("%s open failed\n%>", file->s_name, 2);
-		return (-1);
-	}
+		return (error_func(file, OPEN_FAIL));
 	file->file_size = lseek(file->s_fd, 0, SEEK_END);
 	lseek(file->s_fd, 0, SEEK_SET);
 	file->s_file_content = malloc(file->file_size);
@@ -102,7 +159,7 @@ int		file_get_content(t_file *file)
 	return (ret < 0 ? -1 : 0);
 }
 
-int		file_put_content(t_file *file, char *file_name)
+int		write_file(t_file *file, char *file_name)
 {
 	if (!file_name)
 		return (-1);
@@ -111,7 +168,7 @@ int		file_put_content(t_file *file, char *file_name)
 		ft_printf("%s open failed\n%>", file_name, 2);
 		return (-1);
 	}
-	write(file->cor_fd, file->s_file_content, file->file_size);
+	write(file->cor_fd, file->header, file->file_size);
 	close(file->cor_fd);
 	return (0);
 }
@@ -119,10 +176,13 @@ int		file_put_content(t_file *file, char *file_name)
 int		create_file(t_a *all, char *file_name)
 {
 	all->file->s_name = file_name;
-	if (file_get_content(all->file) == -1)
+	if (ft_strcmp(get_ext(all->file->s_name), "s"))
+		return (error_func(all->file, NOT_S_FILE));
+	if (read_file(all->file) == -1)
 		return (-1);
-	create_header(all, all->file);
-	return (file_put_content(all->file, get_cor_name(file_name)));
+	if (create_header(all, all->file) == -1)
+		return (-1);
+	return (write_file(all->file, get_cor_name(file_name)));
 }
 
 int		create_files(int ac, char **av, t_a *all)
@@ -134,10 +194,7 @@ int		create_files(int ac, char **av, t_a *all)
 	i = get_flags(ac, av, all) - 1;
 	while (++i < ac)
 	{
-		if (ft_strcmp(get_ext(av[i]), "s"))
-			ft_printf("%s is not a .s file\n%>", av[i], 2);
-		else
-			all->nb_files_created += create_file(all, av[i]) + 1;
+		all->nb_files_created += create_file(all, av[i]) + 1;
 		if (!all->flags[0])
 			break ;
 	}

@@ -17,6 +17,8 @@
 
 #define OP "m"
 
+enum error_code { NOT_S_FILE = 1, OPEN_FAIL, NOT_CREATE, NAME_NOT_FOUND, NAME_TOO_LONG};
+
 typedef struct	s_file
 {
 	char	*header;
@@ -26,6 +28,7 @@ typedef struct	s_file
 	int		s_fd;
 	int		file_size;
 	char	*s_file_content;
+	char	*prog_name;
 }				t_file;
 
 typedef struct	s_a
