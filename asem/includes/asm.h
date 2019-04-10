@@ -15,9 +15,12 @@
 
 # include "common.h"
 
-#define OP "m"
+# define OP "m"
 
-enum error_code { NOT_S_FILE = 1, OPEN_FAIL, NOT_CREATE, NAME_NOT_FOUND, NAME_TOO_LONG};
+enum	e_error_code { NOT_S_FILE = 1, OPEN_FAIL, NOT_CREATE, NAME_NOT_FOUND,
+	NAME_TOO_LONG, COMMENT_NOT_FOUND, COMMENT_TOO_LONG};
+
+enum	e_ln_error_code { CMD_NOT_FOUND = 101, UNEXP_EOF};
 
 typedef struct	s_file
 {
@@ -29,6 +32,11 @@ typedef struct	s_file
 	int		file_size;
 	char	*s_file_content;
 	char	*prog_name;
+	char	*prog_comment;
+	int		glob_off;
+	int		line_nb;
+	int		inline_off;
+	int		nb_error;
 }				t_file;
 
 typedef struct	s_a

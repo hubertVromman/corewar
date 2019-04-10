@@ -45,11 +45,17 @@ int		end_fail(char **fm)
 int		end_succes(char **fm, char buicolor[19], int end_bal, int pos_end)
 {
 	int		count;
+	int		i;
 
 	count = -1;
 	while (++count < 19)
 		if (buicolor[count])
+		{
+			i = 2;
+			while (++i < 19)
+				g_color[i] = 0;
 			g_color[count] = !end_bal;
+		}
 	if (change_status())
 		return (-1);
 	(*fm) += pos_end + 1;

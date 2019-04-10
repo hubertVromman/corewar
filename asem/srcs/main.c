@@ -38,15 +38,15 @@ int		exit_func(int exit_code, int dp_usage, t_a *all)
 	exit(exit_code);
 }
 
-int		print_general_error(t_file *file)
-{
-	ft_printf("%s: <b bred>error:</> %>", file->s_name, 2);
-	return (0);
-}
+// int		print_general_error(t_file *file)
+// {
+// 	ft_printf("%s: <b bred>error:</> %>", file->s_name, 2);
+// 	return (0);
+// }
 
 int		error_func(t_file *file, int error_code)
 {
-	print_general_error(file);
+	ft_printf("<b bwhite>%s: <bred>error:<b bwhite> %>", file->s_name, 2);
 	if (error_code == NOT_S_FILE)
 		ft_printf("not a .s file\n%>", 2);
 	else if (error_code == OPEN_FAIL)
@@ -57,8 +57,52 @@ int		error_func(t_file *file, int error_code)
 		ft_printf("program name too long (max size : %d)\n%>", PROG_NAME_LENGTH, 2);
 	else if (error_code == NAME_NOT_FOUND)
 		ft_printf("program name not found\n%>", 2);
+	else if (error_code == COMMENT_TOO_LONG)
+		ft_printf("program comment too long (max size : %d)\n%>", COMMENT_LENGTH, 2);
+	else if (error_code == COMMENT_NOT_FOUND)
+		ft_printf("program comment not found\n%>", 2);
 	else
 		ft_printf("undifined error\n%>", 2);
+	ft_printf("</>%>", 2);
+	file->nb_error++;
+	return (-1);
+}
+
+int		wrong_char(t_file *file, char *expected)
+{
+	ft_printf("<b bwhite>%s:%d:%d: <bred>error:<bwhite> %>", file->s_name, file->line_nb, file->inline_off, 2);
+	ft_printf("wrong char, expected '%s', got '%c' (%#x)\n%></>", expected, file->s_file_content[file->glob_off + file->inline_off], file->s_file_content[file->glob_off + file->inline_off], 2);
+	file->nb_error++;
+	return (-1);
+}
+
+int		error_func_ln(t_file *file, int error_code, char *error_detail)
+{
+	ft_printf("<b bwhite>%s:%d:%d: <bred>error:</> %>", file->s_name, file->line_nb, file->inline_off, 2);
+	if (error_code == CMD_NOT_FOUND)
+		ft_printf("command '%s' not found\n%>", error_detail, 2);
+	else if (error_code == UNEXP_EOF)
+		ft_printf("unexpected EOF\n%>", 2);
+	else
+		ft_printf("undifined error\n%>", 2);
+	free(error_detail);
+	ft_printf("</>%>", 2);
+	file->nb_error++;
+	return (-1);
+}
+
+int		error_command(t_file *file, char *data)
+{
+	int		end_command;
+
+	file->inline_off++;
+	end_command = 0;
+	while (data[file->glob_off + file->inline_off + end_command] != ' ' && 
+data[file->glob_off + file->inline_off + end_command] != '\t' &&
+data[file->glob_off + file->inline_off + end_command] != '\n' &&
+data[file->glob_off + file->inline_off + end_command])
+		end_command++;
+	error_func_ln(file, CMD_NOT_FOUND, ft_strsub(data, file->glob_off + file->inline_off, end_command));
 	return (-1);
 }
 
@@ -113,18 +157,140 @@ int		little_to_big_endian(int little)
 	return (big);
 }
 
-char	*get_name(char *data)
+int		skip_whitespaces(char *data, int offset)
 {
-	int		offset;
-	char	*name_ptr;
+	int		sub_off;
 
-	if (!(name_ptr = ft_strstr(data, ".name")))
-		return (NULL);
-	while (name_ptr > data && *name_ptr != '\n')
-		name_ptr--;
-	name_ptr = ft_strsub(name_ptr, 0, 100);
-	offset = 0;
-	return (name_ptr);
+	sub_off = 0;
+	while (data[offset + sub_off] == ' ' || data[offset + sub_off] == '\t')
+		sub_off++;
+	return (sub_off);
+}
+
+int		get_name(t_file *file, char *data)
+{
+	int		start_search;
+
+	file->inline_off++;
+	start_search = file->glob_off + file->inline_off;
+	while (data[file->glob_off + file->inline_off])
+	{
+		if (data[file->glob_off + file->inline_off] == '\n')
+		{
+			file->line_nb++;
+			file->glob_off += file->inline_off + 1;
+			file->inline_off = 0;
+		}
+		else if (data[file->glob_off + file->inline_off] == '"')
+		{
+			file->prog_name = ft_strsub(data, start_search, file->glob_off + file->inline_off++ - start_search);
+			break;
+		}
+		else
+			file->inline_off++;
+	}
+	return (0);
+}
+
+int		get_comment(t_file *file, char *data)
+{
+	int		start_search;
+
+	file->inline_off++;
+	start_search = file->glob_off + file->inline_off;
+	while (data[file->glob_off + file->inline_off])
+	{
+		if (data[file->glob_off + file->inline_off] == '\n')
+		{
+			file->line_nb++;
+			file->glob_off += file->inline_off + 1;
+			file->inline_off = 0;
+		}
+		else if (data[file->glob_off + file->inline_off] == '"')
+		{
+			file->prog_comment = ft_strsub(data, start_search, file->glob_off + file->inline_off++ - start_search);
+			break;
+		}
+		else
+			file->inline_off++;
+	}
+	return (0);
+}
+
+int		check_command(t_file *file, char *data)
+{
+	if (!ft_strncmp(data + file->glob_off + file->inline_off, NAME_CMD_STRING, ft_strlen(NAME_CMD_STRING)))
+	{
+		file->inline_off += ft_strlen(NAME_CMD_STRING) + 1;
+		file->inline_off += skip_whitespaces(data, file->glob_off + file->inline_off);
+		if (data[file->glob_off + file->inline_off] == '"')
+		{
+			get_name(file, data);
+			file->inline_off += skip_whitespaces(data, file->glob_off + file->inline_off);
+			if (data[file->glob_off + file->inline_off] != '\n')
+				wrong_char(file, "\\n");
+		}
+		else
+			wrong_char(file, "\"");
+		while (data[file->glob_off + file->inline_off] != '\n' && data[file->glob_off + file->inline_off])
+			file->inline_off++;
+		if (data[file->glob_off + file->inline_off])
+		{
+			file->glob_off += file->inline_off + 1;
+			file->inline_off = 0;
+			file->line_nb++;
+		}
+		else
+			error_func_ln(file, UNEXP_EOF, NULL);
+		ft_printf("%s %d %d %d\n", file->prog_name, file->glob_off, file->inline_off, file->line_nb);
+	}
+	else if (!ft_strncmp(data + file->glob_off + file->inline_off, COMMENT_CMD_STRING, ft_strlen(COMMENT_CMD_STRING)))
+	{
+		file->inline_off += ft_strlen(COMMENT_CMD_STRING) + 1;
+		file->inline_off += skip_whitespaces(data, file->glob_off + file->inline_off);
+		if (data[file->glob_off + file->inline_off] == '"')
+		{
+			get_comment(file, data);
+			file->inline_off += skip_whitespaces(data, file->glob_off + file->inline_off);
+			if (data[file->glob_off + file->inline_off] != '\n')
+				wrong_char(file, "\\n");
+		}
+		else
+			wrong_char(file, "\"");
+		while (data[file->glob_off + file->inline_off] != '\n' && data[file->glob_off + file->inline_off])
+			file->inline_off++;
+		if (data[file->glob_off + file->inline_off])
+		{
+			file->glob_off += file->inline_off + 1;
+			file->inline_off = 0;
+			file->line_nb++;
+		}
+		else
+			error_func_ln(file, UNEXP_EOF, NULL);
+		ft_printf("%s %d %d %d\n", file->prog_comment, file->glob_off, file->inline_off, file->line_nb);
+	}
+	else
+		error_command(file, data);
+	return (0);
+}
+
+int		get_cmds(t_file *file, char *data)
+{
+	while (1)
+	{
+		file->inline_off = skip_whitespaces(data, file->glob_off);
+		if (data[file->glob_off + file->inline_off] == '\n')
+		{
+			file->glob_off += file->inline_off + 1;
+			file->line_nb++;
+			file->inline_off = 0;
+		}
+		else if (data[file->glob_off + file->inline_off] == '.')
+			check_command(file, data);
+		else
+			break;
+	}
+	return (0);
 }
 
 int		create_header(t_a *all, t_file *file)
@@ -136,10 +302,15 @@ int		create_header(t_a *all, t_file *file)
 	file->header = ft_memalloc(all->header_size);
 	ft_memcpy(file->header, &magic, 4);
 	offset = 4;
-	if (!(file->prog_name = get_name(file->s_file_content)))
+	get_cmds(file, file->s_file_content);
+	if (!file->prog_name)
 		return (error_func(all->file, NAME_NOT_FOUND));
-	else if (ft_strlen(file->prog_name) > PROG_NAME_LENGTH)
+	if (!file->prog_comment)
+		return (error_func(all->file, COMMENT_NOT_FOUND));
+	if (ft_strlen(file->prog_name) > PROG_NAME_LENGTH)
 		return (error_func(all->file, NAME_TOO_LONG));
+	if (ft_strlen(file->prog_comment) > COMMENT_LENGTH)
+		return (error_func(all->file, COMMENT_TOO_LONG));
 	ft_memcpy(file->header + offset, file->prog_name, ft_strlen(file->prog_name));
 
 	return (0);
