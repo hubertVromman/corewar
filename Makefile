@@ -33,7 +33,7 @@ COR_OBJ = $(addprefix $(COR_DIR), $(addprefix $(SRCS), $(COR_FILES)))
 ASM_DIR = asem/
 ASM_FILE = asm.h
 ASM_H = $(addprefix $(ASM_DIR), $(addprefix $(HEAD), $(ASM_FILE)))
-ASM_FILES = main.o
+ASM_FILES = main.o error.o exit.o io.o util.o header.o body.o
 ASM_OBJ = $(addprefix $(ASM_DIR), $(addprefix $(SRCS), $(ASM_FILES)))
 
 SANITIZE = -fsanitize=address

@@ -20,7 +20,7 @@
 enum	e_error_code { NOT_S_FILE = 1, OPEN_FAIL, NOT_CREATE, NAME_NOT_FOUND,
 	NAME_TOO_LONG, COMMENT_NOT_FOUND, COMMENT_TOO_LONG};
 
-enum	e_ln_error_code { CMD_NOT_FOUND = 101, UNEXP_EOF};
+enum	e_ln_error_code { CMD_NOT_FOUND = 101, UNEXP_EOF, TWO_CMD};
 
 typedef struct	s_file
 {
@@ -37,6 +37,7 @@ typedef struct	s_file
 	int		line_nb;
 	int		inline_off;
 	int		nb_error;
+	int		pc_offset;
 }				t_file;
 
 typedef struct	s_a
@@ -46,5 +47,45 @@ typedef struct	s_a
 	int		header_size;
 	t_file	*file;
 }				t_a;
+
+/*
+** error.c
+*/
+int				error_func(t_file *file, int error_code);
+int				error_func_ln(t_file *file, int code, char *det, int to_free);
+int				wrong_char(t_file *file, char *expected);
+int				error_command(t_file *file, char *data);
+
+/*
+** exit.c
+*/
+int				free_all(t_a *all);
+int				usage(void);
+int				exit_func(int exit_code, int dp_usage, t_a *all);
+
+/*
+** util.c
+*/
+char			*get_ext(char *str);
+char			*get_cor_name(char *file);
+int				little_to_big_endian(int little);
+int				skip_whitespaces(char *data, int offset);
+int				end_of_line(t_file *file);
+
+/*
+** io.c
+*/
+int				read_file(t_file *file);
+int				write_file(t_a *all, t_file *file, char *file_name);
+
+/*
+** header.c
+*/
+int				create_header(t_a *all, t_file *file);
+
+/*
+** body.c
+*/
+int				create_code(t_a *all, t_file *file);
 
 #endif
