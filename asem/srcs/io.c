@@ -34,6 +34,7 @@ int		write_file(t_a *all, t_file *file, char *file_name)
 	if ((file->cor_fd = open(file_name, O_WRONLY | O_CREAT | O_TRUNC, 0755)) == -1)
 		return (error_func(file, NOT_CREATE));
 	write(file->cor_fd, file->header, all->header_size);
+	write(file->cor_fd, file->prog_content, file->prog_size);
 	close(file->cor_fd);
 	return (0);
 }

@@ -22,6 +22,22 @@ enum	e_error_code { NOT_S_FILE = 1, OPEN_FAIL, NOT_CREATE, NAME_NOT_FOUND,
 
 enum	e_ln_error_code { CMD_NOT_FOUND = 101, UNEXP_EOF, TWO_CMD};
 
+typedef struct s_label t_label;
+
+struct			s_label
+{
+	int		pos;
+	char	*name;
+	t_label	*next;
+};
+
+typedef struct	s_instr
+{
+	int		pos;
+	char	codage;
+	int		param[MAX_ARGS_NUMBER];
+}				t_instr;
+
 typedef struct	s_file
 {
 	char	*header;
@@ -37,7 +53,13 @@ typedef struct	s_file
 	int		line_nb;
 	int		inline_off;
 	int		nb_error;
-	int		pc_offset;
+	int		prog_size;
+	char	*prog_content;
+	t_instr	instr;
+	t_label	*labels;
+	t_label	*current;
+	t_label	*labels_to_write;
+	t_label	*current_to_write;
 }				t_file;
 
 typedef struct	s_a

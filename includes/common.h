@@ -28,9 +28,11 @@ typedef struct		s_op
 	int					opcode;
 	int					cycle;
 	char				*long_name;
-	int					end;
-	int					last;
+	int					codage;
+	int					ind_size;
 }					t_op;
+
+t_op	g_op_tab[17];
 
 
 #endif
