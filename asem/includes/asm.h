@@ -31,12 +31,23 @@ struct			s_label
 	t_label	*next;
 };
 
-typedef struct	s_instr
+typedef struct s_instr t_instr;
+
+typedef struct	s_param
+{
+	int		size;
+	int		inline_off;
+	int		line_nb;
+	char	*data;
+}				t_param;
+
+struct			s_instr
 {
 	int		pos;
-	char	codage;
-	int		param[MAX_ARGS_NUMBER];
-}				t_instr;
+	int		size;
+	int		nb_params;
+	t_param	param[MAX_ARGS_NUMBER];
+};
 
 typedef struct	s_file
 {
@@ -53,13 +64,12 @@ typedef struct	s_file
 	int		line_nb;
 	int		inline_off;
 	int		nb_error;
-	int		prog_size;
+	int		nb_instr;
 	char	*prog_content;
-	t_instr	instr;
 	t_label	*labels;
-	t_label	*current;
-	t_label	*labels_to_write;
-	t_label	*current_to_write;
+	t_label	*current_lab;
+	t_instr	*instr;
+	t_instr	*current_instr;
 }				t_file;
 
 typedef struct	s_a

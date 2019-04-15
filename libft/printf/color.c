@@ -52,8 +52,9 @@ int		end_succes(char **fm, char buicolor[19], int end_bal, int pos_end)
 		if (buicolor[count])
 		{
 			i = 2;
-			while (++i < 19)
-				g_color[i] = 0;
+			if (!end_bal)
+				while (++i < 19)
+					g_color[i] = 0;
 			g_color[count] = !end_bal;
 		}
 	if (change_status())
