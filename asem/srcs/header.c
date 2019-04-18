@@ -46,10 +46,10 @@ int		check_command(t_file *file, char *data, char **to_fill, char *cmd_name)
 		get_command_data(file, data, to_fill);
 		file->inline_off += skip_whitespaces(data, file->glob_off + file->inline_off);
 		if (data[file->glob_off + file->inline_off] != '\n')
-			wrong_char(file, "\\n");
+			wrong_char(file, "\\n", 0);
 	}
 	else
-		wrong_char(file, "\"");
+		wrong_char(file, "\"", 0);
 	while (data[file->glob_off + file->inline_off] != '\n' && data[file->glob_off + file->inline_off])
 		file->inline_off++;
 	if (data[file->glob_off + file->inline_off])

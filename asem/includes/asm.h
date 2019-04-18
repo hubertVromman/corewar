@@ -28,25 +28,30 @@ struct			s_label
 {
 	int		pos;
 	char	*name;
+	char	content;
 	t_label	*next;
 };
-
-typedef struct s_instr t_instr;
 
 typedef struct	s_param
 {
 	int		size;
+	int		kind;
 	int		inline_off;
-	int		line_nb;
 	char	*data;
 }				t_param;
 
+typedef struct s_instr t_instr;
+
 struct			s_instr
 {
-	int		pos;
+	int		index;
 	int		size;
+	int		pos_in_file;
+	int		line_nb;
+	char	codage;
 	int		nb_params;
-	t_param	param[MAX_ARGS_NUMBER];
+	t_param	params[MAX_ARGS_NUMBER];
+	t_instr	*next;
 };
 
 typedef struct	s_file
@@ -64,7 +69,8 @@ typedef struct	s_file
 	int		line_nb;
 	int		inline_off;
 	int		nb_error;
-	int		nb_instr;
+	int		offset_;
+	int		prog_size;
 	char	*prog_content;
 	t_label	*labels;
 	t_label	*current_lab;
@@ -85,7 +91,7 @@ typedef struct	s_a
 */
 int				error_func(t_file *file, int error_code);
 int				error_func_ln(t_file *file, int code, char *det, int to_free);
-int				wrong_char(t_file *file, char *expected);
+int				wrong_char(t_file *file, char *expected, int sub_off);
 int				error_command(t_file *file, char *data);
 
 /*

@@ -1,5 +1,6 @@
 
 # executable files
+debug*
 asm
 corewar
 a.out
@@ -20,3 +21,4 @@ corewar.fr.pdf
 COREWAR.xlsx
 COREWAR.ru.en.xlsx
 42.*
+f*

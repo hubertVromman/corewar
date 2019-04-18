@@ -29,7 +29,7 @@ typedef struct		s_op
 	int					cycle;
 	char				*long_name;
 	int					codage;
-	int					ind_size;
+	int					dir_size;
 }					t_op;
 
 t_op	g_op_tab[17];

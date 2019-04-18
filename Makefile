@@ -48,12 +48,12 @@ all: $(COR) $(ASM)
 $(COR): $(COR_OBJ) $(OBJ)
 	@make -C $(LIB)
 	@$(CC) $(CFLAGS) -o $@ $^ -L$(LIB) -lft
-	@echo "$(GREEN)$(COR) compiled$(NC)"
+	@echo "$(GREEN)$@ compiled$(NC)"
 
 $(ASM): $(ASM_OBJ) $(OBJ)
 	@make -C $(LIB)
 	@$(CC) $(CFLAGS) -o $@ $^ -L$(LIB) -lft
-	@echo "$(GREEN)$(ASM) compiled$(NC)"
+	@echo "$(GREEN)$@ compiled$(NC)"
 
 %.o: %.c $(H) $(COR_H) $(ASM_H)
 	@$(CC) $(CFLAGS) -c -o $@ $< -I $(HEAD) -I $(LIB)$(HEAD) -I $(COR_DIR)$(HEAD) -I $(ASM_DIR)$(HEAD)
@@ -67,5 +67,10 @@ fclean: clean
 	@rm -f $(ASM) $(COR)
 	@make -C $(LIB) fclean
 	@echo "$(RED)$(ASM) and $(COR) fcleaned$(NC)"
+
+debug_asm: $(ASM_OBJ) $(OBJ)
+	@make -C $(LIB)
+	@$(CC) $(CFLAGS) -o $@ $^ -L$(LIB) -lft $(SANITIZE)
+	@echo "$@ compiled$(NC)"
 
 re: fclean all

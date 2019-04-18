@@ -54,10 +54,25 @@ int		error_func_ln(t_file *file, int error_code, char *detail, int to_free)
 	return (-1);
 }
 
-int		wrong_char(t_file *file, char *expected)
+int		wrong_char(t_file *file, char *expected, int sub_off)
 {
-	ft_printf("<b bwhite>%s:%d:%d: <bred>error:<bwhite> %>", file->s_name, file->line_nb + 1, file->inline_off + 1, 2);
-	ft_printf("wrong char, expected '%s', got '%c' (%p)\n%></>", expected, file->s_file_content[file->glob_off + file->inline_off], file->s_file_content[file->glob_off + file->inline_off], 2);
+	char	got;
+	char	representation[2];
+	int		prec;
+
+	ft_printf("<b bwhite>%s:%d:%d: <bred>error:<bwhite> %>", file->s_name, file->line_nb + 1, file->inline_off + sub_off + 1, 2);
+	got = file->s_file_content[file->glob_off + file->inline_off + sub_off];
+	representation[0] = got;
+	prec = 2;
+	if (got == '\t' && (representation[0] = '\\'))
+		representation[1] = 't';
+	else if (got == '\n' && (representation[0] = '\\'))
+		representation[1] = 'n';
+	else if (got == '\r' && (representation[0] = '\\'))
+		representation[1] = 'r';
+	else
+		prec = 1;
+	ft_printf("wrong char, expected '%s', got '%.*s' (%p)\n%></>", expected, prec, representation, got, 2);
 	file->nb_error++;
 	return (-1);
 }
