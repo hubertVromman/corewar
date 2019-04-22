@@ -193,6 +193,8 @@ int		parse_lines(t_file *file, char *data)
 		file->inline_off = skip_whitespaces(data, file->glob_off);
 		if (data[file->glob_off + file->inline_off] == '\n')
 			end_of_line(file);
+		else if (!data[file->glob_off + file->inline_off])
+			return (0);
 		else
 		{
 			if (get_instruction(file, data) == -1)
@@ -271,7 +273,7 @@ int		get_encoded_param(t_file *file, t_param *param, int pos_in_file)
 	int		nb;
 
 	nb = 0;
-	ft_printf ("%d <%s>\n", param->kind, param->data);
+	// ft_printf ("%d <%s>\n", param->kind, param->data);
 	if (param->kind & T_REG)
 		nb = atoi(param->data + 1);
 	else if (param->kind & T_DIR)
@@ -311,7 +313,6 @@ int		write_params(t_file *file)
 		while (++i < current->nb_params)
 		{
 			ret = get_encoded_param(file, &current->params[i], current->pos_in_file);
-			ft_printf("%032b\n", ret);
 			ret = ret >> (8 * (4 - current->params[i].size));
 			ft_memcpy(file->prog_content + offset, &ret, current->params[i].size);
 			offset += current->params[i].size;

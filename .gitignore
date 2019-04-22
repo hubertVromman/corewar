@@ -8,6 +8,8 @@ a.out
 # compilation files
 *.o
 *.a
+*.s
+*.cor
 
 # system files
 *.DS_Store
@@ -20,5 +22,5 @@ resources_corewar.pdf
 corewar.fr.pdf
 COREWAR.xlsx
 COREWAR.ru.en.xlsx
-42.*
 f*
+*.sh
