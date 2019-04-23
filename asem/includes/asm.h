@@ -20,7 +20,7 @@
 enum	e_error_code { NOT_S_FILE = 1, OPEN_FAIL, NOT_CREATE, NAME_NOT_FOUND,
 	NAME_TOO_LONG, COMMENT_NOT_FOUND, COMMENT_TOO_LONG};
 
-enum	e_ln_error_code { CMD_NOT_FOUND = 101, UNEXP_EOF, TWO_CMD};
+enum	e_ln_error_code { CMD_NOT_FOUND = 101, UNEXP_EOF, TWO_CMD, WRONG_TYPE};
 
 typedef struct s_label t_label;
 
@@ -84,6 +84,7 @@ typedef struct	s_a
 	char	*flags;
 	int		header_size;
 	t_file	*file;
+	int		nb_errors;
 }				t_a;
 
 /*
@@ -97,6 +98,7 @@ int				error_command(t_file *file, char *data);
 /*
 ** exit.c
 */
+int				free_file(t_file *file);
 int				free_all(t_a *all);
 int				usage(void);
 int				exit_func(int exit_code, int dp_usage, t_a *all);

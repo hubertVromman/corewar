@@ -14,7 +14,7 @@ COR = corewar
 ASM = asm
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -O3
+CFLAGS = -Wall -Wextra -Werror
 SRCS = srcs/
 HEAD = includes/
 LIB = libft/

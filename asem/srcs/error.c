@@ -45,6 +45,8 @@ int		error_func_ln(t_file *file, int error_code, char *detail, int to_free)
 		ft_printf("unexpected EOF\n%>", 2);
 	else if (error_code == TWO_CMD)
 		ft_printf("command '%s' already found\n%>", detail, 2);
+	else if (error_code == WRONG_TYPE)
+		ft_printf("wrong param type\n%>", 2);
 	else
 		ft_printf("undifined error\n%>", 2);
 	ft_printf("</>%>", 2);

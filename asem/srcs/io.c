@@ -20,8 +20,9 @@ int		read_file(t_file *file)
 		return (error_func(file, OPEN_FAIL));
 	file->file_size = lseek(file->s_fd, 0, SEEK_END);
 	lseek(file->s_fd, 0, SEEK_SET);
-	file->s_file_content = malloc(file->file_size);
+	file->s_file_content = malloc(file->file_size + 1);
 	ret = read(file->s_fd, file->s_file_content, file->file_size);
+	file->s_file_content[file->file_size] = 0;
 	close(file->s_fd);
 	return (ret < 0 ? -1 : 0);
 }

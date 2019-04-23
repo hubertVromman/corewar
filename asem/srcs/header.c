@@ -85,6 +85,8 @@ int		get_cmds(t_file *file, char *data)
 		file->inline_off = skip_whitespaces(data, file->glob_off);
 		if (data[file->glob_off + file->inline_off] == '\n')
 			end_of_line(file);
+		else if (!data[file->glob_off + file->inline_off])
+			return (wrong_char(file, "instruction", 0));
 		else if (data[file->glob_off + file->inline_off] == '.')
 		{
 			if (get_command_name(file, data) == -1)

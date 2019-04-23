@@ -90,6 +90,11 @@ int		get_params(t_file *file, char *data)
 			else
 				data_size += nb_digits(data + sub_off + data_size);
 		}
+		if (!(g_op_tab[file->current_instr->index].param[i] & file->current_instr->params[i].kind))
+		{
+			error_func_ln(file, WRONG_TYPE, NULL, 0);
+			return (sub_off);
+		}
 		file->current_instr->params[i].inline_off = file->inline_off + sub_off;
 		file->current_instr->params[i].data = ft_strsub(data, sub_off, data_size);
 		i++;
@@ -138,7 +143,8 @@ int		get_name(t_file *file, char *data)
 	while (ft_isalpha(data[++i]))
 		;
 	instr_length = i;
-	ft_printf("instr_length %d", instr_length);
+	if (!instr_length)
+		return (wrong_char(file, "instruction", 0));
 	i = -1;
 	while (++i < max_index)
 		if (!strncmp(data, g_op_tab[i].name, instr_length))
@@ -159,22 +165,25 @@ int		get_name(t_file *file, char *data)
 				ft_printf("-- %d <%s>\n", i, file->current_instr->params[i].data);
 			return (0);
 		}
-	return (-1);
+	return (error_func_ln(file, CMD_NOT_FOUND, ft_strsub(data, 0, instr_length), 1));
 }
 
 int		get_instruction(t_file *file, char *data)
 {
 	int		i;
 
-	ft_printf("%.10s\n", data + file->inline_off + file->glob_off);
 	get_label(file, data + file->inline_off + file->glob_off);
 	file->inline_off += skip_whitespaces(data, file->glob_off + file->inline_off);
-	if (data[file->glob_off + file->inline_off] == '\n')
-		end_of_line(file);// return (0);
+	if (data[file->glob_off + file->inline_off] == '\n' || !data[file->glob_off + file->inline_off])
+		return (end_of_line(file));
 	else
 	{
 		if (get_name(file, data + file->inline_off + file->glob_off) == -1)
-			error_func_ln(file, 0, NULL, 0);
+		{
+			while (data[file->inline_off + file->glob_off] != '\n' && data[file->inline_off + file->glob_off])
+				file->inline_off++;
+			return (end_of_line(file));
+		}
 		file->inline_off += skip_whitespaces(data, file->glob_off + file->inline_off);
 		file->current_instr->size = 1 + g_op_tab[file->current_instr->index].codage;
 		i = -1;
@@ -273,7 +282,7 @@ int		get_encoded_param(t_file *file, t_param *param, int pos_in_file)
 	int		nb;
 
 	nb = 0;
-	// ft_printf ("%d <%s>\n", param->kind, param->data);
+	ft_printf ("%d <%s>\n", param->kind, param->data);
 	if (param->kind & T_REG)
 		nb = atoi(param->data + 1);
 	else if (param->kind & T_DIR)
@@ -306,6 +315,7 @@ int		write_params(t_file *file)
 	current = file->instr;
 	while (current)
 	{
+		ft_printf("current instr %s\n", g_op_tab[current->index].name);
 		offset++;
 		if (g_op_tab[current->index].codage)
 			offset++;
@@ -329,28 +339,11 @@ int		create_code(t_a *all, t_file *file)
 	if (all->flags[0])
 		;
 	parse_lines(file, file->s_file_content);
-	// file->current_instr = file->instr;
-	// while (file->current_instr)
-	// {
-	// 	ft_printf ("%s : %d param(s)\n", g_op_tab[file->current_instr->index].name, file->current_instr->nb_params);
-	// 	for (int i = 0; i < file->current_instr->nb_params; i++)
-	// 		ft_printf("	%s\n", file->current_instr->params[i].data);
-	// 	file->current_instr = file->current_instr->next;
-	// }
 	file->prog_content = ft_memalloc(file->prog_size);
 	write_instr(file);
 	encode_labels(file);
-
-
-	// t_label *iter;
-
-	// iter = file->labels;
-	// while (iter)
-	// {
-	// 	ft_printf ("-> %d %s\n", iter->pos, iter->name);
-	// 	iter = iter->next;
-	// }
-
+	if (file->nb_error)
+		return (0);
 	write_params(file);
 	size = little_to_big_endian(file->prog_size);
 	ft_memcpy(file->header + 8 + PROG_NAME_LENGTH, &size, 4);
