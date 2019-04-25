@@ -20,9 +20,10 @@
 enum	e_error_code { NOT_S_FILE = 1, OPEN_FAIL, NOT_CREATE, NAME_NOT_FOUND,
 	NAME_TOO_LONG, COMMENT_NOT_FOUND, COMMENT_TOO_LONG};
 
-enum	e_ln_error_code { CMD_NOT_FOUND = 101, UNEXP_EOF, TWO_CMD, WRONG_TYPE};
+enum	e_ln_error_code { CMD_NOT_FOUND = 101, UNEXP_EOF, TWO_CMD, WRONG_TYPE,
+	NOT_LABEL};
 
-typedef struct s_label t_label;
+typedef struct s_label	t_label;
 
 struct			s_label
 {
@@ -36,11 +37,11 @@ typedef struct	s_param
 {
 	int		size;
 	int		kind;
-	int		inline_off;
+	int		line_off;
 	char	*data;
 }				t_param;
 
-typedef struct s_instr t_instr;
+typedef struct s_instr	t_instr;
 
 struct			s_instr
 {
@@ -67,7 +68,7 @@ typedef struct	s_file
 	char	*prog_comment;
 	int		glob_off;
 	int		line_nb;
-	int		inline_off;
+	int		line_off;
 	int		nb_error;
 	int		offset_;
 	int		prog_size;
@@ -86,6 +87,13 @@ typedef struct	s_a
 	t_file	*file;
 	int		nb_errors;
 }				t_a;
+
+typedef struct	s_var
+{
+	int	i;
+	int	sub_off;
+	int	data_size;
+}				t_var;
 
 /*
 ** error.c
@@ -109,8 +117,13 @@ int				exit_func(int exit_code, int dp_usage, t_a *all);
 char			*get_ext(char *str);
 char			*get_cor_name(char *file);
 int				little_to_big_endian(int little);
-int				skip_whitespaces(char *data, int offset);
+int				skip_spaces(char *data, int offset);
 int				end_of_line(t_file *file);
+
+/*
+** util2.c
+*/
+int				nb_digits(char *str);
 
 /*
 ** io.c
@@ -124,8 +137,25 @@ int				write_file(t_a *all, t_file *file, char *file_name);
 int				create_header(t_a *all, t_file *file);
 
 /*
+** label.c
+*/
+int				get_label(t_file *file, char *data);
+int				label_length(char *str);
+
+/*
 ** body.c
 */
 int				create_code(t_a *all, t_file *file);
+
+/*
+** write_instr.c
+*/
+int				write_params(t_file *file);
+int				write_instr(t_file *file);
+
+/*
+** get_parse_info.c
+*/
+int				get_name(t_file *file, char *data);
 
 #endif

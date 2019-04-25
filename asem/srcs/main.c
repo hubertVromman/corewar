@@ -89,6 +89,5 @@ int		main(int ac, char **av)
 
 	instantiate_all(&all, &file);
 	create_files(ac, av, &all);
-	// ft_printf("nb_files_created %d\n", all.nb_files_created);
 	exit_func(0, 0, &all);
 }

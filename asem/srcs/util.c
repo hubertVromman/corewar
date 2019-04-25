@@ -41,7 +41,7 @@ int		little_to_big_endian(int little)
 	return (big);
 }
 
-int		skip_whitespaces(char *data, int offset)
+int		skip_spaces(char *data, int offset)
 {
 	int		sub_off;
 
@@ -58,8 +58,8 @@ int		skip_whitespaces(char *data, int offset)
 
 int		end_of_line(t_file *file)
 {
-	file->glob_off += file->inline_off + 1;
+	file->glob_off += file->line_off + 1;
 	file->line_nb++;
-	file->inline_off = 0;
+	file->line_off = 0;
 	return (0);
 }

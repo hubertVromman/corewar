@@ -15,11 +15,13 @@
 int		free_instr(t_instr *current_instr)
 {
 	t_instr	*next_instr;
+	int		i;
 
 	while (current_instr)
 	{
 		next_instr = current_instr->next;
-		for (int i = 0; i < 4; i++)
+		i = -1;
+		while (++i < 4)
 			if (&(current_instr->params[i]))
 			{
 				free(current_instr->params[i].data);
