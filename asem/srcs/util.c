@@ -23,7 +23,8 @@ char	*get_cor_name(char *file)
 	char	*new_name;
 
 	len = ft_strlen(file);
-	new_name = malloc(len + 3);
+	if (!(new_name = malloc(len + 3)))
+		exit_func(-2, 0);
 	ft_memcpy(new_name, file, len - 1);
 	ft_memcpy(new_name + len - 1, "cor", 3);
 	new_name[len + 2] = 0;

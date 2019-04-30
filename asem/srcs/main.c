@@ -29,7 +29,7 @@ int		get_flags(int ac, char **av, t_a *all)
 			while (av[i][++j])
 			{
 				if ((k = ft_indexof(OP, av[i][j])) == -1)
-					exit_func(-1, 1, all);
+					exit_func(-1, 1);
 				all->flags[k] = 1;
 			}
 		}
@@ -58,7 +58,7 @@ int		create_files(int ac, char **av, t_a *all)
 	int		i;
 
 	if (ac < 2)
-		exit_func(-1, 1, all);
+		exit_func(-1, 1);
 	i = get_flags(ac, av, all) - 1;
 	while (++i < ac)
 	{
@@ -72,22 +72,22 @@ int		create_files(int ac, char **av, t_a *all)
 	return (0);
 }
 
-int		instantiate_all(t_a *all, t_file *file)
+int		instantiate_all(t_file *file)
 {
 	ft_bzero(file, sizeof(t_file));
-	ft_bzero(all, sizeof(t_a));
-	all->header_size = 16 + PROG_NAME_LENGTH + COMMENT_LENGTH;
-	all->flags = malloc(sizeof(OP));
-	all->file = file;
+	ft_bzero(&g_all, sizeof(t_a));
+	g_all.header_size = 16 + PROG_NAME_LENGTH + COMMENT_LENGTH;
+	g_all.file = file;
+	if (!(g_all.flags = malloc(sizeof(OP))))
+		exit_func(-2, 0);
 	return (0);
 }
 
 int		main(int ac, char **av)
 {
-	t_a		all;
 	t_file	file;
 
-	instantiate_all(&all, &file);
-	create_files(ac, av, &all);
-	exit_func(0, 0, &all);
+	instantiate_all(&file);
+	create_files(ac, av, &g_all);
+	exit_func(0, 0);
 }

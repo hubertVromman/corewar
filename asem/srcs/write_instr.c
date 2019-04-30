@@ -68,13 +68,11 @@ int		get_encoded_param(t_file *file, t_param *param,
 	int		off;
 
 	*ret = 0;
-	off = 0;
 	if (param->kind & T_REG)
-		*ret = atoi(param->data + 1);
+		*ret = get_normal_base(param->data + 1, param->base);
 	else
 	{
-		if (param->kind & T_DIR)
-			off++;
+		off = !!(param->kind & T_DIR);
 		if (param->data[off] == LABEL_CHAR)
 		{
 			if ((nb = get_label_pos(file, param->data + 1 + off)) == -1)
@@ -86,7 +84,7 @@ int		get_encoded_param(t_file *file, t_param *param,
 			*ret = nb - pos_in_file;
 		}
 		else
-			*ret = atoi(param->data + off);
+			*ret = get_normal_base(param->data + off, param->base);
 	}
 	*ret = little_to_big_endian(*ret);
 	return (0);

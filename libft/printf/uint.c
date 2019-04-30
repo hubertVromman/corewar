@@ -57,11 +57,10 @@ int		unsigned_func(uintmax_t number, char *f, int w[2])
 	if (w[1] != -1)
 		f[2] = 0;
 	len = len_uintmax_t(number, f[5]);
-	size = ft_max(len, w[1]);
+	slen = ft_max(len, w[1]);
 	if (!number && w[1] == 0)
-		size = 0;
-	slen = size;
-	size = ft_max(size, w[0]);
+		slen = 0;
+	size = ft_max(slen, w[0]);
 	if (!(created = realloc_g_str(size * f[9])))
 		return (end_conv_nothing(-1, f, NULL, 0));
 	ft_uitoa_u(number, &created[size - len], len, f[5]);

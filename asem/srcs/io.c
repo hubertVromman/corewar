@@ -20,7 +20,8 @@ int		read_file(t_file *file)
 		return (error_func(file, OPEN_FAIL));
 	file->file_size = lseek(file->s_fd, 0, SEEK_END);
 	lseek(file->s_fd, 0, SEEK_SET);
-	file->s_file_content = malloc(file->file_size + 1);
+	if (!(file->s_file_content = malloc(file->file_size + 1)))
+		exit_func(-2, 0);
 	ret = read(file->s_fd, file->s_file_content, file->file_size);
 	file->s_file_content[file->file_size] = 0;
 	close(file->s_fd);
@@ -38,5 +39,6 @@ int		write_file(t_a *all, t_file *file, char *file_name)
 	write(file->cor_fd, file->header, all->header_size);
 	write(file->cor_fd, file->prog_content, file->prog_size);
 	close(file->cor_fd);
+	ft_printf("<bgreen>File %s compiled to %s\n</>", file->s_name, file_name);
 	return (0);
 }

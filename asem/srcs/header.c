@@ -25,8 +25,9 @@ int		get_command_data(t_file *file, char *data, char **to_fill)
 		else if (data[file->glob_off + file->line_off] == '"')
 		{
 			if (!*to_fill)
-				*to_fill = ft_strsub(data, start_search,
-					file->glob_off + file->line_off - start_search);
+				if (!(*to_fill = ft_strsub(data, start_search,
+					file->glob_off + file->line_off - start_search)))
+					exit_func(-2, 0);
 			file->line_off++;
 			break ;
 		}
@@ -40,7 +41,7 @@ int		check_command(t_file *file, char *data, char **to_fill, char *cmd_name)
 {
 	if (*to_fill)
 		error_func_ln(file, TWO_CMD, cmd_name + 1, 0);
-	file->line_off += ft_strlen(cmd_name) + 1;
+	file->line_off += ft_strlen(cmd_name);
 	file->line_off += skip_spaces(data,
 		file->glob_off + file->line_off);
 	if (data[file->glob_off + file->line_off] == '"')
@@ -78,6 +79,14 @@ int		get_command_name(t_file *file, char *data)
 			== -1)
 			return (-1);
 	}
+	else if (!ft_strncmp(data + file->glob_off + file->line_off, ".extend", 7))
+	{
+		file->line_off += skip_spaces(data, file->glob_off +
+			(file->line_off += 7));
+		if (data[file->glob_off + file->line_off] == '\n')
+			end_of_line(file);
+		file->extend = 1;
+	}
 	else
 		return (error_command(file, data));
 	return (0);
@@ -109,17 +118,18 @@ int		create_header(t_a *all, t_file *file)
 	int		offset;
 
 	magic = little_to_big_endian(COREWAR_EXEC_MAGIC);
-	file->header = ft_memalloc(all->header_size);
+	if (!(file->header = ft_memalloc(all->header_size)))
+		exit_func(-2, 0);
 	ft_memcpy(file->header, &magic, offset = 4);
 	if (get_cmds(file, file->s_file_content) == -1)
 		return (-1);
 	if (!file->prog_name)
 		error_func(file, NAME_NOT_FOUND);
-	if (ft_strlen(file->prog_name) > PROG_NAME_LENGTH)
+	else if (ft_strlen(file->prog_name) > PROG_NAME_LENGTH)
 		error_func(file, NAME_TOO_LONG);
-	if (!file->prog_comment)
+	else if (!file->prog_comment)
 		error_func(file, COMMENT_NOT_FOUND);
-	if (ft_strlen(file->prog_comment) > COMMENT_LENGTH)
+	else if (ft_strlen(file->prog_comment) > COMMENT_LENGTH)
 		error_func(file, COMMENT_TOO_LONG);
 	if (!file->nb_error)
 		ft_memcpy(file->header + offset,
@@ -128,6 +138,5 @@ int		create_header(t_a *all, t_file *file)
 	if (!file->nb_error)
 		ft_memcpy(file->header + offset,
 			file->prog_comment, ft_strlen(file->prog_comment));
-	offset += COMMENT_LENGTH + 4;
 	return (0);
 }

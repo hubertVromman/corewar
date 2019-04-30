@@ -39,13 +39,12 @@ int		binary_func(uintmax_t nb, char *f, int w[2])
 	if (w[1] != -1)
 		f[2] = 0;
 	len = len_bintmax_t(nb);
-	size = (!nb && !w[1]) ? 0 : ft_max(len, w[1]);
-	slen = size;
+	slen = (!nb && !w[1]) ? 0 : ft_max(len, w[1]);
 	size = ft_max(slen, w[0]);
 	if (!(created = realloc_g_str(size * f[9])))
 		return (end_conv_nothing(-1, f, NULL, 0));
 	ft_bitoa_u(nb, &created[size - len], len);
-	ft_memset(created, '0', trun(size - len) + !nb && !w[1] ? 1 : 0);
+	ft_memset(created, '0', trun(size - len) + (!nb && !w[1] ? 1 : 0));
 	if (f[3] && w[0] == size && ft_memcpy(created, created + size - slen, slen))
 		ft_memset(&created[slen], ' ', size - slen);
 	else if (f[2] && w[0] == size)

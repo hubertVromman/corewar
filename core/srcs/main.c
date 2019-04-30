@@ -12,8 +12,8 @@
 
 #include "corewar.h"
 
-int main(int ac, char **av)
+int		main(void)
 {
-	ft_printf("%s\n", av[ac - 1]);
+	ft_printf("%b\n", ft_atoi_base("110111", "012"));
 	return (0);
 }

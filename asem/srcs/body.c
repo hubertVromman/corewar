@@ -81,7 +81,8 @@ int		create_code(t_a *all, t_file *file)
 	if (all->flags[0])
 		;
 	parse_lines(file, file->s_file_content);
-	file->prog_content = ft_memalloc(file->prog_size);
+	if (!(file->prog_content = ft_memalloc(file->prog_size)))
+		exit_func(-2, 0);
 	write_instr(file);
 	encode_labels(file);
 	if (file->nb_error)

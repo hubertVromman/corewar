@@ -34,7 +34,8 @@ ft_putstr_fd.o ft_putchar.o ft_putchar_fd.o
 MEM = ft_memalloc.o ft_memccpy.o ft_memchr.o ft_memcmp.o ft_bzero.o \
 ft_memcpy.o ft_memdel.o ft_memmove.o ft_memset.o ft_memrcpy.o
 
-INT = ft_atoi.o ft_itoa.o ft_min.o ft_max.o ft_pow.o ft_tolower.o ft_toupper.o
+INT = ft_atoi.o ft_itoa.o ft_min.o ft_max.o ft_pow.o ft_tolower.o ft_toupper.o \
+ft_atoi_base.o
 
 TAB = ft_tablen.o ft_free_tab.o
 

@@ -15,13 +15,15 @@
 
 # include "common.h"
 
-# define OP "m"
+# define OP "mbo"
 
 enum	e_error_code { NOT_S_FILE = 1, OPEN_FAIL, NOT_CREATE, NAME_NOT_FOUND,
 	NAME_TOO_LONG, COMMENT_NOT_FOUND, COMMENT_TOO_LONG};
 
 enum	e_ln_error_code { CMD_NOT_FOUND = 101, UNEXP_EOF, TWO_CMD, WRONG_TYPE,
-	NOT_LABEL};
+	NOT_LABEL, INSTR_NOT_FOUND};
+
+enum	e_flag_nb { MULTIPLE_FILES, OTHER_BASE, OPERATION};
 
 typedef struct s_label	t_label;
 
@@ -33,13 +35,17 @@ struct			s_label
 	t_label	*next;
 };
 
-typedef struct	s_param
+typedef struct s_param	t_param;
+
+struct			s_param
 {
 	int		size;
 	int		kind;
+	int		base;
 	int		line_off;
 	char	*data;
-}				t_param;
+	t_param	*extend_op;
+};
 
 typedef struct s_instr	t_instr;
 
@@ -73,6 +79,7 @@ typedef struct	s_file
 	int		offset_;
 	int		prog_size;
 	char	*prog_content;
+	int		extend;
 	t_label	*labels;
 	t_label	*current_lab;
 	t_instr	*instr;
@@ -93,7 +100,10 @@ typedef struct	s_var
 	int	i;
 	int	sub_off;
 	int	data_size;
+	int	extend_size;
 }				t_var;
+
+t_a				g_all;
 
 /*
 ** error.c
@@ -107,9 +117,8 @@ int				error_command(t_file *file, char *data);
 ** exit.c
 */
 int				free_file(t_file *file);
-int				free_all(t_a *all);
 int				usage(void);
-int				exit_func(int exit_code, int dp_usage, t_a *all);
+int				exit_func(int exit_code, int dp_usage);
 
 /*
 ** util.c
@@ -123,7 +132,8 @@ int				end_of_line(t_file *file);
 /*
 ** util2.c
 */
-int				nb_digits(char *str);
+int				nb_digits(char *str, int *base);
+int				get_normal_base(char *data, int base);
 
 /*
 ** io.c

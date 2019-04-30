@@ -94,5 +94,6 @@ void				*ft_memrcpy(void *dst, const void *src, size_t n);
 int					get_next_line(const int fd, char **line);
 int					ft_printf(const char *restrict format, ...);
 int					ft_isspace(char c);
+int					ft_atoi_base(const char *str, char *base);
 
 #endif

@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #ifndef COMMON_H
 # define COMMON_H
 
@@ -32,7 +31,6 @@ typedef struct		s_op
 	int					dir_size;
 }					t_op;
 
-t_op	g_op_tab[17];
-
+t_op				g_op_tab[17];
 
 #endif

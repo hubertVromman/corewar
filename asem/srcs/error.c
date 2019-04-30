@@ -40,6 +40,8 @@ int		error_func(t_file *file, int error_code)
 
 int		error_func_ln(t_file *file, int error_code, char *detail, int to_free)
 {
+	if (to_free && !detail)
+		exit_func(-2, 0);
 	ft_printf("<b bwhite>%s:%d:%d: <bred>error:<bwhite> %>", file->s_name,
 		file->line_nb, file->line_off, 2);
 	if (error_code == CMD_NOT_FOUND)
@@ -52,6 +54,8 @@ int		error_func_ln(t_file *file, int error_code, char *detail, int to_free)
 		ft_printf("label '%s' not found\n%>", detail, 2);
 	else if (error_code == WRONG_TYPE)
 		ft_printf("wrong param type\n%>", 2);
+	else if (error_code == INSTR_NOT_FOUND)
+		ft_printf("instruction '%s' not found\n%>", detail, 2);
 	else
 		ft_printf("undifined error\n%>", 2);
 	ft_printf("</>%>", 2);
