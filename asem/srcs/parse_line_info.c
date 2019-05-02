@@ -12,80 +12,31 @@
 
 #include "asm.h"
 
-// t_param	*new_param(t_param *param, int plus)
-// {
-// 	t_param	*new;
-// 	t_param	*iter;
-
-// 	if (!new = )
-// 		exit_func(-2, 0);
-// 	iter = param;
-// 	while (iter->extend_op)
-// 		iter = iter->extend_op;
-// 	iter->extend_op = new;
-// 	return (new);
-// }
-
-int		get_operations(t_file *file, char *data, int offset, int sub_off, t_param *param)
-{
-	int		size;
-	t_param	*new;
-
-	sub_off += skip_spaces(data, 0);
-	if (data[sub_off] == '+' || data[sub_off] == '-')
-	{
-		new = ft_memalloc(sizeof(t_param));
-		param->extend_op = new;
-		new->kind = data[sub_off++] == '+';
-		sub_off += skip_spaces(data, sub_off);
-		if (data[sub_off] == ':')
-		{
-			size = 1;
-			while (ft_indexof(LABEL_CHARS, data[sub_off + size]) != -1)
-				size++;
-		}
-		else
-		{
-			size = nb_digits(data + sub_off, &new->base);
-		}
-		new->line_off = file->line_off + offset + sub_off;
-		if (!(new->data = ft_strsub(data, sub_off, size)))
-			exit_func(-2, 0);
-		ft_printf("%s %s\n", new->kind ? "+" : "-", new->data);
-		return (get_operations(file, data + sub_off + size, offset, 0, new) + (sub_off + size));
-	}
-	return (0);
-}
-
-int		encode_type(t_file *file, char *data, int i, int *extend_size)
+int		encode_type(t_file *file, char *data, t_param *param, int *extend_size)
 {
 	int		data_size;
 
 	data_size = 0;
 	if (data[0] == 'r')
 	{
-		file->current_instr->params[i].size = 1;
-		file->current_instr->params[i].kind = T_REG;
-		file->current_instr->params[i].base = 10;
+		param->size = 1;
+		param->kind = T_REG;
+		param->base = 10;
 		data_size = 1 + nb_digits(data + 1, NULL);
 	}
 	else
 	{
 		if ((data_size = data[0] == DIRECT_CHAR) &&
-			(file->current_instr->params[i].kind = T_DIR))
-			file->current_instr->params[i].size = 4 - 2 *
-				g_op_tab[file->current_instr->index].dir_size;
-		else if ((file->current_instr->params[i].kind = T_IND))
-			file->current_instr->params[i].size = 2;
-		if (data[data_size] == LABEL_CHAR)
-			data_size += 1 + label_length(data + 1 + data_size);
-		else
-			data_size += nb_digits(data + data_size,
-				&file->current_instr->params[i].base);
+			(param->kind = T_DIR))
+			param->size = 4 - 2 *
+				g_op_tab[file->curr_instr->index].dir_size;
+		else if ((param->kind = T_IND))
+			param->size = 2;
+		data_size += data[data_size] == LABEL_CHAR ? 1 +
+label_length(data + 1 + data_size) : nb_digits(data + data_size, &param->base);
 		if (g_all.flags[OPERATION] || file->extend)
-		{
-			*extend_size = get_operations(file, data + data_size, data_size, 0, &file->current_instr->params[i]);
-		}
+			*extend_size = get_operations(file, data + data_size,
+				data_size, param);
 	}
 	return (data_size);
 }
@@ -98,7 +49,7 @@ int		get_error(t_file *file, char *data, t_var *var, char *param)
 		wrong_char(file, "label_char", var->sub_off);
 	else if (!var->data_size)
 		wrong_char(file, "param", var->sub_off);
-	else if (var->i == file->current_instr->nb_params)
+	else if (var->i == file->curr_instr->nb_params)
 	{
 		if (data[var->sub_off] != '\n')
 			wrong_char(file, "\\n", var->sub_off);
@@ -118,21 +69,22 @@ int		get_params(t_file *file, char *data)
 	while (1)
 	{
 		var.sub_off += skip_spaces(data, var.sub_off);
-		var.data_size = encode_type(file, data + var.sub_off, var.i, &var.extend_size);
-		if (!(g_op_tab[file->current_instr->index].param[var.i]
-			& file->current_instr->params[var.i].kind))
+		var.data_size = encode_type(file, data + var.sub_off,
+			&file->curr_instr->params[var.i], &var.extend_size);
+		if (!(g_op_tab[file->curr_instr->index].param[var.i]
+			& file->curr_instr->params[var.i].kind))
 		{
 			error_func_ln(file, WRONG_TYPE, NULL, 0);
 			return (var.sub_off);
 		}
-		file->current_instr->params[var.i].line_off =
-			file->line_off + var.sub_off;
-		if (!(file->current_instr->params[var.i].data =
+		file->curr_instr->params[var.i].line_off = file->line_off + var.sub_off;
+		if (!(file->curr_instr->params[var.i].data =
 			ft_strsub(data, var.sub_off, var.data_size)))
 			exit_func(-2, 0);
-		var.sub_off += skip_spaces(data, var.sub_off += var.data_size + var.extend_size);
+		var.sub_off += skip_spaces(data,
+			var.sub_off += var.data_size + var.extend_size);
 		if (get_error(file, data, &var,
-			file->current_instr->params[var.i++].data))
+			file->curr_instr->params[var.i++].data))
 			return (var.sub_off);
 		var.sub_off++;
 	}
@@ -143,9 +95,9 @@ int		parse_name(t_file *file, char *data, int i)
 	int		ret;
 	int		sub_off;
 
-	file->current_instr->index = i;
-	file->current_instr->line_nb = file->line_nb;
-	file->current_instr->nb_params = g_op_tab[i].param_nb;
+	file->curr_instr->index = i;
+	file->curr_instr->line_nb = file->line_nb;
+	file->curr_instr->nb_params = g_op_tab[i].param_nb;
 	sub_off = ft_strlen(g_op_tab[i].name);
 	file->line_off += sub_off;
 	ret = get_params(file, data + sub_off);
@@ -166,13 +118,13 @@ int		get_name(t_file *file, char *data)
 	{
 		if (!(file->instr = ft_memalloc(sizeof(t_instr))))
 			exit_func(-2, 0);
-		file->current_instr = file->instr;
+		file->curr_instr = file->instr;
 	}
 	else
 	{
-		if (!(file->current_instr->next = ft_memalloc(sizeof(t_instr))))
+		if (!(file->curr_instr->next = ft_memalloc(sizeof(t_instr))))
 			exit_func(-2, 0);
-		file->current_instr = file->current_instr->next;
+		file->curr_instr = file->curr_instr->next;
 	}
 	while (ft_isalpha(data[++i]))
 		;

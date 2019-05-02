@@ -83,7 +83,7 @@ typedef struct	s_file
 	t_label	*labels;
 	t_label	*current_lab;
 	t_instr	*instr;
-	t_instr	*current_instr;
+	t_instr	*curr_instr;
 }				t_file;
 
 typedef struct	s_a
@@ -162,10 +162,18 @@ int				create_code(t_a *all, t_file *file);
 */
 int				write_params(t_file *file);
 int				write_instr(t_file *file);
+int				get_label_pos(t_file *file, char *label);
 
 /*
 ** get_parse_info.c
 */
 int				get_name(t_file *file, char *data);
+
+/*
+** operation.c
+*/
+int				get_operations(t_file *file, char *data, int offset,
+	t_param *param);
+int				get_extend(t_file *file, t_param *param, int pos_in_file);
 
 #endif

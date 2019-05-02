@@ -78,7 +78,7 @@ int		get_encoded_param(t_file *file, t_param *param,
 			if ((nb = get_label_pos(file, param->data + 1 + off)) == -1)
 			{
 				file->line_off = param->line_off;
-				file->line_nb = file->current_instr->line_nb + 1;
+				file->line_nb = file->curr_instr->line_nb + 1;
 				return (-1);
 			}
 			*ret = nb - pos_in_file;
@@ -86,6 +86,7 @@ int		get_encoded_param(t_file *file, t_param *param,
 		else
 			*ret = get_normal_base(param->data + off, param->base);
 	}
+	*ret += get_extend(file, param, pos_in_file);
 	*ret = little_to_big_endian(*ret);
 	return (0);
 }
@@ -105,7 +106,7 @@ int		write_params(t_file *file)
 		i = -1;
 		while (++i < current->nb_params)
 		{
-			file->current_instr = current;
+			file->curr_instr = current;
 			if ((get_encoded_param(file, &current->params[i],
 				current->pos_in_file, &ret)) == -1)
 				error_func_ln(file, NOT_LABEL, current->params[i].data, 0);

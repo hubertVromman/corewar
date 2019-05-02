@@ -31,12 +31,12 @@ int		get_instruction(t_file *file, char *data)
 			return (end_of_line(file));
 		}
 		file->line_off += skip_spaces(data, file->glob_off + file->line_off);
-		file->current_instr->size = 1 +
-			g_op_tab[file->current_instr->index].codage;
-		while (++i < file->current_instr->nb_params)
-			file->current_instr->size += file->current_instr->params[i].size;
-		file->current_instr->pos_in_file = file->prog_size;
-		file->prog_size += file->current_instr->size;
+		file->curr_instr->size = 1 +
+			g_op_tab[file->curr_instr->index].codage;
+		while (++i < file->curr_instr->nb_params)
+			file->curr_instr->size += file->curr_instr->params[i].size;
+		file->curr_instr->pos_in_file = file->prog_size;
+		file->prog_size += file->curr_instr->size;
 	}
 	return (0);
 }

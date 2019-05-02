@@ -12,20 +12,31 @@
 
 #include "asm.h"
 
-int		free_instr(t_instr *current_instr)
+int		free_instr(t_instr *curr_instr)
 {
 	t_instr	*next_instr;
+	t_param	*param;
+	t_param	*next;
 	int		i;
 
-	while (current_instr)
+	while (curr_instr)
 	{
-		next_instr = current_instr->next;
+		next_instr = curr_instr->next;
 		i = -1;
 		while (++i < 4)
-			if (&(current_instr->params[i]))
-				free(current_instr->params[i].data);
-		free(current_instr);
-		current_instr = next_instr;
+			if (&(curr_instr->params[i]))
+			{
+				free(curr_instr->params[i].data);
+				next = curr_instr->params[i].extend_op;
+				while ((param = next))
+				{
+					next = param->extend_op;
+					free(param->data);
+					free(param);
+				}
+			}
+		free(curr_instr);
+		curr_instr = next_instr;
 	}
 	return (0);
 }
@@ -68,6 +79,7 @@ int		usage(void)
 	ft_printf("             0b : binary\n%>", 2);
 	ft_printf("             0  : octal\n%>", 2);
 	ft_printf("             0x : hexadecimal\n%>", 2);
+	ft_printf("      -o  : Unable to perform operations in parameters\n%>", 2);
 	return (0);
 }
 
