@@ -65,9 +65,7 @@ typedef struct	s_file
 {
 	char	*header;
 	char	*cor_name;
-	int		cor_fd;
 	char	*s_name;
-	int		s_fd;
 	int		file_size;
 	char	*s_file_content;
 	char	*prog_name;

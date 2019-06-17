@@ -27,7 +27,7 @@ OBJ = $(addprefix $(SRCS), $(FILES))
 COR_DIR = core/
 COR_FILE = corewar.h
 COR_H = $(addprefix $(COR_DIR), $(addprefix $(HEAD), $(COR_FILE)))
-COR_FILES = main.o
+COR_FILES = main.o error.o exit.o util.o
 COR_OBJ = $(addprefix $(COR_DIR), $(addprefix $(SRCS), $(COR_FILES)))
 
 ASM_DIR = asem/
@@ -69,6 +69,11 @@ fclean: clean
 	@echo "$(RED)$(ASM) and $(COR) fcleaned$(NC)"
 
 debug_asm: $(ASM_OBJ) $(OBJ)
+	@make -C $(LIB)
+	@$(CC) $(CFLAGS) -o $@ $^ -L$(LIB) -lft $(SANITIZE)
+	@echo "$@ compiled$(NC)"
+
+debug_corewar: $(COR_OBJ) $(OBJ)
 	@make -C $(LIB)
 	@$(CC) $(CFLAGS) -o $@ $^ -L$(LIB) -lft $(SANITIZE)
 	@echo "$@ compiled$(NC)"

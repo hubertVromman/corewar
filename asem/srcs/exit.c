@@ -72,7 +72,7 @@ int		free_all(void)
 
 int		usage(void)
 {
-	ft_printf("usage: asm: [-%s] file.s ...\n%>", OP, 2);
+	ft_printf("usage: asm  [-%s] file.s ...\n%>", OP, 2);
 	ft_printf("      -m  : Unable to compile multiple files\n%>", 2);
 	ft_printf("      -b  : Unable number in other bases "
 		"(also works with .extend command)\n%>", 2);

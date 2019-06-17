@@ -78,7 +78,7 @@ int		instantiate_all(t_file *file)
 	ft_bzero(&g_all, sizeof(t_a));
 	g_all.header_size = 16 + PROG_NAME_LENGTH + COMMENT_LENGTH;
 	g_all.file = file;
-	if (!(g_all.flags = malloc(sizeof(OP))))
+	if (!(g_all.flags = ft_memalloc(sizeof(OP))))
 		exit_func(-2, 0);
 	return (0);
 }

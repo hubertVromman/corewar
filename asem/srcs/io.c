@@ -15,30 +15,33 @@
 int		read_file(t_file *file)
 {
 	int ret;
+	int fd;
 
-	if ((file->s_fd = open(file->s_name, O_RDONLY)) == -1)
+	if ((fd = open(file->s_name, O_RDONLY)) == -1)
 		return (error_func(file, OPEN_FAIL));
-	file->file_size = lseek(file->s_fd, 0, SEEK_END);
-	lseek(file->s_fd, 0, SEEK_SET);
+	file->file_size = lseek(fd, 0, SEEK_END);
+	lseek(fd, 0, SEEK_SET);
 	if (!(file->s_file_content = malloc(file->file_size + 1)))
 		exit_func(-2, 0);
-	ret = read(file->s_fd, file->s_file_content, file->file_size);
+	ret = read(fd, file->s_file_content, file->file_size);
 	file->s_file_content[file->file_size] = 0;
-	close(file->s_fd);
+	close(fd);
 	return (ret < 0 ? -1 : 0);
 }
 
 int		write_file(t_a *all, t_file *file, char *file_name)
 {
+	int fd;
+
 	file->cor_name = file_name;
 	if (!file_name || file->nb_error)
 		return (-1);
-	if ((file->cor_fd = open(file_name,
+	if ((fd = open(file_name,
 		O_WRONLY | O_CREAT | O_TRUNC, 0755)) == -1)
 		return (error_func(file, NOT_CREATE));
-	write(file->cor_fd, file->header, all->header_size);
-	write(file->cor_fd, file->prog_content, file->prog_size);
-	close(file->cor_fd);
+	write(fd, file->header, all->header_size);
+	write(fd, file->prog_content, file->prog_size);
+	close(fd);
 	ft_printf("<bgreen>File %s compiled to %s\n</>", file->s_name, file_name);
 	return (0);
 }
