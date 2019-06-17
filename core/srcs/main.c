@@ -12,7 +12,33 @@
 
 #include "corewar.h"
 
-#include <stdio.h>
+int		get_flags(int ac, char **av)
+{
+	int		i;
+	int		j;
+	int		k;
+
+	i = 0;
+	while (++i < ac)
+	{
+		if (!ft_strcmp(av[i], "--"))
+			return (i + 1);
+		if (av[i][0] == '-')
+		{
+			j = 0;
+			while (av[i][++j])
+			{
+				if ((k = ft_indexof(OP, av[i][j])) == -1)
+					exit_func(-1, 1);
+				g_all.flags[k] = 1;
+			}
+		}
+		else
+			return (i);
+	}
+	return (i);
+}
+
 int		read_file(t_champ *champ)
 {
 	int ret;
@@ -43,37 +69,41 @@ int		get_file(char *file_name, t_champ *new)
 int		get_champ(char **av)
 {
 	int		i;
+	int		j;
 
 	i = -1;
+	j = g_all.start;
 	while (++i < g_all.nb_champ)
 	{
-		get_file(av[i + 1], &(g_all.champ[i]));
+		get_file(av[j], &(g_all.champ[i]));
+		++j;
 	}
 	return (0);
 }
 
-int		init_all(nb_champ)
+int		init_all(int ac, char **av)
 {
 	ft_bzero(&g_all, sizeof(g_all));
-	if (nb_champ < 1)
-		exit_func(-1, 1);
-	g_all.nb_champ = nb_champ;
-	if (!(g_all.champ = ft_memalloc(sizeof(t_champ) * nb_champ)))
-		exit_func(MERROR, 0);
 	if (!(g_all.flags = ft_memalloc(sizeof(OP))))
 		exit_func(-2, 0);
+	g_all.start = get_flags(ac, av);
+	g_all.nb_champ = ac - g_all.start;
+	if (g_all.nb_champ < 1)
+		exit_func(-1, 1);
+	if (!(g_all.champ = ft_memalloc(sizeof(t_champ) * g_all.nb_champ)))
+		exit_func(MERROR, 0);
 	return (0);
 }
 
 int		main(int ac, char **av)
 {
-	init_all(ac - 1);
+	init_all(ac, av);
 	get_champ(av);
 	for (int i = 0; i < g_all.nb_champ; ++i)
 	{
-		for (size_t j = 0; j < g_all.champ->file_size; ++j)
+		for (size_t j = 0; j < g_all.champ[i].file_size; ++j)
 		{
-			ft_printf("%4d ", g_all.champ->file[j]);
+			ft_printf("%4d ", g_all.champ[i].file[j]);
 			if (!((j+1)%16))
 				ft_printf("\n");
 		}

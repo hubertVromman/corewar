@@ -33,6 +33,7 @@ int		usage(void)
 
 int		exit_func(int exit_code, int dp_usage)
 {
+	ft_printf("exit\n");
 	if (dp_usage)
 		usage();
 	if (exit_code == -2)

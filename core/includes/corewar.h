@@ -19,7 +19,7 @@ enum	e_error_code { NOT_COR_FILE = 1, OPEN_FAIL};
 
 # define MERROR -2
 
-#define OP ""
+#define OP "f"
 
 typedef struct	s_champ
 {
@@ -35,6 +35,7 @@ typedef struct	s_a
 	t_champ	*champ;
 	int		nb_errors;
 	char	*flags;
+	int		start;
 }				t_a;
 
 t_a				g_all;

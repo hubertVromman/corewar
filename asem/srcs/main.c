@@ -57,9 +57,9 @@ int		create_files(int ac, char **av, t_a *all)
 {
 	int		i;
 
-	if (ac < 2)
-		exit_func(-1, 1);
 	i = get_flags(ac, av, all) - 1;
+	if (ac - i < 2)
+		exit_func(-1, 1);
 	while (++i < ac)
 	{
 		all->nb_files_created += create_file(all, av[i]) + 1;
