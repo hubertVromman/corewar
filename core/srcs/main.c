@@ -78,6 +78,8 @@ int		get_file(char *file_name, t_champ *new)
 	new->exec_size = get_prog_size(new->file);
 	if (new->file_size != new->exec_size + g_all.header_size)
 		return (-1);
+	if (new->exec_size > CHAMP_MAX_SIZE)
+		return (error_func(new, TOO_LARGE) - 2);
 	return (0);
 }
 

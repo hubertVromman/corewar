@@ -20,7 +20,7 @@ int		error_func(t_champ *champ, int error_code)
 	else if (error_code == OPEN_FAIL)
 		ft_printf("open failed\n%>", 2);
 	else if (error_code == TOO_LARGE)
-		ft_printf("too large executable (%d vs %d bytes) %s\n%>", champ->exec_size, CHAMP_MAX_SIZE, 2);
+		ft_printf("too large executable (%d vs %d bytes)\n%>", champ->exec_size, CHAMP_MAX_SIZE, 2);
 	else if (error_code == READ_ERROR)
 		ft_printf("read error\n%>", 2);
 	// else if (error_code == NAME_NOT_FOUND)
