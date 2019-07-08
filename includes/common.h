@@ -33,4 +33,10 @@ typedef struct		s_op
 
 t_op				g_op_tab[17];
 
+
+/*
+** util.c
+*/
+int					change_endianness(int little);
+
 #endif

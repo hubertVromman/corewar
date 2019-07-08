@@ -88,7 +88,7 @@ int		create_code(t_a *all, t_file *file)
 	if (file->nb_error)
 		return (0);
 	write_params(file);
-	size = little_to_big_endian(file->prog_size);
+	size = change_endianness(file->prog_size);
 	ft_memcpy(file->header + 8 + PROG_NAME_LENGTH, &size, 4);
 	return (0);
 }

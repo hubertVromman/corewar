@@ -87,7 +87,7 @@ int		get_encoded_param(t_file *file, t_param *param,
 			*ret = get_normal_base(param->data + off, param->base);
 	}
 	*ret += get_extend(file, param, pos_in_file);
-	*ret = little_to_big_endian(*ret);
+	*ret = change_endianness(*ret);
 	return (0);
 }
 

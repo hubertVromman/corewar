@@ -19,11 +19,10 @@ int		error_func(t_champ *champ, int error_code)
 		ft_printf("not a .cor file\n%>", 2);
 	else if (error_code == OPEN_FAIL)
 		ft_printf("open failed\n%>", 2);
-	// else if (error_code == NOT_CREATE)
-	// 	ft_printf("could not open or create %s\n%>", file->cor_name, 2);
-	// else if (error_code == NAME_TOO_LONG)
-	// 	ft_printf("program name too long (max size : %d)\n%>",
-	// 		PROG_NAME_LENGTH, 2);
+	else if (error_code == TOO_LARGE)
+		ft_printf("too large executable (%d vs %d bytes) %s\n%>", champ->exec_size, CHAMP_MAX_SIZE, 2);
+	else if (error_code == READ_ERROR)
+		ft_printf("read error\n%>", 2);
 	// else if (error_code == NAME_NOT_FOUND)
 	// 	ft_printf("program name not found\n%>", 2);
 	// else if (error_code == COMMENT_TOO_LONG)

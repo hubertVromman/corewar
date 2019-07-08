@@ -117,7 +117,7 @@ int		create_header(t_a *all, t_file *file)
 	int		magic;
 	int		offset;
 
-	magic = little_to_big_endian(COREWAR_EXEC_MAGIC);
+	magic = change_endianness(COREWAR_EXEC_MAGIC);
 	if (!(file->header = ft_memalloc(all->header_size)))
 		exit_func(-2, 0);
 	ft_memcpy(file->header, &magic, offset = 4);

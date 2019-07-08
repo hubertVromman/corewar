@@ -21,7 +21,7 @@ int		free_all(void)
 int		usage(void)
 {
 	ft_printf("usage: corewar  [-%s] file.cor ...\n%>", OP, 2);
-	// ft_printf("      -m  : Unable to compile multiple files\n%>", 2);
+	ft_printf("      -f  : Start game even if one file error\n%>", 2);
 	// ft_printf("      -b  : Unable number in other bases "
 	// 	"(also works with .extend command)\n%>", 2);
 	// ft_printf("             0b : binary\n%>", 2);

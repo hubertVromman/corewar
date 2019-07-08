@@ -123,7 +123,6 @@ int				exit_func(int exit_code, int dp_usage);
 */
 char			*get_ext(char *str);
 char			*get_cor_name(char *file);
-int				little_to_big_endian(int little);
 int				skip_spaces(char *data, int offset);
 int				end_of_line(t_file *file);
 

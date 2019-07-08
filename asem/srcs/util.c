@@ -31,17 +31,6 @@ char	*get_cor_name(char *file)
 	return (new_name);
 }
 
-int		little_to_big_endian(int little)
-{
-	int		big;
-
-	big = ((little >> 24) & 0xff) |
-		((little >> 8) & 0xff00) |
-		((little << 8) & 0xff0000) |
-		((little << 24) & 0xff000000);
-	return (big);
-}
-
 int		skip_spaces(char *data, int offset)
 {
 	int		sub_off;

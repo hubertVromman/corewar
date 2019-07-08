@@ -15,7 +15,7 @@
 
 # include "common.h"
 
-enum	e_error_code { NOT_COR_FILE = 1, OPEN_FAIL};
+enum	e_error_code { NOT_COR_FILE = 1, OPEN_FAIL, TOO_LARGE, READ_ERROR};
 
 # define MERROR -2
 
@@ -27,6 +27,7 @@ typedef struct	s_champ
 	char	*file;
 	int		nb_errors;
 	size_t	file_size;
+	int		exec_size;
 }				t_champ;
 
 typedef struct	s_a
@@ -36,6 +37,7 @@ typedef struct	s_a
 	int		nb_errors;
 	char	*flags;
 	int		start;
+	size_t	header_size;
 }				t_a;
 
 t_a				g_all;

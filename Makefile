@@ -21,7 +21,7 @@ LIB = libft/
 
 FILE = common.h op.h
 H = $(addprefix $(HEAD), $(FILE))
-FILES = op.o
+FILES = op.o util.o
 OBJ = $(addprefix $(SRCS), $(FILES))
 
 COR_DIR = core/

@@ -45,7 +45,7 @@ int		read_file(t_champ *champ)
 	int fd;
 
 	if ((fd = open(champ->file_name, O_RDONLY)) == -1)
-		return (error_func(champ, OPEN_FAIL));
+		return (error_func(champ, OPEN_FAIL) - 2);
 	champ->file_size = lseek(fd, 0, SEEK_END);
 	lseek(fd, 0, SEEK_SET);
 	if (!(champ->file = malloc(champ->file_size + 1)))
@@ -56,18 +56,34 @@ int		read_file(t_champ *champ)
 	return (ret < 0 ? -1 : 0);
 }
 
+int		get_prog_size(char *file_content)
+{
+	int		size;
+
+	ft_memcpy(&size, file_content + 4 + PROG_NAME_LENGTH + 4, 4);
+	return (change_endianness(size));
+}
+
 int		get_file(char *file_name, t_champ *new)
 {
+	int		ret;
+
 	new->file_name = file_name;
 	if (ft_strcmp(get_ext(file_name), "cor"))
 		return (error_func(new, NOT_COR_FILE));
-	if (read_file(new) == -1)
+	if ((ret = read_file(new)) < 0)
+		return (ret);
+	if (new->file_size < g_all.header_size)
+		return (-1);
+	new->exec_size = get_prog_size(new->file);
+	if (new->file_size != new->exec_size + g_all.header_size)
 		return (-1);
 	return (0);
 }
 
 int		get_champ(char **av)
 {
+	int		ret;
 	int		i;
 	int		j;
 
@@ -75,7 +91,10 @@ int		get_champ(char **av)
 	j = g_all.start;
 	while (++i < g_all.nb_champ)
 	{
-		get_file(av[j], &(g_all.champ[i]));
+		if ((ret = get_file(av[j], &(g_all.champ[i]))) == -1)
+			error_func(&(g_all.champ[i]), READ_ERROR);
+		if (ret < 0 && !(g_all.flags[0]))
+			exit_func(-1, 0);
 		++j;
 	}
 	return (0);
@@ -92,6 +111,7 @@ int		init_all(int ac, char **av)
 		exit_func(-1, 1);
 	if (!(g_all.champ = ft_memalloc(sizeof(t_champ) * g_all.nb_champ)))
 		exit_func(MERROR, 0);
+	g_all.header_size = 16 + PROG_NAME_LENGTH + COMMENT_LENGTH;
 	return (0);
 }
 
@@ -101,6 +121,7 @@ int		main(int ac, char **av)
 	get_champ(av);
 	for (int i = 0; i < g_all.nb_champ; ++i)
 	{
+		ft_printf("%d\n\n", g_all.champ[i].exec_size);
 		for (size_t j = 0; j < g_all.champ[i].file_size; ++j)
 		{
 			ft_printf("%4d ", g_all.champ[i].file[j]);
