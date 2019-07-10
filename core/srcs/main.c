@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hvromman <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:28:49 by hvromman          #+#    #+#             */
-/*   Updated: 2019/04/06 14:28:52 by hvromman         ###   ########.fr       */
+/*   Updated: 2019/07/10 17:50:01 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,9 +111,12 @@ int		init_all(int ac, char **av)
 	g_all.nb_champ = ac - g_all.start;
 	if (g_all.nb_champ < 1)
 		exit_func(-1, 1);
-	if (!(g_all.champ = ft_memalloc(sizeof(t_champ) * g_all.nb_champ)))
-		exit_func(MERROR, 0);
+	ft_bzero(&g_all.champ, sizeof(g_all.champ));
+	// if (!(g_all.champ = ft_memalloc(sizeof(t_champ) * g_all.nb_champ)))
+	// 	exit_func(MERROR, 0);
 	g_all.header_size = 16 + PROG_NAME_LENGTH + COMMENT_LENGTH;
+	g_all.cycle_to_die = CYCLE_TO_DIE;
+	g_all.nbr_processes = g_all.nb_champ;
 	return (0);
 }
 
