@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:31:13 by hvromman          #+#    #+#             */
-/*   Updated: 2019/07/10 17:47:44 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/07/10 21:53:20 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,22 @@ enum	e_error_code { NOT_COR_FILE = 1, OPEN_FAIL, TOO_LARGE, READ_ERROR};
 
 #define OP "f"
 
-typedef struct	s_proces
+
+typedef struct	s_proces	t_proces;
+
+struct			s_proces
 {
 	int			carry;
 	int			pc;
-}				t_proces;
+	t_op 		*operations;
+	t_proces	*next;
+}				;
+
+/*
+** liste chainé de tout les proces par joureur. Du coup j'ai
+** rajouté la struc op vue que c'est de la qu'on fais passer les instructions.
+** Par contre je capte pas les cycle dans la struc des OP.
+*/
 
 typedef struct	s_champ
 {
@@ -36,7 +47,7 @@ typedef struct	s_champ
 	int			exec_size;
 	int			last_live;
 	int			lives_period;
-	t_proces	proces;
+	t_proces	*proces;
 }				t_champ;
 
 typedef struct	s_a
@@ -50,7 +61,6 @@ typedef struct	s_a
 	int			start;
 	size_t		header_size;
 	int			nbr_processes;
-	int			cycle;
 }				t_a;
 
 t_a				g_all;
