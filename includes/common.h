@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:39:56 by hvromman          #+#    #+#             */
-/*   Updated: 2019/07/10 21:41:18 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/07/11 14:15:10 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ typedef struct		s_op
 	int					param_nb;
 	int					param[MAX_ARGS_NUMBER];
 	int					opcode;
-	int					cycle;
+	int					cycle_op;
 	char				*long_name;
 	int					codage;
 	int					dir_size;

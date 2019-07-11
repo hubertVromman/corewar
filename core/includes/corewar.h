@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:31:13 by hvromman          #+#    #+#             */
-/*   Updated: 2019/07/10 21:53:20 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/07/10 21:58:06 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct	s_a
 	int			start;
 	size_t		header_size;
 	int			nbr_processes;
+	int			cycle;
 }				t_a;
 
 t_a				g_all;
