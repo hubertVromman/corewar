@@ -22,3 +22,8 @@ int		change_endianness(int little)
 		((little << 24) & 0xff000000);
 	return (big);
 }
+
+char	*get_ext(char *str)
+{
+	return (str + ft_last_indexof(str, '.') + 1);
+}

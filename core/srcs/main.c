@@ -117,6 +117,7 @@ int		init_all(int ac, char **av)
 	g_all.header_size = 16 + PROG_NAME_LENGTH + COMMENT_LENGTH;
 	g_all.cycle_to_die = CYCLE_TO_DIE;
 	g_all.nbr_processes = g_all.nb_champ;
+	dump_memory();
 	return (0);
 }
 

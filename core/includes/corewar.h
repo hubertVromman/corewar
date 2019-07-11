@@ -80,5 +80,5 @@ int				exit_func(int exit_code, int dp_usage);
 /*
 ** util.c
 */
-char			*get_ext(char *str);
+int				dump_memory();
 #endif

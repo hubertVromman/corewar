@@ -121,7 +121,6 @@ int				exit_func(int exit_code, int dp_usage);
 /*
 ** util.c
 */
-char			*get_ext(char *str);
 char			*get_cor_name(char *file);
 int				skip_spaces(char *data, int offset);
 int				end_of_line(t_file *file);

@@ -37,5 +37,6 @@ t_op				g_op_tab[17];
 ** util.c
 */
 int					change_endianness(int little);
+char				*get_ext(char *str);
 
 #endif

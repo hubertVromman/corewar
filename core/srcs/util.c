@@ -12,7 +12,14 @@
 
 #include "corewar.h"
 
-char	*get_ext(char *str)
+int		dump_memory()
 {
-	return (str + ft_last_indexof(str, '.') + 1);
+	int		i;
+
+	i = -1;
+	while (++i < MEM_SIZE)
+	{
+		ft_printf("%.2x%c", g_all.arena[i], (i + 1) % 32 ? ' ' : '\n');
+	}
+	return (0);
 }

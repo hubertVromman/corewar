@@ -12,11 +12,6 @@
 
 #include "asm.h"
 
-char	*get_ext(char *str)
-{
-	return (str + ft_last_indexof(str, '.') + 1);
-}
-
 char	*get_cor_name(char *file)
 {
 	int		len;
