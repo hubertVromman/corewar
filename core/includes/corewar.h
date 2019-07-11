@@ -42,6 +42,7 @@ typedef struct	s_champ
 {
 	char		*file_name;
 	char		*file;
+	char		*exec_file;
 	int			nb_errors;
 	size_t		file_size;
 	int			exec_size;

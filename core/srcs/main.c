@@ -80,6 +80,7 @@ int		get_file(char *file_name, t_champ *new)
 		return (-1);
 	if (new->exec_size > CHAMP_MAX_SIZE)
 		return (error_func(new, TOO_LARGE) - 2);
+	new->exec_file = new->file + g_all.header_size;
 	return (0);
 }
 
@@ -117,7 +118,6 @@ int		init_all(int ac, char **av)
 	g_all.header_size = 16 + PROG_NAME_LENGTH + COMMENT_LENGTH;
 	g_all.cycle_to_die = CYCLE_TO_DIE;
 	g_all.nbr_processes = g_all.nb_champ;
-	dump_memory();
 	return (0);
 }
 
