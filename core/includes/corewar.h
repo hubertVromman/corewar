@@ -22,6 +22,15 @@ enum	e_error_code { NOT_COR_FILE = 1, OPEN_FAIL, TOO_LARGE, READ_ERROR};
 
 #define OP "f"
 
+# define NC "\x1b[0m"
+# define RED "\x1b[31m"
+# define GREEN "\x1b[32m"
+# define YELLOW "\x1b[33m"
+# define BLUE "\x1b[34m"
+# define MAGENTA "\x1b[35m"
+# define CYAN "\x1b[36m"
+
+# define MAX_PLAYER_NB 6
 
 typedef struct	s_proces	t_proces;
 
@@ -86,4 +95,5 @@ int				exit_func(int exit_code, int dp_usage);
 ** util.c
 */
 int				dump_memory();
+int				dump_memory_colored();
 #endif

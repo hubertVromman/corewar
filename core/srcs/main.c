@@ -12,33 +12,6 @@
 
 #include "corewar.h"
 
-int		get_flags(int ac, char **av)
-{
-	int		i;
-	int		j;
-	int		k;
-
-	i = 0;
-	while (++i < ac)
-	{
-		if (!ft_strcmp(av[i], "--"))
-			return (i + 1);
-		if (av[i][0] == '-')
-		{
-			j = 0;
-			while (av[i][++j])
-			{
-				if ((k = ft_indexof(OP, av[i][j])) == -1)
-					exit_func(-1, 1);
-				g_all.flags[k] = 1;
-			}
-		}
-		else
-			return (i);
-	}
-	return (i);
-}
-
 int		read_file(t_champ *champ)
 {
 	int ret;
@@ -70,7 +43,7 @@ int		get_file(char *file_name, t_champ *new)
 
 	new->file_name = file_name;
 	if (ft_strcmp(get_ext(file_name), "cor"))
-		return (error_func(new, NOT_COR_FILE));
+		return (error_func(new, NOT_COR_FILE)- 2);
 	if ((ret = read_file(new)) < 0)
 		return (ret);
 	if (new->file_size < g_all.header_size)
@@ -84,7 +57,7 @@ int		get_file(char *file_name, t_champ *new)
 	return (0);
 }
 
-int		get_champ(char **av)
+int		get_champ(int idx)
 {
 	int		ret;
 	int		i;
@@ -108,9 +81,63 @@ t_proces 	*init_proces(int pc)
 	t_proces *proc;
 	proc = ft_memalloc(sizeof(t_proces));
 	proc->pc = pc;
-	proc->carry = 0;
-	proc->next = NULL;
 	return(proc);
+}
+
+int		get_flags(int ac, char **av)
+{
+	int		i;
+	int		j;
+	int		k;
+
+	i = 0;
+	while (++i < ac)
+	{
+		if (!ft_strcmp(av[i], "--"))
+			return (i + 1);
+		if (av[i][0] == '-')
+		{
+			j = 0;
+			while (av[i][++j])
+			{
+				if ((k = ft_indexof(OP, av[i][j])) == -1)
+					exit_func(-1, 1);
+				g_all.flags[k] = 1;
+			}
+		}
+		else
+			return (i);
+	}
+	return (i);
+}
+
+int		parse_arg(int ac, char **av)
+{
+	int		i;
+
+	i = 0;
+	while (++i < ac)
+	{
+		if (av[i][0] == '-')
+		{
+			if (!ft_strcmp(av[i] + 1, "n"))
+			{
+				g_all.next_champ_nb = ft_atoi(av[++i]);
+			}
+			j = 0;
+			while (av[i][++j])
+			{
+				if ((k = ft_indexof(OP, av[i][j])) == -1)
+					exit_func(-1, 1);
+				g_all.flags[k] = 1;
+			}
+		}
+		else
+		{
+			get_champ(i);
+			g_all.nb_champ++;
+		}
+	}
 }
 
 int		init_all(int ac, char **av)
@@ -121,16 +148,17 @@ int		init_all(int ac, char **av)
 	ft_bzero(&g_all, sizeof(g_all));
 	if (!(g_all.flags = ft_memalloc(sizeof(OP))))
 		exit_func(-2, 0);
-	g_all.start = get_flags(ac, av);
-	g_all.nb_champ = ac - g_all.start;
-	if (g_all.nb_champ < 1)
-		exit_func(-1, 1);
-	ft_bzero(&g_all.champ, sizeof(g_all.champ));
+	// g_all.start = get_flags(ac, av);
+	// g_all.nb_champ = ac - g_all.start;
+	// if (g_all.nb_champ < 1)
+		// exit_func(-1, 1);
+	// ft_bzero(&g_all.champ, sizeof(g_all.champ));
 	g_all.header_size = 16 + PROG_NAME_LENGTH + COMMENT_LENGTH;
 	g_all.cycle_to_die = CYCLE_TO_DIE;
+	parse_arg(ac, av);
 	g_all.nbr_processes = g_all.nb_champ;
-	get_champ(av);
-	ft_printf("--- %s\n\n", g_all.arena);
+	
+	// ft_printf("--- %s\n\n", g_all.arena);
 	g_all.pos_depart = MEM_SIZE / g_all.nb_champ;
 	while (++i < g_all.nb_champ)
 	{
@@ -138,23 +166,12 @@ int		init_all(int ac, char **av)
 		g_all.champ[i].exec_file, g_all.champ[i].file_size - g_all.header_size);
 		g_all.champ[i].proces = init_proces(g_all.pos_depart * i);
 	}
-	dump_memory();
+	dump_memory_colored();
 	return (0);
 }
 
 int		main(int ac, char **av)
 {
 	init_all(ac, av);
-	// for (int i = 0; i < g_all.nb_champ; ++i)
-	// {
-		// ft_printf("%d\n\n", g_all.champ[i].exec_size);
-		// for (size_t j = 0; j < g_all.champ[i].file_size; ++j)
-		// {
-			// ft_printf("%4d ", g_all.champ[i].file[j]);
-			// if (!((j+1)%16))
-			// 	ft_printf("\n");
-		// }
-		// ft_printf("\n\n");
-	// }
 	exit_func(0, 0);
 }
