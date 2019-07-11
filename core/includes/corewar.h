@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:31:13 by hvromman          #+#    #+#             */
-/*   Updated: 2019/07/11 17:24:27 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/07/11 18:00:40 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ struct			s_proces
 	int			carry;
 	int			pc;
 	int			reg[REG_NUMBER];
+	int			cycle_left;
 	t_op 		*operations;
 	t_proces	*next;
 }				;
