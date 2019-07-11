@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:28:49 by hvromman          #+#    #+#             */
-/*   Updated: 2019/07/10 17:50:01 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/07/11 17:47:16 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,21 @@ int		get_champ(char **av)
 	return (0);
 }
 
+t_proces 	*init_proces(int pc)
+{
+	t_proces *proc;
+	proc = ft_memalloc(sizeof(t_proces));
+	proc->pc = pc;
+	proc->carry = 0;
+	proc->next = NULL;
+	return(proc);
+}
+
 int		init_all(int ac, char **av)
 {
+	int i;
+
+	i = -1;
 	ft_bzero(&g_all, sizeof(g_all));
 	if (!(g_all.flags = ft_memalloc(sizeof(OP))))
 		exit_func(-2, 0);
@@ -113,28 +126,35 @@ int		init_all(int ac, char **av)
 	if (g_all.nb_champ < 1)
 		exit_func(-1, 1);
 	ft_bzero(&g_all.champ, sizeof(g_all.champ));
-	// if (!(g_all.champ = ft_memalloc(sizeof(t_champ) * g_all.nb_champ)))
-	// 	exit_func(MERROR, 0);
 	g_all.header_size = 16 + PROG_NAME_LENGTH + COMMENT_LENGTH;
 	g_all.cycle_to_die = CYCLE_TO_DIE;
 	g_all.nbr_processes = g_all.nb_champ;
+	get_champ(av);
+	ft_printf("--- %s\n\n", g_all.arena);
+	g_all.pos_depart = MEM_SIZE / g_all.nb_champ;
+	while (++i < g_all.nb_champ)
+	{
+		ft_memcpy(g_all.arena + (g_all.pos_depart * i),
+		g_all.champ[i].exec_file, g_all.champ[i].file_size - g_all.header_size);
+		g_all.champ[i].proces = init_proces(g_all.pos_depart * i);
+	}
+	dump_memory();
 	return (0);
 }
 
 int		main(int ac, char **av)
 {
 	init_all(ac, av);
-	get_champ(av);
-	for (int i = 0; i < g_all.nb_champ; ++i)
-	{
-		ft_printf("%d\n\n", g_all.champ[i].exec_size);
-		for (size_t j = 0; j < g_all.champ[i].file_size; ++j)
-		{
-			ft_printf("%4d ", g_all.champ[i].file[j]);
-			if (!((j+1)%16))
-				ft_printf("\n");
-		}
-		ft_printf("\n\n");
-	}
+	// for (int i = 0; i < g_all.nb_champ; ++i)
+	// {
+		// ft_printf("%d\n\n", g_all.champ[i].exec_size);
+		// for (size_t j = 0; j < g_all.champ[i].file_size; ++j)
+		// {
+			// ft_printf("%4d ", g_all.champ[i].file[j]);
+			// if (!((j+1)%16))
+			// 	ft_printf("\n");
+		// }
+		// ft_printf("\n\n");
+	// }
 	exit_func(0, 0);
 }

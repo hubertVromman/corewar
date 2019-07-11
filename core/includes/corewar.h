@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:31:13 by hvromman          #+#    #+#             */
-/*   Updated: 2019/07/10 21:58:06 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/07/11 17:24:27 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define COREWAR_H
 
 # include "common.h"
+#include <stdio.h>
 
 enum	e_error_code { NOT_COR_FILE = 1, OPEN_FAIL, TOO_LARGE, READ_ERROR};
 
@@ -28,6 +29,7 @@ struct			s_proces
 {
 	int			carry;
 	int			pc;
+	int			reg[REG_NUMBER];
 	t_op 		*operations;
 	t_proces	*next;
 }				;
@@ -55,6 +57,7 @@ typedef struct	s_a
 {
 	int			nb_champ;
 	int			cycle_to_die;
+	int 		pos_depart;
 	char		arena[MEM_SIZE];
 	t_champ		champ[4];
 	int			nb_errors;
