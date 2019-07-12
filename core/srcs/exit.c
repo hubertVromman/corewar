@@ -20,9 +20,10 @@ int		free_all(void)
 
 int		usage(void)
 {
-	ft_printf("usage: corewar  [-%s] file.cor ...\n%>", OP, 2);
+	ft_printf("usage: corewar  [-%s] [[-n player_nb] file.cor] ...\n%>", OP, 2);
 	ft_printf("      -f  : Start game even if one file error\n%>", 2);
-	// ft_printf("      -b  : Unable number in other bases "
+	ft_printf("      -n  : Set the next player's number"
+	" (default next available)\n%>", 2);
 	// 	"(also works with .extend command)\n%>", 2);
 	// ft_printf("             0b : binary\n%>", 2);
 	// ft_printf("             0  : octal\n%>", 2);

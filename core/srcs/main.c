@@ -43,7 +43,7 @@ int		get_file(char *file_name, t_champ *new)
 
 	new->file_name = file_name;
 	if (ft_strcmp(get_ext(file_name), "cor"))
-		return (error_func(new, NOT_COR_FILE)- 2);
+		return (error_func(new, NOT_COR_FILE) - 2);
 	if ((ret = read_file(new)) < 0)
 		return (ret);
 	if (new->file_size < g_all.header_size)
@@ -57,22 +57,31 @@ int		get_file(char *file_name, t_champ *new)
 	return (0);
 }
 
-int		get_champ(int idx)
+int		get_champ(char *file_name)
 {
 	int		ret;
 	int		i;
 	int		j;
 
-	i = -1;
-	j = g_all.start;
-	while (++i < g_all.nb_champ)
+	if ((ret = get_file(file_name, &(g_all.champ[g_all.nb_champ]))) == -1)
+		error_func(&(g_all.champ[g_all.nb_champ]), READ_ERROR);
+	if (ret < 0 && !(g_all.flags[0]))
+		exit_func(-1, 0);
+	i = g_all.next_champ_nb ? g_all.next_champ_nb - 1 : 0;
+	while (++i && (j = -1))
 	{
-		if ((ret = get_file(av[j], &(g_all.champ[i]))) == -1)
-			error_func(&(g_all.champ[i]), READ_ERROR);
-		if (ret < 0 && !(g_all.flags[0]))
-			exit_func(-1, 0);
-		++j;
+		while (++j < g_all.nb_champ)
+		{
+			if (i == g_all.champ[j].player_nb)
+				break;
+		}
+		if (j == g_all.nb_champ)
+		{
+			g_all.champ[g_all.nb_champ].player_nb = i;
+			break;
+		}
 	}
+	g_all.next_champ_nb = 0;
 	return (0);
 }
 
@@ -84,7 +93,7 @@ t_proces 	*init_proces(int pc)
 	return(proc);
 }
 
-int		get_flags(int ac, char **av)
+int		parse_arg(int ac, char **av)
 {
 	int		i;
 	int		j;
@@ -93,35 +102,12 @@ int		get_flags(int ac, char **av)
 	i = 0;
 	while (++i < ac)
 	{
-		if (!ft_strcmp(av[i], "--"))
-			return (i + 1);
-		if (av[i][0] == '-')
-		{
-			j = 0;
-			while (av[i][++j])
-			{
-				if ((k = ft_indexof(OP, av[i][j])) == -1)
-					exit_func(-1, 1);
-				g_all.flags[k] = 1;
-			}
-		}
-		else
-			return (i);
-	}
-	return (i);
-}
-
-int		parse_arg(int ac, char **av)
-{
-	int		i;
-
-	i = 0;
-	while (++i < ac)
-	{
 		if (av[i][0] == '-')
 		{
 			if (!ft_strcmp(av[i] + 1, "n"))
 			{
+				if (i + 1 == ac)
+					exit_func(-1, 1);
 				g_all.next_champ_nb = ft_atoi(av[++i]);
 			}
 			j = 0;
@@ -134,10 +120,11 @@ int		parse_arg(int ac, char **av)
 		}
 		else
 		{
-			get_champ(i);
+			get_champ(av[i]);
 			g_all.nb_champ++;
 		}
 	}
+	return (0);
 }
 
 int		init_all(int ac, char **av)
@@ -150,14 +137,14 @@ int		init_all(int ac, char **av)
 		exit_func(-2, 0);
 	// g_all.start = get_flags(ac, av);
 	// g_all.nb_champ = ac - g_all.start;
-	// if (g_all.nb_champ < 1)
-		// exit_func(-1, 1);
+	
 	// ft_bzero(&g_all.champ, sizeof(g_all.champ));
 	g_all.header_size = 16 + PROG_NAME_LENGTH + COMMENT_LENGTH;
 	g_all.cycle_to_die = CYCLE_TO_DIE;
 	parse_arg(ac, av);
+	if (g_all.nb_champ < 1)
+		exit_func(-1, 1);
 	g_all.nbr_processes = g_all.nb_champ;
-	
 	// ft_printf("--- %s\n\n", g_all.arena);
 	g_all.pos_depart = MEM_SIZE / g_all.nb_champ;
 	while (++i < g_all.nb_champ)
@@ -173,5 +160,7 @@ int		init_all(int ac, char **av)
 int		main(int ac, char **av)
 {
 	init_all(ac, av);
+	for (int i = 0; i<g_all.nb_champ;i++)
+		ft_printf("%d : %d\n", i, g_all.champ[i].player_nb);
 	exit_func(0, 0);
 }

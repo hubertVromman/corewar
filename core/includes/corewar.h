@@ -60,6 +60,7 @@ typedef struct	s_champ
 	int			exec_size;
 	int			last_live;
 	int			lives_period;
+	int			player_nb;
 	t_proces	*proces;
 }				t_champ;
 
@@ -73,6 +74,7 @@ typedef struct	s_a
 	int			nb_errors;
 	char		*flags;
 	int			start;
+	int			next_champ_nb;
 	size_t		header_size;
 	int			nbr_processes;
 	int			cycle;
