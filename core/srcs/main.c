@@ -124,7 +124,7 @@ int		parse_arg(int ac, char **av)
 			g_all.nb_champ++;
 		}
 	}
-	return (0);
+	return (0)
 }
 
 int		init_all(int ac, char **av)
