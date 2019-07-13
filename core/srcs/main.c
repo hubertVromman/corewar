@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:28:49 by hvromman          #+#    #+#             */
-/*   Updated: 2019/07/13 21:22:11 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/07/13 23:24:19 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,17 @@ t_proces	*init_proces(int pc)
 	return (proc);
 }
 
+int		read_arena_op(int pc)
+{
+	int opcode;
+
+	opcode = 0;
+	opcode = g_all.arena[pc];
+	if (opcode < 1 || opcode > 16)
+		return (0);
+	return (opcode);
+}
+
 int		init_all(int ac, char **av)
 {
 	int i;
@@ -141,6 +152,12 @@ int		init_all(int ac, char **av)
 	}
 	// dump_memory();
 	dump_memory_colored();
+	/*
+	petit test,
+	int k = 36;
+	ft_printf("%.2hhx  -- %.2d\n", g_all.arena[k], g_all.arena[k]);
+	ft_printf("%d\n", read_arena_op(k));
+	*/
 	return (0);
 }
 
