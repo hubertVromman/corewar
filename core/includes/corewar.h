@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:31:13 by hvromman          #+#    #+#             */
-/*   Updated: 2019/07/11 18:00:40 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/07/13 21:16:32 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ struct			s_proces
 	int			pc;
 	int			reg[REG_NUMBER];
 	int			cycle_left;
+	int			id_proces;
 	t_op 		*operations;
 	t_proces	*next;
 }				;
@@ -61,6 +62,7 @@ typedef struct	s_champ
 	int			last_live;
 	int			lives_period;
 	int			player_nb;
+	int			num_proces;
 	t_proces	*proces;
 }				t_champ;
 
@@ -98,4 +100,16 @@ int				exit_func(int exit_code, int dp_usage);
 */
 int				dump_memory();
 int				dump_memory_colored();
+
+/*
+** operations.c
+*/
+int				operation_fork(t_champ *champ, int num_proces);
+
+/*
+** main.c
+*/
+t_proces		*init_proces(int pc);
+
+
 #endif

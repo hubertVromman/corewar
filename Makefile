@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hvromman <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/05 15:14:07 by hvromman          #+#    #+#              #
-#    Updated: 2019/04/05 15:14:10 by hvromman         ###   ########.fr        #
+#    Updated: 2019/07/13 21:29:12 by sofchami         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ OBJ = $(addprefix $(SRCS), $(FILES))
 COR_DIR = core/
 COR_FILE = corewar.h
 COR_H = $(addprefix $(COR_DIR), $(addprefix $(HEAD), $(COR_FILE)))
-COR_FILES = main.o error.o exit.o util.o
+COR_FILES = main.o error.o exit.o util.o instruct.o
 COR_OBJ = $(addprefix $(COR_DIR), $(addprefix $(SRCS), $(COR_FILES)))
 
 ASM_DIR = asem/
