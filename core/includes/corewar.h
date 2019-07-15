@@ -20,7 +20,7 @@ enum	e_error_code { NOT_COR_FILE = 1, OPEN_FAIL, TOO_LARGE, READ_ERROR};
 
 # define MERROR -2
 
-#define OP "f"
+#define OP "fv"
 
 # define NC "\x1b[0m"
 # define RED "\x1b[31m"
@@ -80,6 +80,7 @@ typedef struct	s_a
 	size_t		header_size;
 	int			nbr_processes;
 	int			cycle;
+	int			dump_period;
 }				t_a;
 
 t_a				g_all;
@@ -109,7 +110,7 @@ int				operation_fork(t_champ *champ, int num_proces);
 /*
 ** main.c
 */
-t_proces		*init_proces(int pc);
+t_proces		*init_proces(int pc, t_proces *parent, int player_nb);
 
 
 #endif

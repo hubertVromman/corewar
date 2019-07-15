@@ -20,10 +20,12 @@ int		free_all(void)
 
 int		usage(void)
 {
-	ft_printf("usage: corewar  [-%s] [[-n player_nb] file.cor] ...\n%>", OP, 2);
-	ft_printf("      -f  : Start game even if one file error\n%>", 2);
-	ft_printf("      -n  : Set the next player's number"
+	ft_printf("usage: corewar [-%s] [-dump dump_period] [[-n player_nb] file.cor] ...\n%>", OP, 2);
+	ft_printf("    -f    : Start game even if one file error\n%>", 2);
+	ft_printf("    -v    : Start game in nCurses\n%>", 2);
+	ft_printf("    -n    : Set the next player's number"
 	" (default next available)\n%>", 2);
+	ft_printf("    -dump : Dump memory in hexadecimal every dump_period\n%>", 2);
 	// 	"(also works with .extend command)\n%>", 2);
 	// ft_printf("             0b : binary\n%>", 2);
 	// ft_printf("             0  : octal\n%>", 2);
