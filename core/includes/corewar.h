@@ -113,4 +113,9 @@ int				operation_fork(t_champ *champ, int num_proces);
 t_proces		*init_proces(int pc, t_proces *parent, int player_nb);
 
 
+/*
+** util_instr.c
+*/
+int				*get_argument_size(int opcode, int codage);
+
 #endif

@@ -27,7 +27,7 @@ OBJ = $(addprefix $(SRCS), $(FILES))
 COR_DIR = core/
 COR_FILE = corewar.h
 COR_H = $(addprefix $(COR_DIR), $(addprefix $(HEAD), $(COR_FILE)))
-COR_FILES = main.o error.o exit.o util.o #instruct.o
+COR_FILES = main.o error.o exit.o util.o util_instr.o #instruct.o
 COR_OBJ = $(addprefix $(COR_DIR), $(addprefix $(SRCS), $(COR_FILES)))
 
 ASM_DIR = asem/

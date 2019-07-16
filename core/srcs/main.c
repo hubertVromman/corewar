@@ -204,5 +204,8 @@ int		main(int ac, char **av)
 {
 	init_all(ac, av);
 	display_start();
+	int *c = get_argument_size(3, 0xd4);
+	for (int i=0;i<4;i++)
+		ft_printf("%d\n", c[i]);
 	exit_func(0, 0);
 }
