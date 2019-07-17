@@ -85,6 +85,13 @@ typedef struct	s_a
 
 t_a				g_all;
 
+typedef struct	s_arg
+{
+	int		size;
+	int		value;
+	int		type;
+}				t_arg;
+
 /*
 ** error.c
 */
@@ -116,6 +123,6 @@ t_proces		*init_proces(int pc, t_proces *parent, int player_nb);
 /*
 ** util_instr.c
 */
-int				*get_argument_size(int opcode, int codage);
+int				*get_argument_size(int pc);
 
 #endif
