@@ -20,7 +20,7 @@ enum	e_error_code { NOT_COR_FILE = 1, OPEN_FAIL, TOO_LARGE, READ_ERROR};
 
 # define MERROR -2
 
-#define OP "fv"
+# define OP "fv"
 
 # define NC "\x1b[0m"
 # define RED "\x1b[31m"
@@ -32,7 +32,7 @@ enum	e_error_code { NOT_COR_FILE = 1, OPEN_FAIL, TOO_LARGE, READ_ERROR};
 
 # define MAX_PLAYER_NB 6
 
-typedef struct	s_proces	t_proces;
+typedef struct s_proces	t_proces;
 
 struct			s_proces
 {
@@ -41,7 +41,7 @@ struct			s_proces
 	int			reg[REG_NUMBER];
 	int			cycle_left;
 	int			id_proces;
-	t_op 		*operations;
+	t_op		*operations;
 	t_proces	*next;
 }				;
 
@@ -70,7 +70,7 @@ typedef struct	s_a
 {
 	int			nb_champ;
 	int			cycle_to_die;
-	int 		pos_depart;
+	int			pos_depart;
 	char		arena[MEM_SIZE];
 	t_champ		champ[4];
 	int			nb_errors;
@@ -119,10 +119,9 @@ int				operation_fork(t_champ *champ, int num_proces);
 */
 t_proces		*init_proces(int pc, t_proces *parent, int player_nb);
 
-
 /*
 ** util_instr.c
 */
-int				*get_argument_size(int pc);
+t_arg			*get_arguments(int *pc);
 
 #endif

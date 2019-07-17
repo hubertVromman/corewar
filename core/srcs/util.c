@@ -57,7 +57,6 @@ int		dump_memory_colored()
 		{
 			if (i == g_all.champ[c].proces->pc + g_all.champ[c].exec_size)
 			{
-				ft_printf("\x1b[%dm%#>", 0, &buffer);
 				memcpy(s + (i + 1) * 3 + j, "\x1b[0m", 4);
 				j += 4;
 			}
