@@ -158,6 +158,18 @@ int		parse_arg(int ac, char **av)
 	return (0);
 }
 
+int		start_game()
+{
+	int		i;
+
+	i = -1;
+	while (++i < g_all.nb_champ)
+	{
+		ft_printf("player_nb %d opcode %.2hhx cycle_left %d\n", g_all.champ[i].player_nb, g_all.champ[i].proces->opcode, g_all.champ[i].proces->cycle_left);
+	}
+	return (0);
+}
+
 int		display_start()
 {
 	int		i;
@@ -196,6 +208,8 @@ int		init_all(int ac, char **av)
 		ft_memcpy(g_all.arena + (g_all.pos_depart * i),
 			g_all.champ[i].exec_file, g_all.champ[i].file_size - g_all.header_size);
 		g_all.champ[i].proces = init_proces(g_all.pos_depart * i, NULL, g_all.champ[i].player_nb);
+		g_all.champ[i].proces->opcode = g_all.arena[g_all.champ[i].proces->pc];
+		g_all.champ[i].proces->cycle_left = get_cycle_left(g_all.champ[i].proces->opcode);
 	}
 	return (0);
 }
@@ -204,10 +218,11 @@ int		main(int ac, char **av)
 {
 	init_all(ac, av);
 	display_start();
-	int d= 2;
-	t_arg *c = get_arguments(&d);
-	ft_printf("%p\n", c);
-	for (int i=0;i<4;i++)
-		ft_printf("%d %d %x\n", c[i].size, c[i].type, c[i].value);
+	start_game();
+	// int d= 2;
+	// t_arg *c = get_arguments(&d);
+	// ft_printf("%p\n", c);
+	// for (int i=0;i<4;i++)
+		// ft_printf("%d %d %x\n", c[i].size, c[i].type, c[i].value);
 	exit_func(0, 0);
 }

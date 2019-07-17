@@ -41,7 +41,7 @@ struct			s_proces
 	int			reg[REG_NUMBER];
 	int			cycle_left;
 	int			id_proces;
-	t_op		*operations;
+	int			opcode;
 	t_proces	*next;
 }				;
 
@@ -106,6 +106,7 @@ int				exit_func(int exit_code, int dp_usage);
 /*
 ** util.c
 */
+int				get_cycle_left(int opcode);
 int				dump_memory();
 int				dump_memory_colored();
 

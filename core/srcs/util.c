@@ -12,6 +12,14 @@
 
 #include "corewar.h"
 
+int		get_cycle_left(int opcode)
+{
+	if (opcode < 1 || opcode > 16)
+		return (0);
+	else
+		return (g_op_tab[opcode - 1].cycle_op);
+}
+
 int		dump_memory()
 {
 	int		i;
