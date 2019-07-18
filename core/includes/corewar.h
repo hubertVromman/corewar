@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:31:13 by hvromman          #+#    #+#             */
-/*   Updated: 2019/07/13 21:16:32 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/07/18 01:43:44 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,15 @@ typedef struct s_proces	t_proces;
 struct			s_proces
 {
 	int			carry;
+	int			dead;
 	int			pc;
 	int			reg[REG_NUMBER];
 	int			cycle_left;
 	int			id_proces;
 	int			opcode;
+	int 		arguments[4];
+	t_op 		*operations;
+	int			lives_period;
 	t_proces	*next;
 }				;
 

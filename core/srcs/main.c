@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:28:49 by hvromman          #+#    #+#             */
-/*   Updated: 2019/07/11 17:47:16 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/07/18 02:24:07 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,8 @@ int		get_champ(char *file_name)
 t_proces	*init_proces(int pc, t_proces *parent, int player_nb)
 {
 	t_proces *proc;
-	proc = ft_memalloc(sizeof(t_proces));
+	if (!(proc = ft_memalloc(sizeof(t_proces))))
+		exit_func(-2, 0);
 	proc->pc = pc;
 	if (parent)
 	{
@@ -154,6 +155,63 @@ int		parse_arg(int ac, char **av)
 			get_champ(av[i]);
 			g_all.nb_champ++;
 		}
+	}
+	return (0);
+}
+
+int		reset_proc()
+{
+	int i;
+	int total_lives;
+	t_proces *tmp;
+
+	i = -1;
+	total_lives = 0;
+	while (++i < g_all.nb_champ)
+	{
+		tmp = g_all.champ[i].proces;
+		while (tmp)
+		{
+			if (!tmp->lives_period)
+				tmp->dead = 1;
+			else
+			{
+				total_lives += tmp->lives_period;
+				tmp->lives_period = 0;
+			}
+			tmp = tmp->next;
+		}
+	}
+	return (total_lives);
+}
+
+int		beg_battle()
+{
+	int end;
+	int i;
+	int check;
+
+	end = 0;
+	i = -1;
+	check = 0;
+	while (!end)
+	{
+		//read_proces
+		//operations
+		if (!(g_all.cycle_to_die % g_all.cycle))
+		{
+			check++;
+			if ((reset_proc() < NBR_LIVE) || (check == MAX_CHECKS))
+			{
+				g_all.cycle_to_die -= CYCLE_DELTA;
+				check = 0;
+				if (g_all.cycle_to_die <= 0)
+				{
+					end = 1;
+				}
+			}
+		}
+		g_all.cycle++;
 	}
 	return (0);
 }
