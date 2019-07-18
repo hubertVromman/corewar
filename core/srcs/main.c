@@ -12,23 +12,6 @@
 
 #include "corewar.h"
 
-t_proces	*init_proces(int pc, t_proces *parent, int player_nb)
-{
-	t_proces *proc;
-	if (!(proc = ft_memalloc(sizeof(t_proces))))
-		exit_func(-2, 0);
-	proc->pc = pc;
-	if (parent)
-	{
-		ft_memcpy(proc->reg, parent->reg, REG_NUMBER * 4);
-	}
-	else
-	{
-		proc->reg[0] = player_nb;
-	}
-	return(proc);
-}
-
 int		read_arena_op(int pc)
 {
 	int opcode;
@@ -86,72 +69,83 @@ int		parse_arg(int ac, char **av)
 	return (0);
 }
 
-int		reset_proc()
-{
-	int i;
-	int total_lives;
-	t_proces *tmp;
+// int		reset_proc()
+// {
+// 	int i;
+// 	int total_lives;
+// 	t_proces *tmp;
 
-	i = -1;
-	total_lives = 0;
-	while (++i < g_all.nb_champ)
-	{
-		tmp = g_all.champ[i].proces;
-		while (tmp)
-		{
-			if (!tmp->lives_period)
-				tmp->dead = 1;
-			else
-			{
-				total_lives += tmp->lives_period;
-				tmp->lives_period = 0;
-			}
-			tmp = tmp->next;
-		}
-	}
-	return (total_lives);
-}
+// 	i = -1;
+// 	total_lives = 0;
+// 	while (++i < g_all.nb_champ)
+// 	{
+// 		tmp = g_all.champ[i].proces;
+// 		while (tmp)
+// 		{
+// 			if (!tmp->lives_period)
+// 				tmp->dead = 1;
+// 			else
+// 			{
+// 				total_lives += tmp->lives_period;
+// 				tmp->lives_period = 0;
+// 			}
+// 			tmp = tmp->next;
+// 		}
+// 	}
+// 	return (total_lives);
+// }
 
-int		beg_battle()
-{
-	int end;
-	int i;
-	int check;
+// int		beg_battle()
+// {
+// 	int end;
+// 	int i;
+// 	int check;
 
-	end = 0;
-	i = -1;
-	check = 0;
-	while (!end)
-	{
-		//read_proces
-		//operations
-		if (!(g_all.cycle_to_die % g_all.cycle))
-		{
-			check++;
-			if ((reset_proc() < NBR_LIVE) || (check == MAX_CHECKS))
-			{
-				g_all.cycle_to_die -= CYCLE_DELTA;
-				check = 0;
-				if (g_all.cycle_to_die <= 0)
-				{
-					end = 1;
-				}
-			}
-		}
-		g_all.cycle++;
-	}
-	return (0);
-}
+// 	end = 0;
+// 	i = -1;
+// 	check = 0;
+// 	while (!end)
+// 	{
+// 		//read_proces
+// 		//operations
+// 		if (!(g_all.cycle_to_die % g_all.cycle))
+// 		{
+// 			check++;
+// 			if ((reset_proc() < NBR_LIVE) || (check == MAX_CHECKS))
+// 			{
+// 				g_all.cycle_to_die -= CYCLE_DELTA;
+// 				check = 0;
+// 				if (g_all.cycle_to_die <= 0)
+// 				{
+// 					end = 1;
+// 				}
+// 			}
+// 		}
+// 		g_all.cycle++;
+// 	}
+// 	return (0);
+// }
 
-int		start_game()
+int		print_debug_info()
 {
 	int		i;
+	int		j;
 
+	ft_printf("%1$/30c DEBUG %1$/30c\n", '-');
+	ft_printf("cycle count : %d\n", g_all.cycle);
+	ft_printf("%/*c\n", 67, '-');
 	i = -1;
 	while (++i < g_all.nb_champ)
 	{
-		ft_printf("player_nb %d opcode %.2hhx cycle_left %d\n", g_all.champ[i].player_nb, g_all.champ[i].proces->opcode, g_all.champ[i].proces->cycle_left);
+		j = -1;
+		while (++j < g_all.champ[i].nb_proces)
+		{
+			ft_printf("player_nb %2d | proces_id %2d | pc %4d | opcode %.2hhx | cycle_left %4d\n", g_all.champ[i].player_nb, j, g_all.champ[i].proces[0].pc, g_all.champ[i].proces[0].opcode, g_all.champ[i].proces[0].cycle_left);
+		}
+		if (i != g_all.nb_champ - 1)
+			ft_printf("%/*c\n", 67, '-');
 	}
+	ft_printf("%/*c\n", 67, '-');
 	return (0);
 }
 
@@ -185,15 +179,15 @@ int		init_all(int ac, char **av)
 	parse_arg(ac, av);
 	if (g_all.nb_champ < 1)
 		exit_func(-1, 1);
-	g_all.nbr_processes = g_all.nb_champ;
+	g_all.nb_proces_tot = g_all.nb_champ;
 	g_all.pos_depart = MEM_SIZE / g_all.nb_champ;
 	while (++i < g_all.nb_champ)
 	{
 		ft_memcpy(g_all.arena + (g_all.pos_depart * i),
-			g_all.champ[i].exec_file, g_all.champ[i].file_size - g_all.header_size);
-		g_all.champ[i].proces = init_proces(g_all.pos_depart * i, NULL, g_all.champ[i].player_nb);
-		g_all.champ[i].proces->opcode = g_all.arena[g_all.champ[i].proces->pc];
-		g_all.champ[i].proces->cycle_left = get_cycle_left(g_all.champ[i].proces->opcode);
+			g_all.champ[i].exec_file, g_all.champ[i].exec_size);
+		create_proces(g_all.pos_depart * i, NULL, &(g_all.champ[i])); //gestion d'erreur
+		g_all.champ[i].proces[0].opcode = g_all.arena[g_all.champ[i].proces->pc];
+		g_all.champ[i].proces[0].cycle_left = get_cycle_left(g_all.champ[i].proces->opcode);
 	}
 	return (0);
 }
@@ -202,11 +196,6 @@ int		main(int ac, char **av)
 {
 	init_all(ac, av);
 	display_start();
-	start_game();
-	// int d= 2;
-	// t_arg *c = get_arguments(&d);
-	// ft_printf("%p\n", c);
-	// for (int i=0;i<4;i++)
-		// ft_printf("%d %d %x\n", c[i].size, c[i].type, c[i].value);
+	print_debug_info();
 	exit_func(0, 0);
 }

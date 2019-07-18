@@ -20,6 +20,37 @@ int		get_cycle_left(int opcode)
 		return (g_op_tab[opcode - 1].cycle_op);
 }
 
+int		detele_proces(t_champ *champ, int id_proces)
+{
+	free(champ->proces[id_proces]);
+	ft_memcpy(champ->proces[id_proces], champ[champ->nb_proces - 1], sizeof(t_proces));
+	champ->nb_proces--;
+	g_all.nb_proces_tot--;
+	return (0);
+}
+
+int		create_proces(int pc, t_proces *parent, t_champ *champ)
+{
+	t_proces *proc;
+
+	if (!(champ->proces = realloc(champ->proces, sizeof(t_proces) * (champ->nb_proces + 1))))
+		return (-1);
+	proc = &(champ->proces[champ->nb_proces]);
+	proc->pc = pc;
+	if (parent)
+	{
+		ft_memcpy(proc->reg, parent->reg, REG_NUMBER * 4);
+	}
+	else
+	{
+		proc->reg[0] = champ->player_nb;
+	}
+	proc->champ = champ;
+	champ->nb_proces++;
+	g_all.nb_proces_tot++;
+	return(0);
+}
+
 int		dump_memory()
 {
 	int		i;

@@ -32,27 +32,24 @@ enum	e_error_code { NOT_COR_FILE = 1, OPEN_FAIL, TOO_LARGE, READ_ERROR};
 
 # define MAX_PLAYER_NB 6
 
-typedef struct s_proces	t_proces;
+typedef struct	s_champ t_champ;
 
-struct			s_proces
+typedef struct	s_proces
 {
 	int			carry;
-	int			dead;
 	int			pc;
-	int			reg[REG_NUMBER];
 	int			cycle_left;
 	int			id_proces;
 	int			opcode;
 	int 		arguments[4];
-	t_op 		*operations;
 	int			lives_period;
-	t_proces	*next;
-}				;
+	int			reg[REG_NUMBER];
+	t_champ		*champ;
+	struct s_proces	*next; // a supprimer
+}				t_proces;
 
 /*
-** liste chainé de tout les proces par joureur. Du coup j'ai
-** rajouté la struc op vue que c'est de la qu'on fais passer les instructions.
-** Par contre je capte pas les cycle dans la struc des OP.
+** changer proces en array
 */
 
 typedef struct	s_champ
@@ -80,7 +77,7 @@ typedef struct	s_a
 	int			pos_depart;
 	t_champ		champ[4];
 	int			nb_errors;
-	int			nbr_processes;
+	int			nb_proces_tot;
 	int			cycle;
 	int			dump_period;
 	int			next_champ_nb;
@@ -112,6 +109,8 @@ int				exit_func(int exit_code, int dp_usage);
 ** util.c
 */
 int				get_cycle_left(int opcode);
+int				create_proces(int pc, t_proces *parent, t_champ *champ);
+int				detele_proces(t_champ *champ, int id_proces);
 int				dump_memory();
 int				dump_memory_colored();
 
@@ -123,7 +122,7 @@ int				operation_fork(t_champ *champ, int num_proces);
 /*
 ** main.c
 */
-t_proces		*init_proces(int pc, t_proces *parent, int player_nb);
+int			init_proces(int pc, t_proces *parent, t_champ *champ);
 
 /*
 ** util_instr.c
