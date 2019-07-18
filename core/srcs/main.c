@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:28:49 by hvromman          #+#    #+#             */
-/*   Updated: 2019/07/18 20:05:42 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/07/18 21:47:38 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ int		main(int ac, char **av)
 {
 	init_all(ac, av);
 	display_start();
+	beg_battle();
 	print_debug_info();
 	exit_func(0, 0);
 }
