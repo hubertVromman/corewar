@@ -12,6 +12,13 @@
 
 #include "corewar.h"
 
+int		calc_pc(int pc)
+{
+	if (pc > MEM_SIZE)
+		pc %= MEM_SIZE;
+	return (pc);
+}
+
 int		increment_pc(int *pc, int nb_byte)
 {
 	*pc = (*pc + nb_byte) % MEM_SIZE;

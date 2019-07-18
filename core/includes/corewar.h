@@ -57,34 +57,35 @@ struct			s_proces
 
 typedef struct	s_champ
 {
+	int			nb_proces;
+	int			lives_period;
+	int			nb_errors;
+	int			exec_size;
+	int			last_live;
+	int			player_nb;
+	t_proces	*proces;
 	char		*file_name;
 	char		*file;
 	char		*exec_file;
-	int			nb_errors;
+	char		*player_name;
+	char		*comment;
 	size_t		file_size;
-	int			exec_size;
-	int			last_live;
-	int			lives_period;
-	int			player_nb;
-	int			num_proces;
-	t_proces	*proces;
 }				t_champ;
 
 typedef struct	s_a
 {
+	size_t		header_size;
 	int			nb_champ;
 	int			cycle_to_die;
 	int			pos_depart;
-	char		arena[MEM_SIZE];
 	t_champ		champ[4];
 	int			nb_errors;
-	char		*flags;
-	int			start;
-	int			next_champ_nb;
-	size_t		header_size;
 	int			nbr_processes;
 	int			cycle;
 	int			dump_period;
+	int			next_champ_nb;
+	char		flags[sizeof(OP)];
+	char		arena[MEM_SIZE];
 }				t_a;
 
 t_a				g_all;
@@ -128,5 +129,10 @@ t_proces		*init_proces(int pc, t_proces *parent, int player_nb);
 ** util_instr.c
 */
 t_arg			*get_arguments(int *pc);
+
+/*
+** champ_instance.c
+*/
+int				get_champ(char *file_name);
 
 #endif

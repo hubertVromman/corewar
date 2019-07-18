@@ -12,79 +12,6 @@
 
 #include "corewar.h"
 
-int		read_file(t_champ *champ)
-{
-	int ret;
-	int fd;
-
-	if ((fd = open(champ->file_name, O_RDONLY)) == -1)
-		return (error_func(champ, OPEN_FAIL) - 2);
-	champ->file_size = lseek(fd, 0, SEEK_END);
-	lseek(fd, 0, SEEK_SET);
-	if (!(champ->file = malloc(champ->file_size + 1)))
-		exit_func(-2, 0);
-	ret = read(fd, champ->file, champ->file_size);
-	champ->file[champ->file_size] = 0;
-	close(fd);
-	return (ret < 0 ? -1 : 0);
-}
-
-int		get_prog_size(char *file_content)
-{
-	int		size;
-
-	ft_memcpy(&size, file_content + 4 + PROG_NAME_LENGTH + 4, 4);
-	return (change_endianness(size));
-}
-
-int		get_file(char *file_name, t_champ *new)
-{
-	int		ret;
-
-	new->file_name = file_name;
-	if (ft_strcmp(get_ext(file_name), "cor"))
-		return (error_func(new, NOT_COR_FILE) - 2);
-	if ((ret = read_file(new)) < 0)
-		return (ret);
-	if (new->file_size < g_all.header_size)
-		return (-1);
-	new->exec_size = get_prog_size(new->file);
-	if (new->file_size != new->exec_size + g_all.header_size)
-		return (-1);
-	if (new->exec_size > CHAMP_MAX_SIZE)
-		return (error_func(new, TOO_LARGE) - 2);
-	new->exec_file = new->file + g_all.header_size;
-	return (0);
-}
-
-int		get_champ(char *file_name)
-{
-	int		ret;
-	int		i;
-	int		j;
-
-	if ((ret = get_file(file_name, &(g_all.champ[g_all.nb_champ]))) == -1)
-		error_func(&(g_all.champ[g_all.nb_champ]), READ_ERROR);
-	if (ret < 0 && !(g_all.flags[0]))
-		exit_func(-1, 0);
-	i = g_all.next_champ_nb ? g_all.next_champ_nb - 1 : 0;
-	while (++i && (j = -1))
-	{
-		while (++j < g_all.nb_champ)
-		{
-			if (i == g_all.champ[j].player_nb)
-				break;
-		}
-		if (j == g_all.nb_champ)
-		{
-			g_all.champ[g_all.nb_champ].player_nb = i;
-			break;
-		}
-	}
-	g_all.next_champ_nb = 0;
-	return (0);
-}
-
 t_proces	*init_proces(int pc, t_proces *parent, int player_nb)
 {
 	t_proces *proc;
@@ -240,7 +167,7 @@ int		display_start()
 		i = -1;
 		while (++i < g_all.nb_champ)
 		{
-			ft_printf("* Player %d, weighing %d bytes, \"%s\" (\"%s\") !\n", g_all.champ[i].player_nb, g_all.champ[i].exec_size, g_all.champ[i].file + 4, g_all.champ[i].file + PROG_NAME_LENGTH + 12);
+			ft_printf("* Player %d, weighing %d bytes, \"%s\" (\"%s\") !\n", g_all.champ[i].player_nb, g_all.champ[i].exec_size, g_all.champ[i].player_name, g_all.champ[i].comment);
 		}
 	}
 	return (0);
@@ -251,9 +178,8 @@ int		init_all(int ac, char **av)
 	int i;
 
 	i = -1;
+	ft_printf("t_a %d t_champ %d\n", sizeof(t_a), sizeof(t_champ));
 	ft_bzero(&g_all, sizeof(g_all));
-	if (!(g_all.flags = ft_memalloc(sizeof(OP))))
-		exit_func(-2, 0);
 	g_all.header_size = 16 + PROG_NAME_LENGTH + COMMENT_LENGTH;
 	g_all.cycle_to_die = CYCLE_TO_DIE;
 	parse_arg(ac, av);

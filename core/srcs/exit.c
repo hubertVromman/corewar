@@ -14,7 +14,6 @@
 
 int		free_all(void)
 {
-	free(g_all.flags);
 	return (0);
 }
 

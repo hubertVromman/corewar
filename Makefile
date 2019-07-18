@@ -27,8 +27,12 @@ OBJ = $(addprefix $(SRCS), $(FILES))
 COR_DIR = core/
 COR_FILE = corewar.h
 COR_H = $(addprefix $(COR_DIR), $(addprefix $(HEAD), $(COR_FILE)))
-COR_FILES = main.o error.o exit.o util.o util_instr.o #instruct.o
+COR_FILES = main.o error.o exit.o util.o util_instr.o champ_instance.o
 COR_OBJ = $(addprefix $(COR_DIR), $(addprefix $(SRCS), $(COR_FILES)))
+
+OP_DIR = operations/
+OP_FILES = #live.o lfork.o fork.o zjmp.o ld.o st.o add.o sub.o and.o or.o xor.o ldi.o sti.o  lld.o lldi.o  aff.o
+OP_OBJ = $(addprefix $(COR_DIR), $(addprefix $(OP_DIR) ,$(addprefix $(SRCS), $(OP_FILES))))
 
 ASM_DIR = asem/
 ASM_FILE = asm.h
@@ -45,7 +49,7 @@ NC=\033[0m
 
 all: $(COR) $(ASM)
 
-$(COR): $(COR_OBJ) $(OBJ)
+$(COR): $(OP_OBJ) $(COR_OBJ) $(OBJ)
 	@make -C $(LIB)
 	@$(CC) $(CFLAGS) -o $@ $^ -L$(LIB) -lft
 	@echo "$(GREEN)$@ compiled$(NC)"
