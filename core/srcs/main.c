@@ -99,6 +99,20 @@ int		display_start()
 	return (0);
 }
 
+int		ft(t_champ *champ, t_proces *proces, t_arg *args)
+{
+	champ = NULL;
+	proces = NULL;
+	args = NULL;
+	return (8);
+}
+
+int		init_func_pointer()
+{
+	g_all.func[0] = ft;
+	return (0);
+}
+
 int		init_all(int ac, char **av)
 {
 	int i;
@@ -121,6 +135,7 @@ int		init_all(int ac, char **av)
 		g_all.champ[i].proces[0].opcode = g_all.arena[g_all.champ[i].proces->pc];
 		g_all.champ[i].proces[0].cycle_left = get_cycle_left(g_all.champ[i].proces->opcode);
 	}
+	init_func_pointer();
 	return (0);
 }
 

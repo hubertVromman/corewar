@@ -32,6 +32,13 @@ enum	e_error_code { NOT_COR_FILE = 1, OPEN_FAIL, TOO_LARGE, READ_ERROR};
 
 # define MAX_PLAYER_NB 6
 
+typedef struct	s_arg
+{
+	int		size;
+	int		value;
+	int		type;
+}				t_arg;
+
 typedef struct	s_champ t_champ;
 
 typedef struct	s_proces
@@ -82,18 +89,12 @@ typedef struct	s_a
 	int			cycle;
 	int			dump_period;
 	int			next_champ_nb;
+	int			(*func[16]) (t_champ *champ, t_proces *proces, t_arg *args);
 	char		flags[sizeof(OP)];
 	char		arena[MEM_SIZE];
 }				t_a;
 
 t_a				g_all;
-
-typedef struct	s_arg
-{
-	int		size;
-	int		value;
-	int		type;
-}				t_arg;
 
 /*
 ** error.c
@@ -114,11 +115,6 @@ int				create_proces(int pc, t_proces *parent, t_champ *champ);
 int				detele_proces(t_champ *champ, int id_proces);
 int				dump_memory();
 int				dump_memory_colored();
-
-/*
-** operations.c
-*/
-int				operation_fork(t_champ *champ, int num_proces);
 
 /*
 ** main.c
@@ -143,5 +139,25 @@ int				beg_battle();
 int	 			read_proces();
 int				reset_proc();
 int				read_arena_op(int pc);
+
+/*
+** operations
+*/
+int				operation_add(t_champ *champ, t_proces *proces, t_arg *args);
+int				operation_aff(t_champ *champ, t_proces *proces, t_arg *args);
+int				operation_and(t_champ *champ, t_proces *proces, t_arg *args);
+int				operation_fork(t_champ *champ, t_proces *proces, t_arg *args);
+int				operation_ld(t_champ *champ, t_proces *proces, t_arg *args);
+int				operation_ldi(t_champ *champ, t_proces *proces, t_arg *args);
+int				operation_lfork(t_champ *champ, t_proces *proces, t_arg *args);
+int				operation_live(t_champ *champ, t_proces *proces, t_arg *args);
+int				operation_lld(t_champ *champ, t_proces *proces, t_arg *args);
+int				operation_lldi(t_champ *champ, t_proces *proces, t_arg *args);
+int				operation_or(t_champ *champ, t_proces *proces, t_arg *args);
+int				operation_st(t_champ *champ, t_proces *proces, t_arg *args);
+int				operation_sti(t_champ *champ, t_proces *proces, t_arg *args);
+int				operation_sub(t_champ *champ, t_proces *proces, t_arg *args);
+int				operation_xor(t_champ *champ, t_proces *proces, t_arg *args);
+int				operation_zjmp(t_champ *champ, t_proces *proces, t_arg *args);
 
 #endif

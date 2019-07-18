@@ -11,3 +11,17 @@
 /* ************************************************************************** */
 
 #include "corewar.h"
+
+int		operation_aff(t_champ *champ, t_proces *proces, t_arg *args)
+{
+	champ = NULL;
+	if (args[0].value > REG_NUMBER || args[0].value < 1)
+	{
+		return (-1);
+	}
+	else
+	{
+		ft_printf("%c", proces->reg[args[0].value]);
+		return (0);
+	}
+}
