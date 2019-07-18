@@ -22,8 +22,7 @@ int		get_cycle_left(int opcode)
 
 int		detele_proces(t_champ *champ, int id_proces)
 {
-	free(champ->proces[id_proces]);
-	ft_memcpy(champ->proces[id_proces], champ[champ->nb_proces - 1], sizeof(t_proces));
+	ft_memcpy(&(champ->proces[id_proces]), &(champ[champ->nb_proces - 1]), sizeof(t_proces));
 	champ->nb_proces--;
 	g_all.nb_proces_tot--;
 	return (0);

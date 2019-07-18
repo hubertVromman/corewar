@@ -108,7 +108,7 @@ int		parse_arg(int ac, char **av)
 // 	{
 // 		//read_proces
 // 		//operations
-// 		if (!(g_all.cycle_to_die % g_all.cycle))
+// 		if (!(g_all.cycle_to_die % g_all.cycle)) // ??
 // 		{
 // 			check++;
 // 			if ((reset_proc() < NBR_LIVE) || (check == MAX_CHECKS))
@@ -197,5 +197,6 @@ int		main(int ac, char **av)
 	init_all(ac, av);
 	display_start();
 	print_debug_info();
+	dump_memory_colored();
 	exit_func(0, 0);
 }
