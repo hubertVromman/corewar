@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:31:13 by hvromman          #+#    #+#             */
-/*   Updated: 2019/07/18 01:43:44 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/07/18 20:00:55 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ typedef struct	s_a
 	int			nb_champ;
 	int			cycle_to_die;
 	int			pos_depart;
+	int			ctd;
 	t_champ		champ[4];
 	int			nb_errors;
 	int			nb_proces_tot;
@@ -133,5 +134,13 @@ t_arg			*get_arguments(int *pc);
 ** champ_instance.c
 */
 int				get_champ(char *file_name);
+
+/*
+** lecteur.c
+*/
+int		beg_battle();
+int	 	read_proces();
+int		reset_proc();
+int		read_arena_op(int pc);
 
 #endif
