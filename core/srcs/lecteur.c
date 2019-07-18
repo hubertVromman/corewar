@@ -6,7 +6,7 @@
 /*   By: sofchami <sofchami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/18 19:57:39 by sofchami          #+#    #+#             */
-/*   Updated: 2019/07/18 20:03:58 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/07/18 21:01:39 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,29 +27,31 @@ int		reset_proc()
 {
 	int i;
 	int total_lives;
-	t_proces *tmp;
+	int k;
 
 	i = -1;
 	total_lives = 0;
 	while (++i < g_all.nb_champ)
 	{
-		tmp = g_all.champ[i].proces;
-		while (tmp)
+		k = -1;
+		while (++k < g_all.champ[i].nb_proces)
 		{
-			if (!tmp->lives_period)
-				tmp->dead = 1;
+			if (!g_all.champ[i].proces[k].lives_period)
+			{
+				detele_proces(&g_all.champ[i], k);
+				k--;
+			}
 			else
 			{
-				total_lives += tmp->lives_period;
-				tmp->lives_period = 0;
+				total_lives += g_all.champ[i].proces[k].lives_period;
+				g_all.champ[i].proces[k].lives_period = 0;
 			}
-			tmp = tmp->next;
 		}
 	}
 	return (total_lives);
 }
 
-int	 	read_proces()
+int		read_proces()
 {
 	int i;
 	int k;
@@ -70,15 +72,18 @@ int	 	read_proces()
 			}
 			else
 			{
-
-
 				g_all.champ[i].proces[k].opcode = read_arena_op(g_all.champ[i].proces[k].pc);
-
+				if (!g_all.champ[i].proces[k].opcode)
+				{
+					g_all.champ[i].proces[k].pc = calc_pc(g_all.champ[i].proces[k].pc++);
+					k--;
+				}
+				else
+					g_all.champ[i].proces[k].cycle_left = get_cycle_left(g_all.champ[i].proces[k].opcode);
 			}
-
-
 		}
 	}
+	return (0);
 }
 
 int		beg_battle()
@@ -93,7 +98,6 @@ int		beg_battle()
 	while (!end)
 	{
 		read_proces();
-		//operations
 		if (!(g_all.cycle_to_die % g_all.ctd))
 		{
 			g_all.ctd = 0;
@@ -101,7 +105,7 @@ int		beg_battle()
 			{
 				g_all.cycle_to_die -= CYCLE_DELTA;
 				check = 0;
-				if (g_all.cycle_to_die <= 0)
+				if (g_all.cycle_to_die <= 0 || !g_all.nb_proces_tot)
 				{
 					end = 1;
 				}

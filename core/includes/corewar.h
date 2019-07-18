@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:31:13 by hvromman          #+#    #+#             */
-/*   Updated: 2019/07/18 20:00:55 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/07/18 21:03:17 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ int			init_proces(int pc, t_proces *parent, t_champ *champ);
 ** util_instr.c
 */
 t_arg			*get_arguments(int *pc);
+int				calc_pc(int pc);
 
 /*
 ** champ_instance.c
@@ -138,9 +139,9 @@ int				get_champ(char *file_name);
 /*
 ** lecteur.c
 */
-int		beg_battle();
-int	 	read_proces();
-int		reset_proc();
-int		read_arena_op(int pc);
+int				beg_battle();
+int	 			read_proces();
+int				reset_proc();
+int				read_arena_op(int pc);
 
 #endif
