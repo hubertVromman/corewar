@@ -6,7 +6,7 @@
 /*   By: sofchami <sofchami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/18 19:57:39 by sofchami          #+#    #+#             */
-/*   Updated: 2019/07/18 21:46:26 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/07/19 14:13:55 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int		read_proces()
 {
 	int i;
 	int k;
+	t_arg *arg;
 
 	i = -1;
 	while (i++ < g_all.nb_champ)
@@ -67,6 +68,7 @@ int		read_proces()
 				g_all.champ[i].proces[k].cycle_left--;
 				if (!g_all.champ[i].proces[k].cycle_left)
 				{
+					arg = get_arguments(&g_all.champ[i].proces[k].pc);
 					// pointeur_fonction[g_all.champ[i].proces[k].opcode];
 				}
 			}
@@ -99,7 +101,6 @@ int		beg_battle()
 	while (!end)
 	{
 		read_proces();
-		// ft_printf("%d  %d\n", g_all.cycle_to_die, g_all.ctd);
 		g_all.ctd++;
 		if (!(g_all.cycle_to_die % g_all.ctd))
 		{

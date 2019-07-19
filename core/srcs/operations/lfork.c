@@ -3,33 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   lfork.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hvromman <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/18 13:50:48 by hvromman          #+#    #+#             */
-/*   Updated: 2019/07/18 13:50:50 by hvromman         ###   ########.fr       */
+/*   Updated: 2019/07/19 15:24:03 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
 
-int		operation_lfork(int champ, int id_proces)
+int		operation_lfork(t_champ *champ, t_proces *proces, t_arg *args)
 {
-	int		pc_pere;
-	t_champ *tmp;
+	int		pc;
+	int		param;
 
-	tmp = g_all.champ[champ];
-	while (tmp.proces)
-	{
-		if (tmp.proces->id_proces == id_proces)
-			pc_pere = tmp.proces->pc;
-		if (!tmp.proces->next && pc_pere)
-		{
-			tmp.proces->next = init_proces(calc_pc(pc_pere * 2));
-			champ->num_proces++;
-			tmp.proces->next->id_proces = champ->num_proces;
-			break ;
-		}
-		tmp.proces = tmp.proces->next;
-	}
+	pc = proces.pc;
+	param = proces->reg[arg[0]->value];
+	create_proces(calc_pc(pc + param), proces, champ);
 	return (0);
 }

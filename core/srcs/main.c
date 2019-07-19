@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:28:49 by hvromman          #+#    #+#             */
-/*   Updated: 2019/07/18 21:47:38 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/07/19 15:42:06 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,5 +145,9 @@ int		main(int ac, char **av)
 	display_start();
 	beg_battle();
 	print_debug_info();
+	t_arg *arg;
+
+	arg = get_arguments(&g_all.champ[0].proces[0].pc);
+	ft_printf("%d   %b\n", g_all.champ[0].proces[0].reg[arg[0].value], g_all.champ[0].proces[0].reg[arg[0].value]);
 	exit_func(0, 0);
 }
