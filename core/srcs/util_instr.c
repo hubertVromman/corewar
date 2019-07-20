@@ -18,10 +18,17 @@ int		calc_pc(int pc)
 	return (pc);
 }
 
-int		increment_pc(int *pc, int nb_byte)
+int		increment_pc(t_proces *proces, int nb_byte)
 {
-	*pc = (*pc + nb_byte) % MEM_SIZE;
-	return (*pc);
+	proces->pc = (proces->pc + nb_byte) % MEM_SIZE;
+	return (proces->pc);
+}
+
+int		write_byte(t_proces *proces, int address, char to_write)
+{
+	g_all.arena[address] = to_write;
+	proces = NULL;
+	return (0);
 }
 
 char	get_codage(int opcode)
@@ -41,7 +48,7 @@ char	get_codage(int opcode)
 	return (codage);
 }
 
-t_arg	*get_arguments(int *pc)
+t_arg	*get_arguments(t_proces *proces)
 {
 	static t_arg	to_return[MAX_ARGS_NUMBER];
 	int				i;
@@ -49,8 +56,8 @@ t_arg	*get_arguments(int *pc)
 	int				opcode;
 	int				codage;
 
-	opcode = g_all.arena[*pc];
-	codage = g_op_tab[opcode - 1].codage ? g_all.arena[increment_pc(pc, 1)] : get_codage(opcode);
+	opcode = g_all.arena[proces->pc];
+	codage = g_op_tab[opcode - 1].codage ? g_all.arena[increment_pc(proces, 1)] : get_codage(opcode);
 	i = -1;
 	while (++i < MAX_ARGS_NUMBER)
 	{
@@ -60,7 +67,7 @@ t_arg	*get_arguments(int *pc)
 				return (NULL);
 			to_return[i].type = T_IND;
 			to_return[i].size = 2;
-			to_return[i].value = g_all.arena[increment_pc(pc, 1)] << 8 | g_all.arena[increment_pc(pc, 1)];
+			to_return[i].value = g_all.arena[increment_pc(proces, 1)] << 8 | g_all.arena[increment_pc(proces, 1)];
 		}
 		else if (codage & 1 << (7 - 2 * i))
 		{
@@ -71,7 +78,7 @@ t_arg	*get_arguments(int *pc)
 			to_return[i].value = 0;
 			j = -1;
 			while (++j < to_return[i].size)
-				to_return[i].value |= (g_all.arena[increment_pc(pc, 1)] & 0xff) << (to_return[i].size - j - 1) * 8;
+				to_return[i].value |= (g_all.arena[increment_pc(proces, 1)] & 0xff) << (to_return[i].size - j - 1) * 8;
 		}
 		else if (codage & 1 << (6 - 2 * i))
 		{
@@ -79,7 +86,7 @@ t_arg	*get_arguments(int *pc)
 				return (NULL);
 			to_return[i].type = T_REG;
 			to_return[i].size = 1;
-			to_return[i].value = g_all.arena[increment_pc(pc, 1)];
+			to_return[i].value = g_all.arena[increment_pc(proces, 1)];
 		}
 		else
 		{
@@ -88,7 +95,6 @@ t_arg	*get_arguments(int *pc)
 			to_return[i].value = 0;
 		}
 	}
-	ft_printf("ici\n");
-	increment_pc(pc, 1);
+	increment_pc(proces, 1);
 	return (to_return);
 }

@@ -25,6 +25,6 @@ int		operation_st(t_champ *champ, t_proces *proces, t_arg *args) // idem copie 1
 			proces->reg[args[1].value - 1] = proces->reg[args[0].value - 1];
 	}
 	else
-		g_all.arena[calc_pc(proces->pc + args[1].value % IDX_MOD)] = proces->reg[args[0].value - 1];
+		write_byte(proces, calc_pc(proces->pc + args[1].value % IDX_MOD), proces->reg[args[0].value - 1]);
 	return (0);
 }

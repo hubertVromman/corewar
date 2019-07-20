@@ -153,10 +153,5 @@ int		main(int ac, char **av)
 	display_start();
 	print_debug_info();
 	beg_battle();
-	t_arg *arg;
-	ft_printf("- - - %d\n", g_all.champ[0].proces[0].pc);
-	arg = get_arguments(&g_all.champ[0].proces[0].pc);
-	ft_printf("- - - %d\n", g_all.champ[0].proces[0].pc);
-	ft_printf("%d   %b     %d\n", g_all.champ[0].proces[0].reg[arg[0].value], g_all.champ[0].proces[0].reg[arg[0].value], arg[0].size);
 	exit_func(0, 0);
 }
