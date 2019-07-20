@@ -28,7 +28,6 @@ int		parse_arg(int ac, char **av)
 				if (i + 1 == ac)
 					exit_func(-1, 1);
 				g_all.next_champ_nb = ft_atoi(av[++i]);
-				ft_printf("ici\n");
 			}
 			else if (!ft_strcmp(av[i] + 1, "dump"))
 			{
@@ -121,6 +120,12 @@ int		init_func_pointer()
 	return (0);
 }
 
+int		sort_champs()
+{
+	//trier champion par player_nb
+	return (0);
+}
+
 int		init_all(int ac, char **av)
 {
 	int i;
@@ -135,8 +140,10 @@ int		init_all(int ac, char **av)
 		exit_func(-1, 1);
 	g_all.nb_proces_tot = g_all.nb_champ;
 	g_all.pos_depart = MEM_SIZE / g_all.nb_champ;
+	sort_champs();
 	while (++i < g_all.nb_champ)
 	{
+		g_all.champ[i].color_id = 31 + i;
 		ft_memcpy(g_all.arena + (g_all.pos_depart * i),
 			g_all.champ[i].exec_file, g_all.champ[i].exec_size);
 		create_proces(g_all.pos_depart * i, NULL, &(g_all.champ[i])); //gestion d'erreur

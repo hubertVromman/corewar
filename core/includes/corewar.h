@@ -30,8 +30,6 @@ enum	e_error_code { NOT_COR_FILE = 1, OPEN_FAIL, TOO_LARGE, READ_ERROR};
 # define MAGENTA "\x1b[35m"
 # define CYAN "\x1b[36m"
 
-# define MAX_PLAYER_NB 6
-
 typedef struct	s_arg
 {
 	int		size;
@@ -52,7 +50,6 @@ typedef struct	s_proces
 	int			lives_period;
 	int			reg[REG_NUMBER];
 	t_champ		*champ;
-	struct s_proces	*next; // a supprimer
 }				t_proces;
 
 /*
@@ -67,6 +64,7 @@ typedef struct	s_champ
 	int			exec_size;
 	int			last_live;
 	int			player_nb;
+	int			color_id;
 	t_proces	*proces;
 	char		*file_name;
 	char		*file;
