@@ -16,10 +16,11 @@ int		operation_zjmp(t_champ *champ, t_proces *proces, t_arg *args)
 {
 	int index;
 
+	champ = NULL;
 	if (proces->carry == 1)
 	{
-		index = proces->reg[arg[0].value];
-		proces->pc = calc_pc(proces->pc += index):
+		index = proces->reg[args[0].value];
+		proces->pc = calc_pc(proces->pc += index);
 	}
 	else
 		return (-1);

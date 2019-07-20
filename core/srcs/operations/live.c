@@ -14,6 +14,9 @@
 
 int		operation_live(t_champ *champ, t_proces *proces, t_arg *args)
 {
+	int i;
+
+	i = args[0].size;
 	champ->lives_period++;
 	champ->last_live = g_all.cycle;
 	proces->lives_period++;

@@ -17,8 +17,8 @@ int		operation_lfork(t_champ *champ, t_proces *proces, t_arg *args)
 	int		pc;
 	int		param;
 
-	pc = proces.pc;
-	param = proces->reg[arg[0]->value];
+	pc = proces->pc;
+	param = proces->reg[args[0].value];
 	create_proces(calc_pc(pc + param), proces, champ);
 	return (0);
 }

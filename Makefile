@@ -31,7 +31,7 @@ COR_FILES = main.o error.o exit.o util.o util_instr.o champ_instance.o lecteur.o
 COR_OBJ = $(addprefix $(COR_DIR), $(addprefix $(SRCS), $(COR_FILES)))
 
 OP_DIR = operations/
-OP_FILES = add.o st.o sub.o aff.o#live.o lfork.o fork.o zjmp.o ld.o st.o and.o or.o xor.o ldi.o sti.o  lld.o lldi.o
+OP_FILES = add.o st.o sub.o aff.o live.o lfork.o fork.o zjmp.o ld.o st.o and.o or.o xor.o ldi.o sti.o lld.o lldi.o
 OP_OBJ = $(addprefix $(COR_DIR), $(addprefix $(SRCS), $(addprefix $(OP_DIR), $(OP_FILES))))
 
 ASM_DIR = asem/

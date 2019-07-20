@@ -12,7 +12,7 @@
 
 #include "corewar.h"
 
-int		operation_add(t_champ *champ, t_proces *proces, t_arg *args)
+int		operation_or(t_champ *champ, t_proces *proces, t_arg *args)
 {
 	champ = NULL;
 	if (args[0].value > REG_NUMBER || args[0].value < 1 || args[1].value >

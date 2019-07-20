@@ -109,7 +109,22 @@ int		ft(t_champ *champ, t_proces *proces, t_arg *args)
 
 int		init_func_pointer()
 {
-	g_all.func[0] = ft;
+	g_all.func[0] = &operation_live;
+	g_all.func[1] = &operation_ld;
+	g_all.func[2] = &operation_st;
+	g_all.func[3] = &operation_add;
+	g_all.func[4] = &operation_sub;
+	g_all.func[5] = &operation_and;
+	g_all.func[6] = &operation_or;
+	g_all.func[7] = &operation_xor;
+	g_all.func[8] = &operation_zjmp;
+	g_all.func[9] = &operation_ldi;
+	g_all.func[10] = &operation_sti;
+	g_all.func[11] = &operation_fork;
+	g_all.func[12] = &operation_lld;
+	g_all.func[13] = &operation_lldi;
+	g_all.func[14] = &operation_lfork;
+	g_all.func[15] = &operation_aff;
 	return (0);
 }
 
@@ -146,8 +161,9 @@ int		main(int ac, char **av)
 	beg_battle();
 	print_debug_info();
 	t_arg *arg;
-
+	ft_printf("- - - %d\n", g_all.champ[0].proces[0].pc);
 	arg = get_arguments(&g_all.champ[0].proces[0].pc);
-	ft_printf("%d   %b\n", g_all.champ[0].proces[0].reg[arg[0].value], g_all.champ[0].proces[0].reg[arg[0].value]);
+	ft_printf("- - - %d\n", g_all.champ[0].proces[0].pc);
+	ft_printf("%d   %b     %d\n", g_all.champ[0].proces[0].reg[arg[0].value], g_all.champ[0].proces[0].reg[arg[0].value], arg[0].size);
 	exit_func(0, 0);
 }

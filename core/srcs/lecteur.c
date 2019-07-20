@@ -69,7 +69,7 @@ int		read_proces()
 				if (!g_all.champ[i].proces[k].cycle_left)
 				{
 					arg = get_arguments(&g_all.champ[i].proces[k].pc);
-					// pointeur_fonction[g_all.champ[i].proces[k].opcode];
+					g_all.func[g_all.champ[i].proces[k].opcode](&g_all.champ[i], &g_all.champ[i].proces[k], arg);
 				}
 			}
 			else
