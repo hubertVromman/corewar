@@ -66,7 +66,7 @@ int		dump_memory()
 	return (0);
 }
 
-int		dump_memory_colored()
+int		dump_memory_colored() // protection et utile que debut de game
 {
 	int		i;
 	int		j;

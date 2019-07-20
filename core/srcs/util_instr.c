@@ -14,8 +14,7 @@
 
 int		calc_pc(int pc)
 {
-	if (pc > MEM_SIZE)
-		pc %= MEM_SIZE;
+	pc %= MEM_SIZE;
 	return (pc);
 }
 
@@ -89,5 +88,7 @@ t_arg	*get_arguments(int *pc)
 			to_return[i].value = 0;
 		}
 	}
+	ft_printf("ici\n");
+	increment_pc(pc, 1);
 	return (to_return);
 }

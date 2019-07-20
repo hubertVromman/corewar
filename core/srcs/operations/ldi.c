@@ -11,3 +11,11 @@
 /* ************************************************************************** */
 
 #include "corewar.h"
+
+int		operation_ldi(t_champ *champ, t_proces *proces, t_arg *args)
+{
+	champ = NULL;
+	proces = NULL;
+	args = NULL;
+	return (0);
+}

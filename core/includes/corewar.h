@@ -119,7 +119,7 @@ int				dump_memory_colored();
 /*
 ** main.c
 */
-int			init_proces(int pc, t_proces *parent, t_champ *champ);
+int				print_debug_info();
 
 /*
 ** util_instr.c

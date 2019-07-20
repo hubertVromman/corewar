@@ -70,6 +70,7 @@ int		print_debug_info()
 	while (++i < g_all.nb_champ)
 	{
 		j = -1;
+		ft_printf("%d\n", g_all.champ[i].nb_proces);
 		while (++j < g_all.champ[i].nb_proces)
 		{
 			ft_printf("player_nb %2d | proces_id %2d | pc %4d | opcode %.2hhx | cycle_left %4d\n", g_all.champ[i].player_nb, j, g_all.champ[i].proces[0].pc, g_all.champ[i].proces[0].opcode, g_all.champ[i].proces[0].cycle_left);
@@ -97,14 +98,6 @@ int		display_start()
 		}
 	}
 	return (0);
-}
-
-int		ft(t_champ *champ, t_proces *proces, t_arg *args)
-{
-	champ = NULL;
-	proces = NULL;
-	args = NULL;
-	return (8);
 }
 
 int		init_func_pointer()
@@ -158,8 +151,8 @@ int		main(int ac, char **av)
 {
 	init_all(ac, av);
 	display_start();
-	beg_battle();
 	print_debug_info();
+	beg_battle();
 	t_arg *arg;
 	ft_printf("- - - %d\n", g_all.champ[0].proces[0].pc);
 	arg = get_arguments(&g_all.champ[0].proces[0].pc);

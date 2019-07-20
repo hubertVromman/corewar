@@ -21,7 +21,7 @@ int		operation_aff(t_champ *champ, t_proces *proces, t_arg *args)
 	}
 	else
 	{
-		ft_printf("%c", proces->reg[args[0].value]);
+		ft_printf("%c", proces->reg[args[0].value - 1]);
 		return (0);
 	}
 }

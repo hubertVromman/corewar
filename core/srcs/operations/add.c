@@ -24,8 +24,8 @@ int		operation_add(t_champ *champ, t_proces *proces, t_arg *args)
 	}
 	else
 	{
-		proces->reg[args[2].value] = proces->reg[args[0].value] + proces->reg[args[1].value];
-		proces->carry = proces->reg[args[2].value] == 0 ? 1 : 0;
+		proces->reg[args[2].value - 1] = proces->reg[args[0].value - 1] + proces->reg[args[1].value - 1];
+		proces->carry = proces->reg[args[2].value - 1] == 0 ? 1 : 0;
 		return (0);
 	}
 }

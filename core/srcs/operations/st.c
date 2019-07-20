@@ -12,7 +12,7 @@
 
 #include "corewar.h"
 
-int		operation_st(t_champ *champ, t_proces *proces, t_arg *args)
+int		operation_st(t_champ *champ, t_proces *proces, t_arg *args) // idem copie 1 ou 4 bytes ?
 {
 	champ = NULL;
 	if (args[0].value > REG_NUMBER || args[0].value < 1)
@@ -22,9 +22,9 @@ int		operation_st(t_champ *champ, t_proces *proces, t_arg *args)
 		if (args[1].value > REG_NUMBER || args[1].value < 1)
 			return (-1);
 		else
-			proces->reg[args[1].value] = proces->reg[args[0].value];
+			proces->reg[args[1].value - 1] = proces->reg[args[0].value - 1];
 	}
 	else
-		g_all.arena[proces->pc + args[1].value % IDX_MOD] = args[0].value;
+		g_all.arena[calc_pc(proces->pc + args[1].value % IDX_MOD)] = proces->reg[args[0].value - 1];
 	return (0);
 }

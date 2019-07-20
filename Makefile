@@ -77,7 +77,7 @@ debug_asm: $(ASM_OBJ) $(OBJ)
 	@$(CC) $(CFLAGS) -o $@ $^ -L$(LIB) -lft $(SANITIZE)
 	@echo "$@ compiled$(NC)"
 
-debug_corewar: $(COR_OBJ) $(OBJ)
+debug_corewar: $(OP_OBJ) $(COR_OBJ) $(OBJ)
 	@make -C $(LIB)
 	@$(CC) $(CFLAGS) -o $@ $^ -L$(LIB) -lft $(SANITIZE)
 	@echo "$@ compiled$(NC)"
