@@ -124,7 +124,9 @@ int				print_debug_info();
 */
 t_arg			*get_arguments(t_proces *proces);
 int				calc_pc(int pc);
+int				increment_pc(t_proces *proces, int nb_byte);
 int				write_byte(t_proces *proces, int address, char to_write);
+int				write_int(t_proces *proces, int address, int to_write);
 
 /*
 ** champ_instance.c

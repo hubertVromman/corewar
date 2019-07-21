@@ -18,9 +18,7 @@ int		operation_or(t_champ *champ, t_proces *proces, t_arg *args)
 	int		second_arg;
 
 	champ = NULL;
-	if (args[0].type & T_IND)
-		first_arg = g_all.arena[calc_pc(proces->pc + args[0].value % IDX_MOD)]; // a tester
-	else if (args[0].type & T_DIR)
+	if (args[0].type & T_IND || args[0].type & T_DIR)
 		first_arg = args[0].value; // a tester
 	else if (args[0].value > REG_NUMBER || args[0].value < 1)
 	{
@@ -29,9 +27,7 @@ int		operation_or(t_champ *champ, t_proces *proces, t_arg *args)
 	}
 	else
 		first_arg = proces->reg[args[0].value - 1];
-	if (args[1].type & T_IND)
-		second_arg = g_all.arena[calc_pc(proces->pc + args[1].value % IDX_MOD)]; // a tester
-	else if (args[1].type & T_DIR)
+	if (args[1].type & T_IND || args[1].type & T_DIR)
 		second_arg = args[1].value; // a tester
 	else if (args[1].value > REG_NUMBER || args[1].value < 1)
 	{

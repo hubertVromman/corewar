@@ -38,7 +38,6 @@ int		reset_proc()
 		{
 			if (!g_all.champ[i].proces[k].lives_period)
 			{
-				ft_printf("------------------------------------------------------------------------------------------------------------\n");
 				detele_proces(&g_all.champ[i], k);
 				k--;
 			}
@@ -67,22 +66,16 @@ int		read_proces()
 			if (g_all.champ[i].proces[k].cycle_left)
 			{
 				g_all.champ[i].proces[k].cycle_left--;
-				if (!g_all.champ[i].proces[k].cycle_left)
-				{
-					arg = get_arguments(&g_all.champ[i].proces[k]);
-					g_all.func[g_all.champ[i].proces[k].opcode - 1](&g_all.champ[i], &g_all.champ[i].proces[k], arg);
-				}
 			}
 			else
 			{
-				g_all.champ[i].proces[k].opcode = read_arena_op(g_all.champ[i].proces[k].pc);
-				if (!g_all.champ[i].proces[k].opcode)
-				{
-					g_all.champ[i].proces[k].pc = calc_pc(g_all.champ[i].proces[k].pc++);
-					k--;
-				}
+				arg = get_arguments(&g_all.champ[i].proces[k]);
+				if (g_all.func[g_all.champ[i].proces[k].opcode - 1](&g_all.champ[i], &g_all.champ[i].proces[k], arg) != 0)
+					increment_pc(&g_all.champ[i].proces[k], 1);
 				else
-					g_all.champ[i].proces[k].cycle_left = get_cycle_left(g_all.champ[i].proces[k].opcode);
+					increment_pc(&g_all.champ[i].proces[k], g_all.champ[i].proces[k].opcode == 0x09 ? 0 : arg[0].size + arg[1].size + arg[2].size + arg[3].size + g_op_tab[g_all.champ[i].proces[k].opcode - 1].codage + 1);
+				g_all.champ[i].proces[k].opcode = read_arena_op(g_all.champ[i].proces[k].pc);
+				g_all.champ[i].proces[k].cycle_left = get_cycle_left(g_all.champ[i].proces[k].opcode);
 			}
 		}
 	}

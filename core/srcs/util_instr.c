@@ -26,8 +26,18 @@ int		increment_pc(t_proces *proces, int nb_byte)
 
 int		write_byte(t_proces *proces, int address, char to_write)
 {
+	address %= MEM_SIZE;
 	g_all.arena[address] = to_write;
 	proces = NULL;
+	return (0);
+}
+
+int		write_int(t_proces *proces, int address, int to_write)
+{
+	write_byte(proces, address, to_write >> 24);
+	write_byte(proces, address + 1, to_write >> 16);
+	write_byte(proces, address + 2, to_write >> 8);
+	write_byte(proces, address + 3, to_write);
 	return (0);
 }
 
@@ -48,16 +58,30 @@ char	get_codage(int opcode)
 	return (codage);
 }
 
+int		get_ind(int *pc)
+{
+	int		first_char;
+	int		second_char;
+	int		initial_pc;
+
+	initial_pc = *pc;
+	first_char = (g_all.arena[calc_pc((*pc)++)] & 0xff) << 8;
+	second_char = g_all.arena[calc_pc((*pc)++)] & 0xff;
+	return (g_all.arena[calc_pc(initial_pc + (short)(first_char | second_char))]);
+}
+
 t_arg	*get_arguments(t_proces *proces)
 {
 	static t_arg	to_return[MAX_ARGS_NUMBER];
 	int				i;
 	int				j;
+	int				tmp_pc;
 	int				opcode;
 	int				codage;
 
-	opcode = g_all.arena[proces->pc];
-	codage = g_op_tab[opcode - 1].codage ? g_all.arena[increment_pc(proces, 1)] : get_codage(opcode);
+	tmp_pc = proces->pc;
+	opcode = g_all.arena[tmp_pc++];
+	codage = g_op_tab[opcode - 1].codage ? g_all.arena[calc_pc(tmp_pc++)] : get_codage(opcode);
 	i = -1;
 	while (++i < MAX_ARGS_NUMBER)
 	{
@@ -67,7 +91,7 @@ t_arg	*get_arguments(t_proces *proces)
 				return (NULL);
 			to_return[i].type = T_IND;
 			to_return[i].size = 2;
-			to_return[i].value = g_all.arena[increment_pc(proces, 1)] << 8 | g_all.arena[increment_pc(proces, 1)];
+			to_return[i].value = get_ind(&tmp_pc);
 		}
 		else if (codage & 1 << (7 - 2 * i))
 		{
@@ -78,7 +102,9 @@ t_arg	*get_arguments(t_proces *proces)
 			to_return[i].value = 0;
 			j = -1;
 			while (++j < to_return[i].size)
-				to_return[i].value |= (g_all.arena[increment_pc(proces, 1)] & 0xff) << (to_return[i].size - j - 1) * 8;
+				to_return[i].value |= (g_all.arena[calc_pc(tmp_pc++)] & 0xff) << (to_return[i].size - j - 1) * 8;
+			if (to_return[i].size == 2)
+				to_return[i].value = (short)to_return[i].value;
 		}
 		else if (codage & 1 << (6 - 2 * i))
 		{
@@ -86,7 +112,7 @@ t_arg	*get_arguments(t_proces *proces)
 				return (NULL);
 			to_return[i].type = T_REG;
 			to_return[i].size = 1;
-			to_return[i].value = g_all.arena[increment_pc(proces, 1)];
+			to_return[i].value = g_all.arena[calc_pc(tmp_pc++)];
 		}
 		else
 		{
@@ -95,6 +121,5 @@ t_arg	*get_arguments(t_proces *proces)
 			to_return[i].value = 0;
 		}
 	}
-	increment_pc(proces, 1);
 	return (to_return);
 }

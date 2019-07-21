@@ -20,6 +20,6 @@ int		operation_live(t_champ *champ, t_proces *proces, t_arg *args)
 	champ->lives_period++;
 	champ->last_live = g_all.cycle;
 	proces->lives_period++;
-	ft_printf("un processus dit que le joueur %x(%s) est en vie", champ->player_nb, champ->player_name);
+	ft_printf("un processus dit que le joueur %x(%s) est en vie\n", champ->player_nb, champ->player_name);
 	return (0);
 }
