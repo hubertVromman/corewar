@@ -70,6 +70,22 @@ int		get_ind(int *pc)
 	return (g_all.arena[calc_pc(initial_pc + (short)(first_char | second_char))]);
 }
 
+int		read_byte(int pc, t_arg *arg)
+{
+	int res;
+	int i;
+
+	i = -1;
+	res = 0;
+	while(++i < arg->size)
+	{
+		res <<= 8;
+		res |= g_all.arena[calc_pc(pc  + i)];
+	}
+	return (res);
+
+}
+
 t_arg	*get_arguments(t_proces *proces)
 {
 	static t_arg	to_return[MAX_ARGS_NUMBER];

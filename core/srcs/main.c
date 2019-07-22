@@ -156,9 +156,14 @@ int		init_all(int ac, char **av)
 
 int		main(int ac, char **av)
 {
+	int a = 90;
 	init_all(ac, av);
 	display_start();
 	print_debug_info();
-	beg_battle();
+	// beg_battle();
+	ft_printf("%b   %x\n %b\n", g_all.arena[0], g_all.arena[0], a);
+	int k = read_byte(6, get_arguments(&g_all.champ[0].proces[0]));
+	ft_printf("===  %d   %b\n",k , k);
+
 	exit_func(0, 0);
 }

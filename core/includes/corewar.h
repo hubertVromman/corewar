@@ -127,6 +127,7 @@ int				calc_pc(int pc);
 int				increment_pc(t_proces *proces, int nb_byte);
 int				write_byte(t_proces *proces, int address, char to_write);
 int				write_int(t_proces *proces, int address, int to_write);
+int				read_byte(int pc, t_arg *arg);
 
 /*
 ** champ_instance.c
