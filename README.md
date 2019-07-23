@@ -302,10 +302,6 @@ cycle.
 - **lfork** : Ca signifie long-fork, pour pouvoir fourcher de la paille à une distance
 de 15 mètres, exactement comme son opcode. Pareil qu’un fork sans modulo à l’adresse.
 
-- **sti** : Opcode 11. Prend un registre, et deux index (potentiellement des registres).
-Additionne les deux derniers, utilise cette somme comme une adresse ou sera copiée
-la valeur du premier paramètre.
-
 - **fork** : Pas d’octet de codage des paramètres, prend un index, opcode 0x0c. Crée
 un nouveau processus, qui hérite des différents états de son père, à part son **PC**,
 qui est mis à (**PC** + (1er paramètre % **IDX_MOD**)).
@@ -325,10 +321,24 @@ et fait un saut à cette adresse si le carry est à 1.
 
 - **sub** : Pareil que add, mais l’opcode est 0b101, et utilise une soustraction.
 
+
+
+
 - **ldi** : ldi, comme son nom l’indique, n’implique nullement de se baigner dans de
 la crème de marrons, même si son opcode est 0x0a. Au lieu de ça, ca prend 2 index
 et 1 registre, additionne les 2 premiers, traite ca comme une adresse, y lit une
 valeur de la taille d’un registre et la met dans le 3eme.
+
+- **lldi** : Opcode 0x0e. Pareil que ldi, mais n’applique aucun modulo aux adresses.
+Modifiera, par contre, le carry.
+
+- **sti** : Opcode 11. Prend un registre, et deux index (potentiellement des registres).
+Additionne les deux derniers, utilise cette somme comme une adresse ou sera copiée
+la valeur du premier paramètre.
+
+
+
+
 
 - **or** : Cette opération est un OU bit-à-bit, suivant le même principe que and, son
 opcode est donc évidemment 7.
@@ -349,9 +359,6 @@ d’octet de codage des paramètres, opcode 0x01. Oh, et son seul paramètre est
 
 - **xor** : Fait comme and avec un OU exclusif. Comme vous l’aurez deviné, son opcode
 en octal est 10.
-
-- **lldi** : Opcode 0x0e. Pareil que ldi, mais n’applique aucun modulo aux adresses.
-Modifiera, par contre, le carry.
 
 - **and** : Applique un & (ET bit-à-bit) sur les deux premiers paramètres, et stocke le
 résultat dans le registre qui est le 3ème paramètre. Opcode 0x06. Modifie le carry.

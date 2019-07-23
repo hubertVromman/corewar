@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:31:13 by hvromman          #+#    #+#             */
-/*   Updated: 2019/07/18 21:03:17 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/07/23 15:08:07 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ int				calc_pc(int pc);
 int				increment_pc(t_proces *proces, int nb_byte);
 int				write_byte(t_proces *proces, int address, char to_write);
 int				write_int(t_proces *proces, int address, int to_write);
-int				read_byte(int pc, t_arg *arg);
+int				read_byte(int pc, int size);
 
 /*
 ** champ_instance.c

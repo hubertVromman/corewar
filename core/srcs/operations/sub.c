@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sub.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hvromman <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/18 13:51:18 by hvromman          #+#    #+#             */
-/*   Updated: 2019/07/18 13:51:19 by hvromman         ###   ########.fr       */
+/*   Updated: 2019/07/24 00:39:45 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int		operation_sub(t_champ *champ, t_proces *proces, t_arg *args)
 {
 	champ = NULL;
+
 	if (args[0].value > REG_NUMBER || args[0].value < 1 || args[1].value >
 		REG_NUMBER || args[1].value < 1 || args[2].value > REG_NUMBER ||
 		args[2].value < 1)

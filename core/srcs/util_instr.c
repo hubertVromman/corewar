@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util_instr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hvromman <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/16 15:51:38 by hvromman          #+#    #+#             */
-/*   Updated: 2019/07/16 15:51:40 by hvromman         ###   ########.fr       */
+/*   Updated: 2019/07/23 15:07:54 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,14 +70,14 @@ int		get_ind(int *pc)
 	return (g_all.arena[calc_pc(initial_pc + (short)(first_char | second_char))]);
 }
 
-int		read_byte(int pc, t_arg *arg)
+int		read_byte(int pc, int size)
 {
 	int res;
 	int i;
 
 	i = -1;
 	res = 0;
-	while(++i < arg->size)
+	while(++i < size)
 	{
 		res <<= 8;
 		res |= g_all.arena[calc_pc(pc  + i)];

@@ -6,7 +6,7 @@
 /*   By: sofchami <sofchami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/18 19:57:39 by sofchami          #+#    #+#             */
-/*   Updated: 2019/07/19 14:13:55 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/07/24 01:11:14 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int		read_proces()
 			else
 			{
 				arg = get_arguments(&g_all.champ[i].proces[k]);
-				if (g_all.func[g_all.champ[i].proces[k].opcode - 1](&g_all.champ[i], &g_all.champ[i].proces[k], arg) != 0)
+				if ((g_all.champ[i].proces[k].opcode > 0 && g_all.champ[i].proces[k].opcode < 16 ) && g_all.func[g_all.champ[i].proces[k].opcode - 1](&g_all.champ[i], &g_all.champ[i].proces[k], arg) != 0)
 					increment_pc(&g_all.champ[i].proces[k], 1);
 				else
 					increment_pc(&g_all.champ[i].proces[k], g_all.champ[i].proces[k].opcode == 0x09 ? 0 : arg[0].size + arg[1].size + arg[2].size + arg[3].size + g_op_tab[g_all.champ[i].proces[k].opcode - 1].codage + 1);
@@ -96,7 +96,8 @@ int		beg_battle()
 	{
 		read_proces();
 		g_all.ctd++;
-		if (0)//!(g_all.cycle_to_die % g_all.ctd)) ----> condition a changer vraie au premier cycle !!
+		// if (0)//!(g_all.cycle_to_die % g_all.ctd)) ----> condition a changer vraie au premier cycle !!
+		if (!(g_all.ctd % g_all.cycle_to_die))
 		{
 			g_all.ctd = 0;
 			if ((reset_proc() < NBR_LIVE) || (check == MAX_CHECKS))

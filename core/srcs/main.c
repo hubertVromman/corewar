@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:28:49 by hvromman          #+#    #+#             */
-/*   Updated: 2019/07/19 15:42:06 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/07/23 18:28:38 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,14 +156,9 @@ int		init_all(int ac, char **av)
 
 int		main(int ac, char **av)
 {
-	int a = 90;
 	init_all(ac, av);
 	display_start();
 	print_debug_info();
-	// beg_battle();
-	ft_printf("%b   %x\n %b\n", g_all.arena[0], g_all.arena[0], a);
-	int k = read_byte(6, get_arguments(&g_all.champ[0].proces[0]));
-	ft_printf("===  %d   %b\n",k , k);
-
+	beg_battle();
 	exit_func(0, 0);
 }
