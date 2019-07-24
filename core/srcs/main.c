@@ -86,7 +86,11 @@ int		display_start()
 	int		i;
 
 	if (g_all.flags[1])
+	{
+		signal(SIGINT, exit_ctrl_c);
 		dump_memory_colored();
+		while (1);
+	}
 	else
 	{
 		ft_printf("%s\n", "Introducing contestants...");
@@ -122,7 +126,20 @@ int		init_func_pointer()
 
 int		sort_champs()
 {
-	//trier champion par player_nb
+	int		i;
+	t_champ	tmp;
+
+	i = -1;
+	while (++i < g_all.nb_champ - 1)
+	{
+		if (g_all.champ[i].player_nb > g_all.champ[i + 1].player_nb)
+		{
+			ft_memcpy(&tmp, &g_all.champ[i], sizeof(t_champ));
+			ft_memcpy(&g_all.champ[i], &g_all.champ[i + 1], sizeof(t_champ));
+			ft_memcpy(&g_all.champ[i + 1], &tmp, sizeof(t_champ));
+			i = -1;
+		}
+	}
 	return (0);
 }
 
@@ -143,7 +160,7 @@ int		init_all(int ac, char **av)
 	sort_champs();
 	while (++i < g_all.nb_champ)
 	{
-		g_all.champ[i].color_id = 31 + i;
+		g_all.champ[i].color_id = 31 + i % 6;
 		ft_memcpy(g_all.arena + (g_all.pos_depart * i),
 			g_all.champ[i].exec_file, g_all.champ[i].exec_size);
 		create_proces(g_all.pos_depart * i, NULL, &(g_all.champ[i])); //gestion d'erreur

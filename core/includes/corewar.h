@@ -14,6 +14,7 @@
 # define COREWAR_H
 
 # include "common.h"
+# include <signal.h>
 #include <stdio.h>
 
 enum	e_error_code { NOT_COR_FILE = 1, OPEN_FAIL, TOO_LARGE, READ_ERROR};
@@ -162,4 +163,8 @@ int				operation_sub(t_champ *champ, t_proces *proces, t_arg *args);
 int				operation_xor(t_champ *champ, t_proces *proces, t_arg *args);
 int				operation_zjmp(t_champ *champ, t_proces *proces, t_arg *args);
 
+/*
+** visu.c
+*/
+void			exit_ctrl_c(int c);
 #endif

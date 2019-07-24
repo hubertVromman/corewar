@@ -94,17 +94,18 @@ int		beg_battle()
 	ft_printf("begin battle\n");
 	while (!end)
 	{
+		ft_printf("ctd %d cycle to die %d\n", g_all.ctd, g_all.cycle_to_die);
 		read_proces();
 		g_all.ctd++;
 		// if (0)//!(g_all.cycle_to_die % g_all.ctd)) ----> condition a changer vraie au premier cycle !!
-		if (!(g_all.ctd % g_all.cycle_to_die))
+		if (g_all.ctd == g_all.cycle_to_die)
 		{
 			g_all.ctd = 0;
 			if ((reset_proc() < NBR_LIVE) || (check == MAX_CHECKS))
 			{
 				g_all.cycle_to_die -= CYCLE_DELTA;
 				check = 0;
-				if (g_all.cycle_to_die <= 0 || !g_all.nb_proces_tot)
+				if (g_all.cycle_to_die <= 0 || g_all.nb_proces_tot < 1)
 				{
 					end = 1;
 				}
@@ -112,7 +113,7 @@ int		beg_battle()
 			check++;
 		}
 		print_debug_info();
-		dump_memory();
+		// dump_memory();
 		g_all.cycle++;
 	}
 	return (0);
