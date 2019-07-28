@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/18 13:50:58 by hvromman          #+#    #+#             */
-/*   Updated: 2019/07/24 00:39:17 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/07/28 19:07:12 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,5 @@ int		operation_lld(t_champ *champ, t_proces *proces, t_arg *args) // tester s'il
 	else
 		proces->reg[args[0].value - 1] = g_all.arena[calc_pc(proces->pc + args[1].value)]; // sinon changer ca
 	proces->carry = proces->reg[args[0].value - 1] == 0 ? 1 : 0;
-	return (0);
+	return (1);
 }

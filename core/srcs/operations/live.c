@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/18 13:50:53 by hvromman          #+#    #+#             */
-/*   Updated: 2019/07/24 00:39:12 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/07/28 19:07:06 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,5 @@ int		operation_live(t_champ *champ, t_proces *proces, t_arg *args)
 	champ->last_live = g_all.cycle;
 	proces->lives_period++;
 	// ft_printf("un processus dit que le joueur %d(%s) est en vie\n", champ->player_nb, champ->player_name);
-	return (0);
+	return (1);
 }

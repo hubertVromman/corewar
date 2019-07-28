@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/18 13:51:06 by hvromman          #+#    #+#             */
-/*   Updated: 2019/07/24 00:39:28 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/07/28 19:07:21 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,5 @@ int		operation_or(t_champ *champ, t_proces *proces, t_arg *args)
 	}
 	proces->reg[args[2].value - 1] = first_arg | second_arg; // a tester pour erreur de cast (0xfffffef0)
 	proces->carry = proces->reg[args[2].value - 1] == 0 ? 1 : 0;
-	return (0);
+	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/18 13:51:26 by hvromman          #+#    #+#             */
-/*   Updated: 2019/07/24 01:08:35 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/07/28 21:18:34 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ int		operation_zjmp(t_champ *champ, t_proces *proces, t_arg *args)
 	{
 		proces->pc = calc_pc(proces->pc + args[0].value);
 	}
-	else
+	else   // Pas sur si faut enlever se else, "a tester"
+	{
+		increment_pc(proces, 1);
 		return (-1);
-	return (0);
+	}
+	return (1);
 }

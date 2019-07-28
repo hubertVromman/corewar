@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:28:49 by hvromman          #+#    #+#             */
-/*   Updated: 2019/07/23 18:28:38 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/07/28 21:16:05 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int		display_start()
 	{
 		signal(SIGINT, exit_ctrl_c);
 		dump_memory_colored();
-		while (1);
+		// while (1);
 	}
 	else
 	{

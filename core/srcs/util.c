@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/17 16:16:25 by hvromman          #+#    #+#             */
-/*   Updated: 2019/07/13 15:39:20 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/07/28 20:39:59 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int		create_proces(int pc, t_proces *parent, t_champ *champ)
 		return (-1);
 	proc = &(champ->proces[champ->nb_proces]);
 	proc->pc = pc;
+	proc->carry = 0;
 	if (parent)
 	{
 		ft_memcpy(proc->reg, parent->reg, REG_NUMBER * 4);

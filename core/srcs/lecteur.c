@@ -6,7 +6,7 @@
 /*   By: sofchami <sofchami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/18 19:57:39 by sofchami          #+#    #+#             */
-/*   Updated: 2019/07/24 01:11:14 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/07/28 19:44:35 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int		read_proces()
 		k = -1;
 		while (++k < g_all.champ[i].nb_proces)
 		{
+
 			if (g_all.champ[i].proces[k].cycle_left)
 			{
 				g_all.champ[i].proces[k].cycle_left--;
@@ -71,9 +72,13 @@ int		read_proces()
 			{
 				arg = get_arguments(&g_all.champ[i].proces[k]);
 				if ((g_all.champ[i].proces[k].opcode > 0 && g_all.champ[i].proces[k].opcode < 16 ) && g_all.func[g_all.champ[i].proces[k].opcode - 1](&g_all.champ[i], &g_all.champ[i].proces[k], arg) != 0)
-					increment_pc(&g_all.champ[i].proces[k], 1);
-				else
+				{
 					increment_pc(&g_all.champ[i].proces[k], g_all.champ[i].proces[k].opcode == 0x09 ? 0 : arg[0].size + arg[1].size + arg[2].size + arg[3].size + g_op_tab[g_all.champ[i].proces[k].opcode - 1].codage + 1);
+				}
+				else
+				{
+					increment_pc(&g_all.champ[i].proces[k], 1);
+				}
 				g_all.champ[i].proces[k].opcode = read_arena_op(g_all.champ[i].proces[k].pc);
 				g_all.champ[i].proces[k].cycle_left = get_cycle_left(g_all.champ[i].proces[k].opcode);
 			}
@@ -88,31 +93,29 @@ int		beg_battle()
 	int i;
 	int check;
 
-	end = 0;
+	end = 1;
 	i = -1;
 	check = 0;
 	ft_printf("begin battle\n");
-	while (!end)
+	while (end)
 	{
-		ft_printf("ctd %d cycle to die %d\n", g_all.ctd, g_all.cycle_to_die);
 		read_proces();
 		g_all.ctd++;
-		// if (0)//!(g_all.cycle_to_die % g_all.ctd)) ----> condition a changer vraie au premier cycle !!
 		if (g_all.ctd == g_all.cycle_to_die)
 		{
 			g_all.ctd = 0;
-			if ((reset_proc() < NBR_LIVE) || (check == MAX_CHECKS))
+			if ((((end = reset_proc()) < NBR_LIVE) || (check == MAX_CHECKS)) && g_all.cycle > CYCLE_TO_DIE)
 			{
 				g_all.cycle_to_die -= CYCLE_DELTA;
 				check = 0;
 				if (g_all.cycle_to_die <= 0 || g_all.nb_proces_tot < 1)
 				{
-					end = 1;
+					end = 0;
 				}
 			}
 			check++;
 		}
-		print_debug_info();
+		// print_debug_info();
 		// dump_memory();
 		g_all.cycle++;
 	}

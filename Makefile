@@ -6,7 +6,7 @@
 #    By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/05 15:14:07 by hvromman          #+#    #+#              #
-#    Updated: 2019/07/23 18:57:37 by sofchami         ###   ########.fr        #
+#    Updated: 2019/07/28 14:58:55 by sofchami         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,7 @@ all: $(COR) $(ASM)
 
 $(COR): $(OP_OBJ) $(COR_OBJ) $(OBJ)
 	@make -C $(LIB)
-	@$(CC) $(CFLAGS) -o $@ $^ -L$(LIB) -lft $(SANITIZE)
+	@$(CC) $(CFLAGS) -o $@ $^ -L$(LIB) -lft #$(SANITIZE)
 	@echo "$(GREEN)$@ compiled$(NC)"
 
 $(ASM): $(ASM_OBJ) $(OBJ)
