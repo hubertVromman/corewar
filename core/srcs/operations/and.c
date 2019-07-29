@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/18 13:50:12 by hvromman          #+#    #+#             */
-/*   Updated: 2019/07/28 19:06:37 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/07/29 19:19:48 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int		operation_and(t_champ *champ, t_proces *proces, t_arg *args)
 	champ = NULL;
 	if (args[0].type & T_IND || args[0].type & T_DIR)
 		first_arg = args[0].value; // a tester
-	else if (args[0].value > REG_NUMBER || args[0].value < 1)
+	else if (args[0].value > REG_NUMBER || args[0].value < 0)
 	{
 		proces->carry = 0;
 		return (-1);
@@ -29,14 +29,14 @@ int		operation_and(t_champ *champ, t_proces *proces, t_arg *args)
 		first_arg = proces->reg[args[0].value - 1];
 	if (args[1].type & T_IND || args[1].type & T_DIR)
 		second_arg = args[1].value; // a tester
-	else if (args[1].value > REG_NUMBER || args[1].value < 1)
+	else if (args[1].value > REG_NUMBER || args[1].value < 0)
 	{
 		proces->carry = 0;
 		return (-1);
 	}
 	else
 		second_arg = proces->reg[args[1].value - 1];
-	if (args[2].value > REG_NUMBER || args[2].value < 1)
+	if (args[2].value > REG_NUMBER || args[2].value < 0)
 	{
 		proces->carry = 0;
 		return (-1);

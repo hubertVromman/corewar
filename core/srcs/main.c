@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:28:49 by hvromman          #+#    #+#             */
-/*   Updated: 2019/07/28 21:16:05 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/07/29 19:24:44 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,6 +161,7 @@ int		init_all(int ac, char **av)
 	while (++i < g_all.nb_champ)
 	{
 		g_all.champ[i].color_id = 31 + i % 6;
+		g_all.champ[i].player_nb = 0 - g_all.champ[i].player_nb;
 		ft_memcpy(g_all.arena + (g_all.pos_depart * i),
 			g_all.champ[i].exec_file, g_all.champ[i].exec_size);
 		create_proces(g_all.pos_depart * i, NULL, &(g_all.champ[i])); //gestion d'erreur
