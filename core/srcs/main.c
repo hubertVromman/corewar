@@ -176,7 +176,6 @@ int		main(int ac, char **av)
 {
 	init_all(ac, av);
 	display_start();
-	print_debug_info();
 	beg_battle();
 	exit_func(0, 0);
 }

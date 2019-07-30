@@ -26,11 +26,11 @@ int		read_arena_op(int pc)
 int		reset_proc()
 {
 	int i;
-	int total_lives;
+	int total_lives_period;
 	int k;
 
 	i = -1;
-	total_lives = 0;
+	total_lives_period = 0;
 	while (++i < g_all.nb_champ)
 	{
 		k = -1;
@@ -43,12 +43,12 @@ int		reset_proc()
 			}
 			else
 			{
-				total_lives += g_all.champ[i].proces[k].lives_period;
+				total_lives_period += g_all.champ[i].proces[k].lives_period;
 				g_all.champ[i].proces[k].lives_period = 0;
 			}
 		}
 	}
-	return (total_lives);
+	return (total_lives_period);
 }
 
 int		read_proces()
@@ -67,22 +67,21 @@ int		read_proces()
 			if (g_all.champ[i].proces[k].cycle_left)
 			{
 				g_all.champ[i].proces[k].cycle_left--;
-			}
-			else
-			{
-				arg = get_arguments(&g_all.champ[i].proces[k]);
-				if ((g_all.champ[i].proces[k].opcode > 0 && g_all.champ[i].proces[k].opcode < 16 ) && g_all.func[g_all.champ[i].proces[k].opcode - 1](&g_all.champ[i], &g_all.champ[i].proces[k], arg) != 0)
+				if (!g_all.champ[i].proces[k].cycle_left)
 				{
-					increment_pc(&g_all.champ[i].proces[k], g_all.champ[i].proces[k].opcode == 0x09 ? 0 : arg[0].size + arg[1].size + arg[2].size + arg[3].size + g_op_tab[g_all.champ[i].proces[k].opcode - 1].codage + 1);
-					print_debug_info();
-					dump_memory();
+					arg = get_arguments(&g_all.champ[i].proces[k]);
+					if ((g_all.champ[i].proces[k].opcode > 0 && g_all.champ[i].proces[k].opcode < 16 ) && g_all.func[g_all.champ[i].proces[k].opcode - 1](&g_all.champ[i], &g_all.champ[i].proces[k], arg) != 0)
+					{
+						increment_pc(&g_all.champ[i].proces[k], g_all.champ[i].proces[k].opcode == 0x09 ? 0 : arg[0].size + arg[1].size + arg[2].size + arg[3].size + g_op_tab[g_all.champ[i].proces[k].opcode - 1].codage + 1);
+					}
+					else
+					{
+						increment_pc(&g_all.champ[i].proces[k], 1);
+					}
+					g_all.champ[i].proces[k].opcode = read_arena_op(g_all.champ[i].proces[k].pc);
+					g_all.champ[i].proces[k].cycle_left = get_cycle_left(g_all.champ[i].proces[k].opcode);
+					//print_debug_info();
 				}
-				else
-				{
-					increment_pc(&g_all.champ[i].proces[k], 1);
-				}
-				g_all.champ[i].proces[k].opcode = read_arena_op(g_all.champ[i].proces[k].pc);
-				g_all.champ[i].proces[k].cycle_left = get_cycle_left(g_all.champ[i].proces[k].opcode);
 			}
 		}
 	}
@@ -101,23 +100,24 @@ int		beg_battle()
 	ft_printf("begin battle\n");
 	while (end)
 	{
+		g_all.cycle++;
 		read_proces();
 		g_all.ctd++;
 		if (g_all.ctd == g_all.cycle_to_die)
 		{
 			g_all.ctd = 0;
-			if ((((end = reset_proc()) < NBR_LIVE) || (check == MAX_CHECKS)) && g_all.cycle > CYCLE_TO_DIE)
+			if ((end = reset_proc()) >= NBR_LIVE || check == MAX_CHECKS)
 			{
 				g_all.cycle_to_die -= CYCLE_DELTA;
 				check = 0;
-				if (g_all.cycle_to_die <= 0 || g_all.nb_proces_tot < 1)
+				if (g_all.cycle_to_die <= 0 || g_all.nb_proces_tot == 0)
 				{
 					end = 0;
 				}
 			}
 			check++;
 		}
-		g_all.cycle++;
 	}
+	print_debug_info();
 	return (0);
 }
