@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/17 16:16:25 by hvromman          #+#    #+#             */
-/*   Updated: 2019/07/28 20:39:59 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/07/30 23:22:49 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,31 @@ int		get_cycle_left(int opcode)
 		return (g_op_tab[opcode - 1].cycle_op);
 }
 
+int		sort_proces(t_champ *champ)
+{
+	t_proces tmp;
+	int		i;
+
+	i = -1;
+	while (++i < champ->nb_proces)
+	{
+		if (i + 1 < champ->nb_proces && champ->proces[i].id_proces > champ->proces[i + 1].id_proces)
+		{
+			tmp = champ->proces[i];
+			champ->proces[i] = champ->proces[i + 1];
+			champ->proces[i + 1] = tmp;
+			i = -1;
+		}
+	}
+	return (0);
+}
+
 int		detele_proces(t_champ *champ, int id_proces)
 {
 	ft_memcpy(&(champ->proces[id_proces]), &(champ[champ->nb_proces - 1]), sizeof(t_proces));
 	champ->nb_proces--;
 	g_all.nb_proces_tot--;
+	sort_proces(champ);
 	return (0);
 }
 
@@ -37,6 +57,7 @@ int		create_proces(int pc, t_proces *parent, t_champ *champ)
 	proc = &(champ->proces[champ->nb_proces]);
 	proc->pc = pc;
 	proc->carry = 0;
+	proc->id_proces = g_all.id_proces;
 	if (parent)
 	{
 		ft_memcpy(proc->reg, parent->reg, REG_NUMBER * 4);
@@ -48,6 +69,7 @@ int		create_proces(int pc, t_proces *parent, t_champ *champ)
 	proc->champ = champ;
 	champ->nb_proces++;
 	g_all.nb_proces_tot++;
+	g_all.id_proces++;
 	return(0);
 }
 
