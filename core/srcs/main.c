@@ -155,7 +155,6 @@ int		init_all(int ac, char **av)
 	parse_arg(ac, av);
 	if (g_all.nb_champ < 1)
 		exit_func(-1, 1);
-	g_all.nb_proces_tot = g_all.nb_champ;
 	g_all.pos_depart = MEM_SIZE / g_all.nb_champ;
 	sort_champs();
 	while (++i < g_all.nb_champ)

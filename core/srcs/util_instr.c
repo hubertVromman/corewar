@@ -14,8 +14,7 @@
 
 int		calc_pc(int pc)
 {
-	pc %= MEM_SIZE;
-	return (pc);
+	return ((pc + MEM_SIZE) % MEM_SIZE);
 }
 
 int		increment_pc(t_proces *proces, int nb_byte)
@@ -75,7 +74,7 @@ char	get_codage(int opcode)
 	return (codage);
 }
 
-int		get_ind(int *pc)
+int		get_ind(int *pc, int mod)
 {
 	int		first_char;
 	int		second_char;
@@ -84,7 +83,9 @@ int		get_ind(int *pc)
 	initial_pc = *pc;
 	first_char = (g_all.arena[calc_pc((*pc)++)] & 0xff) << 8;
 	second_char = g_all.arena[calc_pc((*pc)++)] & 0xff;
-	return (g_all.arena[calc_pc(initial_pc + (short)(first_char | second_char))]);
+	jump_to_mem(calc_pc(initial_pc + (mod ? (short)(first_char | second_char) % IDX_MOD : (short)(first_char | second_char))));
+			ft_printf("<red>00");
+	return (read_byte(calc_pc(initial_pc - 4 + (mod ? (short)(first_char | second_char) % IDX_MOD : (short)(first_char | second_char))), 4));
 }
 
 int		read_byte(int pc, int size)
@@ -97,7 +98,7 @@ int		read_byte(int pc, int size)
 	while(++i < size)
 	{
 		res <<= 8;
-		res |= g_all.arena[calc_pc(pc  + i)];
+		res |= g_all.arena[calc_pc(pc + i)] & 0xff;
 	}
 	return (res);
 }
@@ -123,7 +124,8 @@ t_arg	*get_arguments(t_proces *proces)
 				return (NULL);
 			to_return[i].type = T_IND;
 			to_return[i].size = 2;
-			to_return[i].value = get_ind(&tmp_pc);
+			to_return[i].value = get_ind(&tmp_pc, opcode != 13 && opcode != 14);
+
 		}
 		else if (codage & 1 << (7 - 2 * i)) // 10 -> DIR
 		{

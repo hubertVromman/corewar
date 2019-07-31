@@ -16,14 +16,13 @@ int		operation_zjmp(t_champ *champ, t_proces *proces, t_arg *args)
 {
 	champ = NULL;
 
-	if (proces->carry == 0)
+	if (proces->carry == 1)
 	{
 		increment_pc(proces, args[0].value);
 	}
-	else   // Pas sur si faut enlever se else, "a tester"
+	else
 	{
 		increment_pc(proces, 4);
-		return (1);
 	}
 	return (1);
 }

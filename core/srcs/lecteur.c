@@ -69,7 +69,7 @@ int		read_proces()
 				if (!g_all.champ[i].proces[k].cycle_left)
 				{
 					arg = get_arguments(&g_all.champ[i].proces[k]);
-					if ((g_all.champ[i].proces[k].opcode > 0 && g_all.champ[i].proces[k].opcode < 16 ) && g_all.func[g_all.champ[i].proces[k].opcode - 1](&g_all.champ[i], &g_all.champ[i].proces[k], arg) != 0)
+					if (arg && (g_all.champ[i].proces[k].opcode > 0 && g_all.champ[i].proces[k].opcode < 16 ) && g_all.func[g_all.champ[i].proces[k].opcode - 1](&g_all.champ[i], &g_all.champ[i].proces[k], arg) != 0)
 					{
 						increment_pc(&g_all.champ[i].proces[k], g_all.champ[i].proces[k].opcode == 0x09 ? 0 : arg[0].size + arg[1].size + arg[2].size + arg[3].size + g_op_tab[g_all.champ[i].proces[k].opcode - 1].codage + 1);
 						// dump_memory();
