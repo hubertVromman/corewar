@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/18 13:51:18 by hvromman          #+#    #+#             */
-/*   Updated: 2019/07/28 19:07:34 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/07/31 23:05:21 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int		operation_sub(t_champ *champ, t_proces *proces, t_arg *args)
 	champ = NULL;
 
 	proces->reg[args[2].value] = proces->reg[args[0].value] - proces->reg[args[1].value];
-	proces->carry = proces->reg[args[2].value] == 0 ? 1 : 0;
+	proces->carry = proces->reg[args[2].value] != 0 ? 1 : 0;
 	// ft_printf("%d\n", proces->carry);
 	return (1);
 }
