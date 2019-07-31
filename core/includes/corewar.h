@@ -91,6 +91,7 @@ typedef struct	s_a
 	int			(*func[16]) (t_champ *champ, t_proces *proces, t_arg *args);
 	char		flags[sizeof(OP)];
 	char		arena[MEM_SIZE];
+	char		color[MEM_SIZE];
 }				t_a;
 
 t_a				g_all;

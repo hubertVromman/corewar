@@ -18,5 +18,6 @@ int		operation_sub(t_champ *champ, t_proces *proces, t_arg *args)
 
 	proces->reg[args[2].value] = proces->reg[args[0].value] - proces->reg[args[1].value];
 	proces->carry = proces->reg[args[2].value] == 0 ? 1 : 0;
+	// ft_printf("%d\n", proces->carry);
 	return (1);
 }

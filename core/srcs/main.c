@@ -164,6 +164,7 @@ int		init_all(int ac, char **av)
 		g_all.champ[i].player_nb = 0 - g_all.champ[i].player_nb;
 		ft_memcpy(g_all.arena + (g_all.pos_depart * i),
 			g_all.champ[i].exec_file, g_all.champ[i].exec_size);
+		ft_memset(g_all.color + (g_all.pos_depart * i), g_all.champ[i].color_id, g_all.champ[i].exec_size);
 		create_proces(g_all.pos_depart * i, NULL, &(g_all.champ[i])); //gestion d'erreur
 		g_all.champ[i].proces[0].opcode = g_all.arena[g_all.champ[i].proces->pc];
 		g_all.champ[i].proces[0].cycle_left = get_cycle_left(g_all.champ[i].proces->opcode);

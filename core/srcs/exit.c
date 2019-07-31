@@ -35,6 +35,7 @@ int		usage(void)
 
 int		exit_func(int exit_code, int dp_usage)
 {
+	ft_printf("\e[0m");
 	ft_printf("exit\n");
 	ft_printf("\e[?25h"); //unhide cursor
 	if (dp_usage)

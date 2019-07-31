@@ -23,21 +23,28 @@ int		increment_pc(t_proces *proces, int nb_byte)
 	if (g_all.flags[VISU])
 	{
 		jump_to_mem(proces->pc);
-		ft_printf("<blue>%.2x", g_all.arena[proces->pc]);
+		ft_printf("\e[%dm%.2hhx", g_all.color[proces->pc], g_all.arena[proces->pc]);
 	}
-	proces->pc = (proces->pc + nb_byte) % MEM_SIZE;
+	proces->pc = calc_pc(proces->pc + nb_byte);
 	if (g_all.flags[VISU])
 	{
 		jump_to_mem(proces->pc);
-		ft_printf("<cyan>%.2x", g_all.arena[proces->pc]);
+		ft_printf("\e[%dm\e[%dm%.2hhx", 10 + proces->champ->color_id, 30, g_all.arena[proces->pc]);
 	}
+	ft_printf("\e[0m");
 	return (proces->pc);
 }
 
 int		write_byte(t_proces *proces, int address, char to_write)
 {
-	address %= MEM_SIZE;
+	address = calc_pc(address);
 	g_all.arena[address] = to_write;
+	if (g_all.flags[VISU])
+	{
+		g_all.color[address] = proces->champ->color_id;
+		jump_to_mem(address);
+		ft_printf("\e[%dm%.2hhx", proces->champ->color_id, g_all.arena[address]);
+	}
 	proces = NULL;
 	return (0);
 }
