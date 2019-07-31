@@ -68,6 +68,7 @@ int		get_params(t_file *file, char *data)
 	ft_bzero(&var, sizeof(var));
 	while (1)
 	{
+		var.extend_size = 0;
 		var.sub_off += skip_spaces(data, var.sub_off);
 		var.data_size = encode_type(file, data + var.sub_off,
 			&file->curr_instr->params[var.i], &var.extend_size);

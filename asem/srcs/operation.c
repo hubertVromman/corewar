@@ -32,7 +32,7 @@ int		get_operations(t_file *file, char *data, int offset, t_param *param)
 		}
 		else
 			size = nb_digits(data + sub_off, &new->base);
-		new->line_off = file->line_off + offset + sub_off;
+		new->line_off += + offset + sub_off;
 		if (!(new->data = ft_strsub(data, sub_off, size)))
 			exit_func(-2, 0);
 		return (get_operations(file, data + sub_off + size, offset, new)
