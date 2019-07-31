@@ -106,7 +106,7 @@ int		dump_memory_colored() // protection et utile que debut de game
 		{
 			if (i == g_all.champ[c].proces->pc)
 			{
-				ft_printf("\x1b[%dm%#>", g_all.champ[c].color_id, &buffer);
+				ft_printf("\e[%dm%#>", g_all.champ[c].color_id, &buffer);
 				memcpy(s + i * 3 + j, buffer, 5);
 				j += 5;
 			}

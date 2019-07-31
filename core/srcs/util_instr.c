@@ -119,7 +119,7 @@ t_arg	*get_arguments(t_proces *proces)
 	{
 		if ((codage & 1 << (7 - 2 * i)) && (codage & 1 << (6 - 2 * i))) // 11 -> IND
 		{
-			if (g_op_tab[opcode - 1].nb_params < i || !(g_op_tab[opcode - 1].param[i] & T_IND))
+			if (i >= g_op_tab[opcode - 1].nb_params || g_op_tab[opcode - 1].nb_params < i || !(g_op_tab[opcode - 1].param[i] & T_IND)) // trop de param ou wrong type
 				return (NULL);
 			to_return[i].type = T_IND;
 			to_return[i].size = 2;
@@ -127,7 +127,7 @@ t_arg	*get_arguments(t_proces *proces)
 		}
 		else if (codage & 1 << (7 - 2 * i)) // 10 -> DIR
 		{
-			if (g_op_tab[opcode - 1].nb_params < i || !(g_op_tab[opcode - 1].param[i] & T_DIR))
+			if (i >= g_op_tab[opcode - 1].nb_params || g_op_tab[opcode - 1].nb_params < i || !(g_op_tab[opcode - 1].param[i] & T_DIR))
 				return (NULL);
 			to_return[i].type = T_DIR;
 			to_return[i].size = 4 - 2 * g_op_tab[opcode - 1].dir_size;
@@ -140,7 +140,7 @@ t_arg	*get_arguments(t_proces *proces)
 		}
 		else if (codage & 1 << (6 - 2 * i)) // 01 -> REG
 		{
-			if (g_op_tab[opcode - 1].nb_params < i || !(g_op_tab[opcode - 1].param[i] & T_REG))
+			if (i >= g_op_tab[opcode - 1].nb_params || g_op_tab[opcode - 1].nb_params < i || !(g_op_tab[opcode - 1].param[i] & T_REG))
 				return (NULL);
 			to_return[i].type = T_REG;
 			to_return[i].size = 1;
@@ -152,17 +152,12 @@ t_arg	*get_arguments(t_proces *proces)
 		{
 			return (NULL);
 		}
-		else if (codage) // si trop d'arguments
-		{
-			return (NULL);
-		}
 		else
 		{
 			to_return[i].type = 0;
 			to_return[i].size = 0;
 			to_return[i].value = 0;
 		}
-		codage &= 0xff >> 2 * (i + 1); // izi (pour savoir le nombre d'arguments)
 	}
 	return (to_return);
 }
