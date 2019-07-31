@@ -57,13 +57,12 @@ int		read_proces()
 	int k;
 	t_arg *arg;
 
-	i = -1;
-	while (i++ < g_all.nb_champ)
+	i = g_all.nb_champ;
+	while (i--)
 	{
 		k = g_all.champ[i].nb_proces;
 		while (k--)
 		{
-
 			if (g_all.champ[i].proces[k].cycle_left)
 			{
 				g_all.champ[i].proces[k].cycle_left--;
@@ -73,7 +72,7 @@ int		read_proces()
 					if ((g_all.champ[i].proces[k].opcode > 0 && g_all.champ[i].proces[k].opcode < 16 ) && g_all.func[g_all.champ[i].proces[k].opcode - 1](&g_all.champ[i], &g_all.champ[i].proces[k], arg) != 0)
 					{
 						increment_pc(&g_all.champ[i].proces[k], g_all.champ[i].proces[k].opcode == 0x09 ? 0 : arg[0].size + arg[1].size + arg[2].size + arg[3].size + g_op_tab[g_all.champ[i].proces[k].opcode - 1].codage + 1);
-						dump_memory();
+						// dump_memory();
 					}
 					else
 					{
@@ -119,5 +118,6 @@ int		beg_battle()
 			check++;
 		}
 	}
+	ft_printf("Contestant %d, \"%s\", has won !\n", g_all.champ[g_all.player_last_live].player_nb, g_all.champ[g_all.player_last_live].player_name);
 	return (0);
 }

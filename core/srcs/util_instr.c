@@ -48,7 +48,7 @@ char	get_codage(int opcode)
 
 	codage = 0;
 	i = -1;
-	while (++i < g_op_tab[opcode - 1].param_nb)
+	while (++i < g_op_tab[opcode - 1].nb_params)
 	{
 		if (g_op_tab[opcode - 1].param[i] & (T_IND | T_DIR))
 			codage |= 1 << (7 - 2 * i);
@@ -83,7 +83,6 @@ int		read_byte(int pc, int size)
 		res |= g_all.arena[calc_pc(pc  + i)];
 	}
 	return (res);
-
 }
 
 t_arg	*get_arguments(t_proces *proces)
@@ -101,17 +100,17 @@ t_arg	*get_arguments(t_proces *proces)
 	i = -1;
 	while (++i < MAX_ARGS_NUMBER)
 	{
-		if ((codage & 1 << (7 - 2 * i)) && (codage & 1 << (6 - 2 * i)))
+		if ((codage & 1 << (7 - 2 * i)) && (codage & 1 << (6 - 2 * i))) // 11 -> IND
 		{
-			if (g_op_tab[opcode - 1].param_nb < i || !(g_op_tab[opcode - 1].param[i] & T_IND))
+			if (g_op_tab[opcode - 1].nb_params < i || !(g_op_tab[opcode - 1].param[i] & T_IND))
 				return (NULL);
 			to_return[i].type = T_IND;
 			to_return[i].size = 2;
 			to_return[i].value = get_ind(&tmp_pc);
 		}
-		else if (codage & 1 << (7 - 2 * i))
+		else if (codage & 1 << (7 - 2 * i)) // 10 -> DIR
 		{
-			if (g_op_tab[opcode - 1].param_nb < i || !(g_op_tab[opcode - 1].param[i] & T_DIR))
+			if (g_op_tab[opcode - 1].nb_params < i || !(g_op_tab[opcode - 1].param[i] & T_DIR))
 				return (NULL);
 			to_return[i].type = T_DIR;
 			to_return[i].size = 4 - 2 * g_op_tab[opcode - 1].dir_size;
@@ -122,13 +121,23 @@ t_arg	*get_arguments(t_proces *proces)
 			if (to_return[i].size == 2)
 				to_return[i].value = (short)to_return[i].value;
 		}
-		else if (codage & 1 << (6 - 2 * i))
+		else if (codage & 1 << (6 - 2 * i)) // 01 -> REG
 		{
-			if (g_op_tab[opcode - 1].param_nb < i || !(g_op_tab[opcode - 1].param[i] & T_REG))
+			if (g_op_tab[opcode - 1].nb_params < i || !(g_op_tab[opcode - 1].param[i] & T_REG))
 				return (NULL);
 			to_return[i].type = T_REG;
 			to_return[i].size = 1;
-			to_return[i].value = g_all.arena[calc_pc(tmp_pc++)];
+			to_return[i].value = g_all.arena[calc_pc(tmp_pc++)] - 1;
+			if (to_return[i].value >= REG_NUMBER || to_return[i].value < 0)
+				return (NULL);
+		}
+		else if (i < g_op_tab[opcode - 1].nb_params) // pas assez d'arguments
+		{
+			return (NULL);
+		}
+		else if (codage) // si trop d'arguments
+		{
+			return (NULL);
 		}
 		else
 		{
@@ -136,6 +145,7 @@ t_arg	*get_arguments(t_proces *proces)
 			to_return[i].size = 0;
 			to_return[i].value = 0;
 		}
+		codage &= 0x00ffffff >> i;
 	}
 	return (to_return);
 }

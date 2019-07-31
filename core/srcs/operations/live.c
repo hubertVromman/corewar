@@ -15,17 +15,17 @@
 int		operation_live(t_champ *champ, t_proces *proces, t_arg *args)
 {
 	int i;
-	// int id;
 
-	i = args[0].size;
-	// id = arg[0].value;
-	// champ[id].lives_period++;
-	// champ[id].last_live = g_all.cycle;
-	// proces->lives_period++;
-	// g_all.player_last_live = id;
-
-	champ->lives_period++;
-	champ->last_live = g_all.cycle;
+	i = -1;
+	while (++i < g_all.nb_champ)
+	{
+		if (g_all.champ[i].player_nb == args[0].size)
+		{
+			champ[i].lives_period++;
+			champ[i].last_live = g_all.cycle;
+			g_all.player_last_live = i;
+		}
+	}
 	proces->lives_period++;
 	// ft_printf("un processus dit que le joueur %d(%s) est en vie\n", champ->player_nb, champ->player_name);
 	return (1);

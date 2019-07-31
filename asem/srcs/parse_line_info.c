@@ -97,7 +97,7 @@ int		parse_name(t_file *file, char *data, int i)
 
 	file->curr_instr->index = i;
 	file->curr_instr->line_nb = file->line_nb;
-	file->curr_instr->nb_params = g_op_tab[i].param_nb;
+	file->curr_instr->nb_params = g_op_tab[i].nb_params;
 	sub_off = ft_strlen(g_op_tab[i].name);
 	file->line_off += sub_off;
 	ret = get_params(file, data + sub_off);

@@ -53,10 +53,6 @@ typedef struct	s_proces
 	t_champ		*champ;
 }				t_proces;
 
-/*
-** changer proces en array
-*/
-
 typedef struct	s_champ
 {
 	int			nb_proces;

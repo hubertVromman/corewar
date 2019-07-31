@@ -22,7 +22,7 @@
 typedef struct		s_op
 {
 	char				*name;
-	int					param_nb;
+	int					nb_params;
 	int					param[MAX_ARGS_NUMBER];
 	int					opcode;
 	int					cycle_op;
