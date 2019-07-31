@@ -18,12 +18,12 @@ int		operation_zjmp(t_champ *champ, t_proces *proces, t_arg *args)
 
 	if (proces->carry == 1)
 	{
-		proces->pc = calc_pc(proces->pc + args[0].value);
+		increment_pc(proces, args[0].value);
 	}
-	else   // Pas sur si faut enlever se else, "a tester"
-	{
-		increment_pc(proces, 1);
-		return (-1);
-	}
+	// else   // Pas sur si faut enlever se else, "a tester"
+	// {
+	// 	increment_pc(proces, 1);
+	// 	return (-1);
+	// }
 	return (1);
 }

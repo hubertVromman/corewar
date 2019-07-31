@@ -19,6 +19,8 @@
 
 enum	e_error_code { NOT_COR_FILE = 1, OPEN_FAIL, TOO_LARGE, READ_ERROR};
 
+enum	e_flag_nb {FORCE_LAUNCH, VISU};
+
 # define MERROR -2
 
 # define OP "fv"
@@ -165,4 +167,6 @@ int				operation_zjmp(t_champ *champ, t_proces *proces, t_arg *args);
 ** visu.c
 */
 void			exit_ctrl_c(int c);
+int				jump_to(int x, int y);
+int				jump_to_mem(int pc);
 #endif

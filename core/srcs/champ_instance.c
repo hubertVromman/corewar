@@ -67,7 +67,7 @@ int				get_champ(char *file_name)
 	current = &(g_all.champ[g_all.nb_champ]);
 	if ((ret = get_file(file_name, current)) == -1)
 		error_func(current, READ_ERROR);
-	if (ret < 0 && !(g_all.flags[0]))
+	if (ret < 0 && !(g_all.flags[FORCE_LAUNCH]))
 		exit_func(-1, 0);
 	i = g_all.next_champ_nb ? g_all.next_champ_nb - 1 : 0;
 	while (++i && (j = -1))

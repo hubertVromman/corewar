@@ -20,7 +20,17 @@ int		calc_pc(int pc)
 
 int		increment_pc(t_proces *proces, int nb_byte)
 {
+	if (g_all.flags[VISU])
+	{
+		jump_to_mem(proces->pc);
+		ft_printf("<blue>%.2x", g_all.arena[proces->pc]);
+	}
 	proces->pc = (proces->pc + nb_byte) % MEM_SIZE;
+	if (g_all.flags[VISU])
+	{
+		jump_to_mem(proces->pc);
+		ft_printf("<cyan>%.2x", g_all.arena[proces->pc]);
+	}
 	return (proces->pc);
 }
 
@@ -145,7 +155,7 @@ t_arg	*get_arguments(t_proces *proces)
 			to_return[i].size = 0;
 			to_return[i].value = 0;
 		}
-		codage &= 0x00ffffff >> i;
+		codage &= 0xff >> 2 * (i + 1); // izi (pour savoir le nombre d'arguments)
 	}
 	return (to_return);
 }

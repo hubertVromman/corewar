@@ -80,7 +80,7 @@ int		read_proces()
 					}
 					g_all.champ[i].proces[k].opcode = read_arena_op(g_all.champ[i].proces[k].pc);
 					g_all.champ[i].proces[k].cycle_left = get_cycle_left(g_all.champ[i].proces[k].opcode);
-					print_debug_info();
+					if (!g_all.flags[VISU])print_debug_info();
 				}
 			}
 		}
@@ -97,7 +97,7 @@ int		beg_battle()
 	end = 1;
 	i = -1;
 	check = 0;
-	ft_printf("begin battle\n");
+	// ft_printf("begin battle\n");
 	while (end)
 	{
 		g_all.cycle++;
@@ -117,7 +117,9 @@ int		beg_battle()
 			}
 			check++;
 		}
+		if (g_all.flags[VISU])usleep(20 * 1000);
 	}
-	ft_printf("Contestant %d, \"%s\", has won !\n", g_all.champ[g_all.player_last_live].player_nb, g_all.champ[g_all.player_last_live].player_name);
+	if (!g_all.flags[VISU])ft_printf("Contestant %d, \"%s\", has won !\n", g_all.champ[g_all.player_last_live].player_nb, g_all.champ[g_all.player_last_live].player_name);
+	else while(1);
 	return (0);
 }

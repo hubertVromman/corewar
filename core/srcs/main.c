@@ -85,11 +85,11 @@ int		display_start()
 {
 	int		i;
 
-	if (g_all.flags[1])
+	if (g_all.flags[VISU])
 	{
 		signal(SIGINT, exit_ctrl_c);
+		ft_printf("\e[?25l\e[H\e[2J"); // clear & hide cursor
 		dump_memory_colored();
-		// while (1);
 	}
 	else
 	{
@@ -148,7 +148,7 @@ int		init_all(int ac, char **av)
 	int i;
 
 	i = -1;
-	ft_printf("t_a %d t_champ %d\n", sizeof(t_a), sizeof(t_champ));
+	// ft_printf("t_a %d t_champ %d\n", sizeof(t_a), sizeof(t_champ));
 	ft_bzero(&g_all, sizeof(g_all));
 	g_all.header_size = 16 + PROG_NAME_LENGTH + COMMENT_LENGTH;
 	g_all.cycle_to_die = CYCLE_TO_DIE;
