@@ -100,6 +100,7 @@ int		beg_battle()
 	// ft_printf("begin battle\n");
 	while (end)
 	{
+		if (g_all.flags[VISU] && g_all.visu.pause){usleep(20 * 1000);continue;}
 		g_all.cycle++;
 		read_proces();
 		g_all.ctd++;

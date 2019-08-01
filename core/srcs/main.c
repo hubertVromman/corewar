@@ -81,6 +81,25 @@ int		print_debug_info()
 	return (0);
 }
 
+void	*reader_func(void *rien)
+{
+	char			buf[2];
+	int				res;
+	struct termios	org_opts;
+	rien = NULL;
+
+
+	res = tcgetattr(0, &org_opts);
+	org_opts.c_lflag = ISIG & ~(ICANON);
+	tcsetattr(0, TCSANOW, &org_opts);
+	while (read(0, buf, 1))
+	{
+		if (buf[0] == ' ')
+			g_all.visu.pause = !g_all.visu.pause;
+	}
+	return (NULL);
+}
+
 int		display_start()
 {
 	int		i;
@@ -88,6 +107,9 @@ int		display_start()
 	if (g_all.flags[VISU])
 	{
 		signal(SIGINT, exit_ctrl_c);
+
+		pthread_create(&(g_all.visu.reader_thread), NULL, reader_func, NULL);
+		// while(1);
 		ft_printf("\e[?25l\e[H\e[2J"); // clear & hide cursor
 		dump_memory_colored();
 	}

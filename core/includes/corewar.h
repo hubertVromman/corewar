@@ -15,6 +15,9 @@
 
 # include "common.h"
 # include <signal.h>
+# include <pthread.h>
+# include <sys/ioctl.h>
+# include <termios.h>
 #include <stdio.h>
 
 enum	e_error_code { NOT_COR_FILE = 1, OPEN_FAIL, TOO_LARGE, READ_ERROR};
@@ -73,6 +76,12 @@ typedef struct	s_champ
 	size_t		file_size;
 }				t_champ;
 
+typedef struct	s_visu
+{
+	int			pause;
+	pthread_t	reader_thread;
+}				t_visu;
+
 typedef struct	s_a
 {
 	size_t		header_size;
@@ -90,6 +99,7 @@ typedef struct	s_a
 	int			player_last_live;
 	int			(*func[16]) (t_champ *champ, t_proces *proces, t_arg *args);
 	char		flags[sizeof(OP)];
+	t_visu		visu;
 	char		arena[MEM_SIZE];
 	char		color[MEM_SIZE];
 }				t_a;
