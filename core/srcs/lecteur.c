@@ -6,7 +6,7 @@
 /*   By: sofchami <sofchami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/18 19:57:39 by sofchami          #+#    #+#             */
-/*   Updated: 2019/07/31 01:35:52 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/01 21:35:13 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,56 @@ int		reset_proc()
 	return (total_lives_period);
 }
 
+int		print_vm_info()
+{
+	int i;
+	int k;
+	int n;
+	int x;
+	int lives;
+
+	i = -1;
+	lives = 0;
+	x = 250;
+	while (++i < g_all.nb_champ)
+		lives += g_all.champ[i].lives_period;
+	jump_to(x,0);
+	ft_printf("%1$/30c Info %1$/30c\n", '-');
+	i = 0;
+	while (++i < 4)
+	{
+		jump_to(x, i);
+		i == 1 ? ft_printf("Cycles = %.4d", g_all.cycle) : 0;
+		i == 2 ? ft_printf("Nbr de proces = %.4d", g_all.nb_proces_tot) : 0;
+		i == 3 ? ft_printf("Lives period = %.4d", lives) : 0;
+	}
+	i++;
+	n = -1;
+	while (++n < g_all.nb_champ)
+	{
+		k = -1;
+		while (++k < g_all.champ[n].nb_proces)
+		{
+			jump_to(x, i + k + (n ? g_all.champ[n - 1].nb_proces : 0));
+			ft_printf("player_nb %2d | proces_id %2d | pc %.4d | opcode %.2hhx | cycle_left %4.4d\n", g_all.champ[n].player_nb, k, g_all.champ[n].proces[k].pc, g_all.champ[n].proces[k].opcode, g_all.champ[n].proces[k].cycle_left);
+		}
+	}
+	if (g_all.max_proces <= g_all.nb_proces_tot)
+		g_all.max_proces = g_all.nb_proces_tot;
+	else
+	{
+		int tmp;
+		tmp = g_all.nb_proces_tot + i;
+		while (tmp < g_all.max_proces + i)
+		{
+			jump_to(x, tmp);
+			ft_printf("%1$/80c", ' ');
+			tmp++;
+		}
+	}
+	return (0);
+}
+
 int		read_proces()
 {
 	int i;
@@ -60,6 +110,7 @@ int		read_proces()
 	i = g_all.nb_champ;
 	while (i--)
 	{
+		print_vm_info();
 		k = g_all.champ[i].nb_proces;
 		while (k--)
 		{
@@ -72,7 +123,6 @@ int		read_proces()
 					if (arg && (g_all.champ[i].proces[k].opcode > 0 && g_all.champ[i].proces[k].opcode < 16 ) && g_all.func[g_all.champ[i].proces[k].opcode - 1](&g_all.champ[i], &g_all.champ[i].proces[k], arg) != 0)
 					{
 						increment_pc(&g_all.champ[i].proces[k], g_all.champ[i].proces[k].opcode == 0x09 ? 0 : arg[0].size + arg[1].size + arg[2].size + arg[3].size + g_op_tab[g_all.champ[i].proces[k].opcode - 1].codage + 1);
-						// dump_memory();
 					}
 					else
 					{
@@ -80,8 +130,13 @@ int		read_proces()
 					}
 					g_all.champ[i].proces[k].opcode = read_arena_op(g_all.champ[i].proces[k].pc);
 					g_all.champ[i].proces[k].cycle_left = get_cycle_left(g_all.champ[i].proces[k].opcode);
-					if (!g_all.flags[VISU])print_debug_info();
+					// if (!g_all.flags[VISU])print_debug_info();
 				}
+			}
+			else
+			{
+				g_all.champ[i].proces[k].opcode = read_arena_op(g_all.champ[i].proces[k].pc);
+				g_all.champ[i].proces[k].cycle_left = get_cycle_left(g_all.champ[i].proces[k].opcode);
 			}
 		}
 	}

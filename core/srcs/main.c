@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:28:49 by hvromman          #+#    #+#             */
-/*   Updated: 2019/07/29 19:24:44 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/01 21:38:20 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,6 @@ int		display_start()
 		signal(SIGINT, exit_ctrl_c);
 
 		pthread_create(&(g_all.visu.reader_thread), NULL, reader_func, NULL);
-		// while(1);
 		ft_printf("\e[?25l\e[H\e[2J"); // clear & hide cursor
 		dump_memory_colored();
 	}

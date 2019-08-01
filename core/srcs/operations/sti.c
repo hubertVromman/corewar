@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/18 13:51:14 by hvromman          #+#    #+#             */
-/*   Updated: 2019/07/29 19:18:47 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/01 21:36:09 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,6 @@ int		operation_sti(t_champ *champ, t_proces *proces, t_arg *args)
 		third_arg = proces->reg[args[2].value];
 	else
 		third_arg = args[2].value;
-	write_int(proces, calc_pc(proces->pc + (second_arg + third_arg) % IDX_MOD), proces->reg[args[0].value]);
+	write_int(proces, calc_pc(proces->pc + (second_arg + third_arg)), proces->reg[args[0].value]);
 	return (1);
 }

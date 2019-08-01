@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/17 16:16:25 by hvromman          #+#    #+#             */
-/*   Updated: 2019/07/30 23:22:49 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/01 20:21:19 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ int		create_proces(int pc, t_proces *parent, t_champ *champ)
 	proc = &(champ->proces[champ->nb_proces]);
 	proc->pc = pc;
 	proc->carry = 0;
+	proc->cycle_left = 0;
+	proc->opcode = 0;
 	proc->id_proces = g_all.id_proces;
 	if (parent)
 	{

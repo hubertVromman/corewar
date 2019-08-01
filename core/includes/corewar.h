@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:31:13 by hvromman          #+#    #+#             */
-/*   Updated: 2019/07/31 01:09:11 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/01 18:54:44 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ typedef struct	s_a
 	int			nb_errors;
 	int			id_proces;
 	int			nb_proces_tot;
+	int			max_proces;
 	int			cycle;
 	int			dump_period;
 	int			next_champ_nb;
