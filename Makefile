@@ -51,7 +51,7 @@ all: $(COR) $(ASM)
 
 $(COR): $(OP_OBJ) $(COR_OBJ) $(OBJ)
 	@make -C $(LIB)
-	@$(CC) $(CFLAGS) -o $@ $^ -L$(LIB) -lft #$(SANITIZE)
+	@$(CC) $(CFLAGS) -o $@ $^ -L$(LIB) -lft
 	@echo "$(GREEN)$@ compiled$(NC)"
 
 $(ASM): $(ASM_OBJ) $(OBJ)

@@ -22,7 +22,7 @@ int		operation_zjmp(t_champ *champ, t_proces *proces, t_arg *args)
 	}
 	else
 	{
-		increment_pc(proces, 4);
+		increment_pc(proces, 3);
 	}
 	return (1);
 }

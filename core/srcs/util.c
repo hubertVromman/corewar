@@ -55,6 +55,7 @@ int		create_proces(int pc, t_proces *parent, t_champ *champ)
 	if (!(champ->proces = realloc(champ->proces, sizeof(t_proces) * (champ->nb_proces + 1))))
 		return (-1);
 	proc = &(champ->proces[champ->nb_proces]);
+	ft_bzero(proc, sizeof(t_proces));
 	proc->pc = pc;
 	proc->carry = 0;
 	proc->cycle_left = 0;
@@ -72,15 +73,16 @@ int		create_proces(int pc, t_proces *parent, t_champ *champ)
 	champ->nb_proces++;
 	g_all.nb_proces_tot++;
 	g_all.id_proces++;
+	increment_pc(proc, 0);
 	return(0);
 }
 
 int		dump_memory()
 {
 	int		i;
+	char *buffer;
 
 	char *s = malloc(MEM_SIZE * 3);
-	char *buffer;
 	i = -1;
 	while (++i < MEM_SIZE)
 	{
@@ -118,7 +120,7 @@ int		dump_memory_colored() // protection et utile que debut de game
 		c = -1;
 		while (++c < g_all.nb_champ)
 		{
-			if (i == g_all.champ[c].proces->pc + g_all.champ[c].exec_size)
+			if (i == g_all.champ[c].proces->pc + g_all.champ[c].exec_size - 1)
 			{
 				memcpy(s + (i + 1) * 3 + j, "\x1b[0m", 4);
 				j += 4;

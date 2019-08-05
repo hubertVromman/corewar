@@ -107,10 +107,11 @@ int		display_start()
 	if (g_all.flags[VISU])
 	{
 		signal(SIGINT, exit_ctrl_c);
-
 		pthread_create(&(g_all.visu.reader_thread), NULL, reader_func, NULL);
 		ft_printf("\e[?25l\e[H\e[2J"); // clear & hide cursor
 		dump_memory_colored();
+		for (int j = 0; j < g_all.nb_champ; j++)
+			increment_pc(g_all.champ[j].proces, 0);
 	}
 	else
 	{
@@ -190,6 +191,7 @@ int		init_all(int ac, char **av)
 		g_all.champ[i].proces[0].cycle_left = get_cycle_left(g_all.champ[i].proces->opcode);
 	}
 	init_func_pointer();
+	g_all.visu.pause = 1;
 	return (0);
 }
 

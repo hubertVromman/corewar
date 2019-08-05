@@ -26,6 +26,8 @@ int		operation_sti(t_champ *champ, t_proces *proces, t_arg *args)
 		third_arg = proces->reg[args[2].value];
 	else
 		third_arg = args[2].value;
+	jump_to(0, 65);
+	ft_printf("second_arg %.8x, third_arg %.8x", second_arg, third_arg);
 	write_int(proces, calc_pc(proces->pc + (second_arg + third_arg)), proces->reg[args[0].value]);
 	return (1);
 }
