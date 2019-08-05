@@ -14,9 +14,8 @@
 
 int		read_arena_op(int pc)
 {
-	int opcode;
+	int		opcode;
 
-	opcode = 0;
 	opcode = g_all.arena[pc];
 	if (opcode < 1 || opcode > 16)
 		return (0);
@@ -110,7 +109,7 @@ int		read_proces()
 	i = g_all.nb_champ;
 	while (i--)
 	{
-		print_vm_info();
+		if (g_all.flags[VISU])print_vm_info();
 		k = g_all.champ[i].nb_proces;
 		while (k--)
 		{
@@ -130,16 +129,16 @@ int		read_proces()
 					}
 					g_all.champ[i].proces[k].opcode = read_arena_op(g_all.champ[i].proces[k].pc);
 					g_all.champ[i].proces[k].cycle_left = get_cycle_left(g_all.champ[i].proces[k].opcode);
-					// if (!g_all.flags[VISU])print_debug_info();
 				}
 			}
-			else
+			else // utilité de ce else ? normalement il devrait pas rentrer dedans...
 			{
 				g_all.champ[i].proces[k].opcode = read_arena_op(g_all.champ[i].proces[k].pc);
 				g_all.champ[i].proces[k].cycle_left = get_cycle_left(g_all.champ[i].proces[k].opcode);
 			}
 		}
 	}
+	if (!g_all.flags[VISU]) print_debug_info();
 	return (0);
 }
 

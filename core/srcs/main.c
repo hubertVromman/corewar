@@ -72,7 +72,7 @@ int		print_debug_info()
 		ft_printf("%d\n", g_all.champ[i].nb_proces);
 		while (++j < g_all.champ[i].nb_proces)
 		{
-			ft_printf("player_nb %2d | proces_id %2d | pc %4d | opcode " CHAR_HEX_PRINT " | cycle_left %4d\n", g_all.champ[i].player_nb, j, g_all.champ[i].proces[0].pc, g_all.champ[i].proces[0].opcode, g_all.champ[i].proces[0].cycle_left);
+			ft_printf("player_nb %2d | proces_id %2d | pc %4d | opcode " CHAR_HEX_PRINT " | cycle_left %4d\n", g_all.champ[i].player_nb, j, g_all.champ[i].proces[j].pc, g_all.champ[i].proces[j].opcode, g_all.champ[i].proces[j].cycle_left);
 		}
 		if (i != g_all.nb_champ - 1)
 			ft_printf("%/*c\n", 67, '-');

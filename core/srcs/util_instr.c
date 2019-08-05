@@ -29,8 +29,8 @@ int		increment_pc(t_proces *proces, int nb_byte)
 	{
 		jump_to_mem(proces->pc);
 		ft_printf(COLOR_PRINT COLOR_PRINT CHAR_HEX_PRINT, 10 + proces->champ->color_id, 30, g_all.arena[proces->pc]);
+		ft_printf(RESET_COLOR);
 	}
-	ft_printf(RESET_COLOR);
 	return (proces->pc);
 }
 

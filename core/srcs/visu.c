@@ -33,7 +33,6 @@ int		jump_to_mem(int pc)
 void	exit_ctrl_c(int c)
 {
 	c = 0;
-	ft_printf("\e[H\e[2J");
-	// ft_printf("%d\n", c);
+	ft_printf(CLEAR_SCREEN);
 	exit_func(0, 0);
 }

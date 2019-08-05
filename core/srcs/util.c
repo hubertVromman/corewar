@@ -14,8 +14,12 @@
 
 int		get_cycle_left(int opcode)
 {
+	ft_printf("=== opcode %d\n", opcode);
 	if (opcode < 1 || opcode > 16)
+	{
+		ft_printf("ici\n");
 		return (1);
+	}
 	else
 		return (g_op_tab[opcode - 1].cycle_op);
 }
@@ -46,7 +50,7 @@ int		detele_proces(t_champ *champ, int id_proces)
 		jump_to_mem(champ->proces[id_proces].pc);
 		ft_printf(CHAR_HEX_PRINT, g_all.arena[champ->proces[id_proces].pc]);
 	}
-	ft_memcpy(&(champ->proces[id_proces]), &(champ[champ->nb_proces - 1]), sizeof(t_proces));
+	ft_memcpy(&(champ->proces[id_proces]), &(champ->proces[champ->nb_proces - 1]), sizeof(t_proces));
 	champ->nb_proces--;
 	g_all.nb_proces_tot--;
 	sort_proces(champ);
