@@ -21,23 +21,21 @@ int		usage(void)
 {
 	ft_printf("usage: corewar [-%s] [-dump dump_period] [[-n player_nb] file.cor] ...\n%>", OP, 2);
 	ft_printf("    -f    : Start game even if one file error\n%>", 2);
-	ft_printf("    -v    : Start game in nCurses\n%>", 2);
+	ft_printf("    -v    : Start game in nCurses, disable -dump\n%>", 2);
 	ft_printf("    -n    : Set the next player's number"
 	" (default next available)\n%>", 2);
 	ft_printf("    -dump : Dump memory in hexadecimal every dump_period\n%>", 2);
-	// 	"(also works with .extend command)\n%>", 2);
-	// ft_printf("             0b : binary\n%>", 2);
-	// ft_printf("             0  : octal\n%>", 2);
-	// ft_printf("             0x : hexadecimal\n%>", 2);
-	// ft_printf("      -o  : Unable to perform operations in parameters\n%>", 2);
 	return (0);
 }
 
 int		exit_func(int exit_code, int dp_usage)
 {
-	ft_printf("\e[0m");
-	ft_printf("exit\n");
-	ft_printf("\e[?25h"); //unhide cursor
+	if (g_all.flags[VISU])
+	{
+		ft_printf(RESET_COLOR);
+		ft_printf("exit\n");
+		ft_printf(UNHIDE_CURSOR); //unhide cursor
+	}
 	if (dp_usage)
 		usage();
 	if (exit_code == -2)

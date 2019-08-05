@@ -22,15 +22,15 @@ int		increment_pc(t_proces *proces, int nb_byte)
 	if (g_all.flags[VISU])
 	{
 		jump_to_mem(proces->pc);
-		ft_printf("\e[%dm%.2hhx", g_all.color[proces->pc], g_all.arena[proces->pc]);
+		ft_printf(COLOR_PRINT CHAR_HEX_PRINT, g_all.color[proces->pc], g_all.arena[proces->pc]);
 	}
 	proces->pc = calc_pc(proces->pc + nb_byte);
 	if (g_all.flags[VISU])
 	{
 		jump_to_mem(proces->pc);
-		ft_printf("\e[%dm\e[%dm%.2hhx", 10 + proces->champ->color_id, 30, g_all.arena[proces->pc]);
+		ft_printf(COLOR_PRINT COLOR_PRINT CHAR_HEX_PRINT, 10 + proces->champ->color_id, 30, g_all.arena[proces->pc]);
 	}
-	ft_printf("\e[0m");
+	ft_printf(RESET_COLOR);
 	return (proces->pc);
 }
 
@@ -42,7 +42,7 @@ int		write_byte(t_proces *proces, int address, char to_write)
 	{
 		g_all.color[address] = proces->champ->color_id;
 		jump_to_mem(address);
-		ft_printf("\e[%dm%.2hhx", proces->champ->color_id, g_all.arena[address]);
+		ft_printf(COLOR_PRINT CHAR_HEX_PRINT, proces->champ->color_id, g_all.arena[address]);
 	}
 	proces = NULL;
 	return (0);
@@ -124,7 +124,7 @@ t_arg	*get_arguments(t_proces *proces)
 				return (NULL);
 			to_return[i].type = T_IND;
 			to_return[i].size = 2;
-			to_return[i].value = get_ind(&tmp_pc, opcode != 13 && opcode != 14, opcode == 3, opcode == 11);
+			to_return[i].value = get_ind(&tmp_pc, opcode != LLD_OP && opcode != LLDI_OP, opcode == ST_OP, opcode == STI_OP);
 
 		}
 		else if (codage & 1 << (7 - 2 * i)) // 10 -> DIR

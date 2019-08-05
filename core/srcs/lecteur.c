@@ -82,7 +82,7 @@ int		print_vm_info()
 		while (++k < g_all.champ[n].nb_proces)
 		{
 			jump_to(x, i + k + (n ? g_all.champ[n - 1].nb_proces : 0));
-			ft_printf("player_nb %2d | proces_id %2d | pc %4d | opcode %.2hhx | cycle_left %4d\n", g_all.champ[n].player_nb, k, g_all.champ[n].proces[k].pc, g_all.champ[n].proces[k].opcode, g_all.champ[n].proces[k].cycle_left);
+			ft_printf("player_nb %2d | proces_id %2d | pc %4d | opcode " CHAR_HEX_PRINT " | cycle_left %4d\n", g_all.champ[n].player_nb, k, g_all.champ[n].proces[k].pc, g_all.champ[n].proces[k].opcode, g_all.champ[n].proces[k].cycle_left);
 		}
 	}
 	if (g_all.max_proces <= g_all.nb_proces_tot)
@@ -122,7 +122,7 @@ int		read_proces()
 					arg = get_arguments(&g_all.champ[i].proces[k]);
 					if (arg && (g_all.champ[i].proces[k].opcode > 0 && g_all.champ[i].proces[k].opcode < 16 ) && g_all.func[g_all.champ[i].proces[k].opcode - 1](&g_all.champ[i], &g_all.champ[i].proces[k], arg) != 0)
 					{
-						increment_pc(&g_all.champ[i].proces[k], g_all.champ[i].proces[k].opcode == 0x09 ? 0 : arg[0].size + arg[1].size + arg[2].size + arg[3].size + g_op_tab[g_all.champ[i].proces[k].opcode - 1].codage + 1);
+						increment_pc(&g_all.champ[i].proces[k], g_all.champ[i].proces[k].opcode == ZJMP_OP ? 0 : arg[0].size + arg[1].size + arg[2].size + arg[3].size + g_op_tab[g_all.champ[i].proces[k].opcode - 1].codage + 1);
 					}
 					else
 					{
@@ -143,6 +143,45 @@ int		read_proces()
 	return (0);
 }
 
+int		update_cps()
+{
+	jump_to(0, 66);
+	ft_printf("Cycles/second limit : %4d", g_all.visu.max_cps);
+	return (0);
+}
+
+int		do_visu_stuff()
+{
+	int		i;
+	int		sleep_time;
+	int		current_cps;
+
+	current_cps = g_all.visu.max_cps;
+	update_cps();
+	i = 0;
+	sleep_time = 1000 / g_all.visu.max_cps;
+	while (i < sleep_time)
+	{
+		i += 10;
+		usleep(10 * 1000);
+		if (current_cps != g_all.visu.max_cps)
+		{
+			update_cps();
+			current_cps = g_all.visu.max_cps;
+			i = 0;
+		}
+	}
+	if (g_all.visu.pause)
+	{
+		return (1);
+	}
+	else
+	{
+		g_all.visu.skipped_frames = 0;
+		return (0);
+	}
+}
+
 int		beg_battle()
 {
 	int end;
@@ -155,7 +194,8 @@ int		beg_battle()
 	// ft_printf("begin battle\n");
 	while (end)
 	{
-		if (g_all.flags[VISU] && g_all.visu.pause){usleep(20 * 1000);continue;}
+		if (g_all.flags[VISU] && do_visu_stuff())
+			continue;
 		g_all.cycle++;
 		read_proces();
 		g_all.ctd++;
@@ -173,7 +213,6 @@ int		beg_battle()
 			}
 			check++;
 		}
-		if (g_all.flags[VISU])usleep(20 * 1000);
 	}
 	if (!g_all.flags[VISU])ft_printf("Contestant %d, \"%s\", has won !\n", g_all.champ[g_all.player_last_live].player_nb, g_all.champ[g_all.player_last_live].player_name);
 	else while(1);

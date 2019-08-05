@@ -72,7 +72,7 @@ int		print_debug_info()
 		ft_printf("%d\n", g_all.champ[i].nb_proces);
 		while (++j < g_all.champ[i].nb_proces)
 		{
-			ft_printf("player_nb %2d | proces_id %2d | pc %4d | opcode %.2hhx | cycle_left %4d\n", g_all.champ[i].player_nb, j, g_all.champ[i].proces[0].pc, g_all.champ[i].proces[0].opcode, g_all.champ[i].proces[0].cycle_left);
+			ft_printf("player_nb %2d | proces_id %2d | pc %4d | opcode " CHAR_HEX_PRINT " | cycle_left %4d\n", g_all.champ[i].player_nb, j, g_all.champ[i].proces[0].pc, g_all.champ[i].proces[0].opcode, g_all.champ[i].proces[0].cycle_left);
 		}
 		if (i != g_all.nb_champ - 1)
 			ft_printf("%/*c\n", 67, '-');
@@ -96,6 +96,19 @@ void	*reader_func(void *rien)
 	{
 		if (buf[0] == ' ')
 			g_all.visu.pause = !g_all.visu.pause;
+		else if (buf[0] == 'q')
+			g_all.visu.max_cps -= 10;
+		else if (buf[0] == 'w')
+			g_all.visu.max_cps--;
+		else if (buf[0] == 'e')
+			g_all.visu.max_cps++;
+		else if (buf[0] == 'r')
+			g_all.visu.max_cps += 10;
+		if (g_all.visu.max_cps <= 0)
+			g_all.visu.max_cps = 1;
+		if (g_all.visu.max_cps > 1000)
+			g_all.visu.max_cps = 1000;
+		g_all.visu.nb_frames_to_skip = g_all.visu.max_cps / 100;
 	}
 	return (NULL);
 }
@@ -108,7 +121,7 @@ int		display_start()
 	{
 		signal(SIGINT, exit_ctrl_c);
 		pthread_create(&(g_all.visu.reader_thread), NULL, reader_func, NULL);
-		ft_printf("\e[?25l\e[H\e[2J"); // clear & hide cursor
+		ft_printf(HIDE_CURSOR CLEAR_SCREEN);
 		dump_memory_colored();
 		for (int j = 0; j < g_all.nb_champ; j++)
 			increment_pc(g_all.champ[j].proces, 0);
@@ -165,6 +178,13 @@ int		sort_champs()
 	return (0);
 }
 
+int		init_visu()
+{
+	g_all.visu.pause = 1;
+	g_all.visu.max_cps = 50;
+	return (0);
+}
+
 int		init_all(int ac, char **av)
 {
 	int i;
@@ -191,7 +211,7 @@ int		init_all(int ac, char **av)
 		g_all.champ[i].proces[0].cycle_left = get_cycle_left(g_all.champ[i].proces->opcode);
 	}
 	init_func_pointer();
-	g_all.visu.pause = 1;
+	init_visu();
 	return (0);
 }
 

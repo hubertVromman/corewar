@@ -18,23 +18,31 @@
 # include <pthread.h>
 # include <sys/ioctl.h>
 # include <termios.h>
-#include <stdio.h>
 
 enum	e_error_code { NOT_COR_FILE = 1, OPEN_FAIL, TOO_LARGE, READ_ERROR};
 
 enum	e_flag_nb {FORCE_LAUNCH, VISU};
 
+enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP, ZJMP_OP, LDI_OP, STI_OP, FORK_OP, LLD_OP, LLDI_OP, LFORK_OP, AFF_OP };
+
+# define RESET_COLOR "\e[0m"
+# define HIDE_CURSOR "\e[?25l"
+# define UNHIDE_CURSOR "\e[?25h"
+# define CLEAR_SCREEN "\e[H\e[2J"
+# define COLOR_PRINT "\e[%dm"
+# define CHAR_HEX_PRINT "%.2hhx"
+
 # define MERROR -2
 
 # define OP "fv"
 
-# define NC "\x1b[0m"
-# define RED "\x1b[31m"
-# define GREEN "\x1b[32m"
-# define YELLOW "\x1b[33m"
-# define BLUE "\x1b[34m"
-# define MAGENTA "\x1b[35m"
-# define CYAN "\x1b[36m"
+# define NC "\e[0m"
+# define RED "\e[31m"
+# define GREEN "\e[32m"
+# define YELLOW "\e[33m"
+# define BLUE "\e[34m"
+# define MAGENTA "\e[35m"
+# define CYAN "\e[36m"
 
 typedef struct	s_arg
 {
@@ -79,6 +87,9 @@ typedef struct	s_champ
 typedef struct	s_visu
 {
 	int			pause;
+	int			max_cps;
+	int			nb_frames_to_skip;
+	int			skipped_frames;
 	pthread_t	reader_thread;
 }				t_visu;
 

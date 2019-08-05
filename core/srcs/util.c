@@ -41,6 +41,11 @@ int		sort_proces(t_champ *champ)
 
 int		detele_proces(t_champ *champ, int id_proces)
 {
+	if (g_all.flags[VISU])
+	{
+		jump_to_mem(champ->proces[id_proces].pc);
+		ft_printf(CHAR_HEX_PRINT, g_all.arena[champ->proces[id_proces].pc]);
+	}
 	ft_memcpy(&(champ->proces[id_proces]), &(champ[champ->nb_proces - 1]), sizeof(t_proces));
 	champ->nb_proces--;
 	g_all.nb_proces_tot--;
@@ -86,7 +91,7 @@ int		dump_memory()
 	i = -1;
 	while (++i < MEM_SIZE)
 	{
-		ft_printf("%.2hhx%c%#>", g_all.arena[i], (i + 1) % 64 ? ' ' : '\n', &buffer);
+		ft_printf(CHAR_HEX_PRINT "%c%#>", g_all.arena[i], (i + 1) % 64 ? ' ' : '\n', &buffer);
 		memcpy(s + i * 3, buffer, 3);
 	}
 	write(1, s, MEM_SIZE * 3);
@@ -110,19 +115,19 @@ int		dump_memory_colored() // protection et utile que debut de game
 		{
 			if (i == g_all.champ[c].proces->pc)
 			{
-				ft_printf("\e[%dm%#>", g_all.champ[c].color_id, &buffer);
+				ft_printf(COLOR_PRINT "%#>", g_all.champ[c].color_id, &buffer);
 				memcpy(s + i * 3 + j, buffer, 5);
 				j += 5;
 			}
 		}
-		ft_printf("%.2hhx%c%#>", g_all.arena[i], (i + 1) % 64 ? ' ' : '\n', &buffer);
+		ft_printf(CHAR_HEX_PRINT "%c%#>", g_all.arena[i], (i + 1) % 64 ? ' ' : '\n', &buffer);
 		memcpy(s + i * 3 + j, buffer, 3);
 		c = -1;
 		while (++c < g_all.nb_champ)
 		{
 			if (i == g_all.champ[c].proces->pc + g_all.champ[c].exec_size - 1)
 			{
-				memcpy(s + (i + 1) * 3 + j, "\x1b[0m", 4);
+				memcpy(s + (i + 1) * 3 + j, NC, 4);
 				j += 4;
 			}
 		}
