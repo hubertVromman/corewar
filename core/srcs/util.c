@@ -83,18 +83,16 @@ int		create_proces(int pc, t_proces *parent, t_champ *champ)
 	proc->opcode = 0;
 	proc->id_proces = g_all.id_proces;
 	if (parent)
-	{
 		ft_memcpy(proc->reg, parent->reg, REG_NUMBER * 4);
-	}
 	else
-	{
 		proc->reg[0] = champ->player_nb;
-	}
+	if (champ->nb_proces)
+		increment_pc(proc, 0);
 	proc->champ = champ;
 	champ->nb_proces++;
 	g_all.nb_proces_tot++;
 	g_all.id_proces++;
-	increment_pc(proc, 0);
+
 	g_all.cycle ? play_sound(1) :0;
 	return(0);
 }
@@ -121,7 +119,8 @@ int		dump_memory_colored() // protection et utile que debut de game
 	int		j;
 	int		c;
 
-	char *s = malloc(MEM_SIZE * 3 + g_all.nb_champ * 9);
+	ft_printf("<b>");
+	char *s = malloc(MEM_SIZE * 3 + g_all.nb_champ * (19 + 19) + 4);
 	char *buffer;
 	i = -1;
 	j = 0;
@@ -132,9 +131,9 @@ int		dump_memory_colored() // protection et utile que debut de game
 		{
 			if (i == g_all.champ[c].proces->pc)
 			{
-				ft_printf(COLOR_PRINT "%#>", g_all.champ[c].color_id, &buffer);
-				memcpy(s + i * 3 + j, buffer, 5);
-				j += 5;
+				ft_printf(RGB_PRINT "%#>", (g_all.champ[c].color_rgb >> 16) & 0xff, (g_all.champ[c].color_rgb >> 8) & 0xff, (g_all.champ[c].color_rgb >> 0) & 0xff, &buffer);
+				memcpy(s + i * 3 + j, buffer, 19);
+				j += 19;
 			}
 		}
 		ft_printf(CHAR_HEX_PRINT "%c%#>", g_all.arena[i], (i + 1) % 64 ? ' ' : '\n', &buffer);
@@ -144,11 +143,12 @@ int		dump_memory_colored() // protection et utile que debut de game
 		{
 			if (i == g_all.champ[c].proces->pc + g_all.champ[c].exec_size - 1)
 			{
-				memcpy(s + (i + 1) * 3 + j, NC, 4);
-				j += 4;
+				ft_printf(RGB_PRINT "%#>", 0x80, 0x80, 0x80, &buffer);
+				memcpy(s + (i + 1) * 3 + j, buffer, 19);
+				j += 19;
 			}
 		}
 	}
-	write(1, s, MEM_SIZE * 3 + g_all.nb_champ * 9);
+	write(1, s, MEM_SIZE * 3 + g_all.nb_champ * (19 + 19));
 	return (0);
 }

@@ -31,8 +31,15 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP
 # define CLEAR_SCREEN "\e[H\e[2J"
 # define COLOR_PRINT "\e[%dm"
 # define CHAR_HEX_PRINT "%.2hhx"
+# define RGB_PRINT "\e[38;2;%.3d;%.3d;%.3dm"
+# define RGB_PRINT_BG "\e[48;2;%.3d;%.3d;%.3dm"
 
 # define MERROR -2
+
+# define P1_COLOR 0x00008080
+# define P2_COLOR 0x00800080
+# define P3_COLOR 0x00800000
+# define P4_COLOR 0x00000080
 
 # define OP "fv"
 
@@ -62,6 +69,7 @@ typedef struct	s_proces
 	int			opcode;
 	int 		arguments[4];
 	int			lives_period;
+	int			color_rgb;
 	int			reg[REG_NUMBER];
 	t_champ		*champ;
 }				t_proces;
@@ -75,6 +83,7 @@ typedef struct	s_champ
 	int			last_live;
 	int			player_nb;
 	int			color_id;
+	int			color_rgb;
 	t_proces	*proces;
 	char		*file_name;
 	char		*file;
@@ -113,7 +122,7 @@ typedef struct	s_a
 	char		flags[sizeof(OP)];
 	t_visu		visu;
 	char		arena[MEM_SIZE];
-	char		color[MEM_SIZE];
+	int			color[MEM_SIZE];
 }				t_a;
 
 t_a				g_all;

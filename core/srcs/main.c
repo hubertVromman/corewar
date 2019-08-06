@@ -185,12 +185,13 @@ int		init_visu()
 	return (0);
 }
 
+#include <fcntl.h>
+
 int		init_all(int ac, char **av)
 {
 	int i;
 
 	i = -1;
-	// ft_printf("t_a %d t_champ %d\n", sizeof(t_a), sizeof(t_champ));
 	ft_bzero(&g_all, sizeof(g_all));
 	g_all.header_size = 16 + PROG_NAME_LENGTH + COMMENT_LENGTH;
 	g_all.cycle_to_die = CYCLE_TO_DIE;
@@ -199,13 +200,23 @@ int		init_all(int ac, char **av)
 		exit_func(-1, 1);
 	g_all.pos_depart = MEM_SIZE / g_all.nb_champ;
 	sort_champs();
+	ft_memset(g_all.color, 0x80, sizeof(g_all.color));
 	while (++i < g_all.nb_champ)
 	{
 		g_all.champ[i].color_id = 31 + i % 6;
+		if (i == 0)
+			g_all.champ[i].color_rgb = P1_COLOR;
+		else if (i == 1)
+			g_all.champ[i].color_rgb = P2_COLOR;
+		else if (i == 2)
+			g_all.champ[i].color_rgb = P3_COLOR;
+		else if (i == 3)
+			g_all.champ[i].color_rgb = P4_COLOR;
 		g_all.champ[i].player_nb = 0 - g_all.champ[i].player_nb;
 		ft_memcpy(g_all.arena + (g_all.pos_depart * i),
 			g_all.champ[i].exec_file, g_all.champ[i].exec_size);
-		ft_memset(g_all.color + (g_all.pos_depart * i), g_all.champ[i].color_id, g_all.champ[i].exec_size);
+		for (int j = 0; j < g_all.champ[i].exec_size; j++)
+			g_all.color[(g_all.pos_depart * i) + j] = g_all.champ[i].color_rgb;
 		create_proces(g_all.pos_depart * i, NULL, &(g_all.champ[i])); //gestion d'erreur
 		g_all.champ[i].proces[0].opcode = g_all.arena[g_all.champ[i].proces->pc];
 		g_all.champ[i].proces[0].cycle_left = get_cycle_left(g_all.champ[i].proces->opcode);
@@ -217,7 +228,8 @@ int		init_all(int ac, char **av)
 
 int		main(int ac, char **av)
 {
-	ft_printf("%d   %d\n", sizeof(g_op_tab), sizeof(g_op_tab)/sizeof(*g_op_tab) - 1);
+	int fd = open ("./f", O_RDWR | O_CREAT);
+	ft_printf("hello%>", fd);
 	init_all(ac, av);
 	display_start();
 	beg_battle();
