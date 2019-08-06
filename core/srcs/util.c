@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/17 16:16:25 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/06 17:31:46 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/06 18:01:04 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ int		sort_proces(t_champ *champ)
 
 int		play_sound(int i)
 {
-	system("pkill afplay");
+	system("pkill afplay &");
 	if (i == 1)
-	system("afplay sound/Ta_da.mp3");
+	system("afplay sound/Ta_da.mp3 &");
 	if (i == 2)
 	system("afplay sound/power_off.mp3");
 	return (0);
@@ -64,7 +64,7 @@ int		detele_proces(t_champ *champ, int id_proces)
 	champ->nb_proces--;
 	g_all.nb_proces_tot--;
 	sort_proces(champ);
-	// play_sound(2);
+	play_sound(2);
 	return (0);
 }
 
@@ -78,6 +78,7 @@ int		create_proces(int pc, t_proces *parent, t_champ *champ)
 	ft_bzero(proc, sizeof(t_proces));
 	proc->pc = pc;
 	proc->carry = 0;
+
 	proc->cycle_left = 0;
 	proc->opcode = 0;
 	proc->id_proces = g_all.id_proces;
@@ -94,7 +95,7 @@ int		create_proces(int pc, t_proces *parent, t_champ *champ)
 	g_all.nb_proces_tot++;
 	g_all.id_proces++;
 	increment_pc(proc, 0);
-	// g_all.cycle ? play_sound(1) :0;
+	g_all.cycle ? play_sound(1) :0;
 	return(0);
 }
 

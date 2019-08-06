@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/16 15:51:38 by hvromman          #+#    #+#             */
-/*   Updated: 2019/07/23 15:07:54 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/06 18:24:37 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ char	get_codage(int opcode)
 
 	codage = 0;
 	i = -1;
+	if (!opcode)
+		return (0);
 	while (++i < g_op_tab[opcode - 1].nb_params)
 	{
 		if (g_op_tab[opcode - 1].param[i] & (T_IND | T_DIR))
@@ -114,6 +116,8 @@ t_arg	*get_arguments(t_proces *proces)
 
 	tmp_pc = proces->pc;
 	opcode = g_all.arena[tmp_pc++];
+	if (opcode < 1 || opcode > 16)
+		return (NULL);
 	codage = g_op_tab[opcode - 1].codage ? g_all.arena[calc_pc(tmp_pc++)] : get_codage(opcode);
 	i = -1;
 	while (++i < MAX_ARGS_NUMBER)
