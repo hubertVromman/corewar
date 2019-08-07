@@ -33,6 +33,8 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP
 # define CHAR_HEX_PRINT "%.2hhx"
 # define RGB_PRINT "\e[38;2;%.3d;%.3d;%.3dm"
 # define RGB_PRINT_BG "\e[48;2;%.3d;%.3d;%.3dm"
+# define SAVE_SCREEN "\e[?1049h"
+# define RESTORE_SCREEN "\e[?1049l"
 
 # define MERROR -2
 
@@ -40,6 +42,8 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP
 # define P2_COLOR 0x00800080
 # define P3_COLOR 0x00800000
 # define P4_COLOR 0x00000080
+
+# define COLOR_INCREMENT 0x00010101
 
 # define OP "fv"
 
@@ -60,7 +64,7 @@ typedef struct	s_arg
 	int		type;
 }				t_arg;
 
-typedef struct	s_champ t_champ;
+typedef struct	s_champ	t_champ;
 
 typedef struct	s_proces
 {
@@ -98,6 +102,7 @@ typedef struct	s_champ
 typedef struct	s_visu
 {
 	int			pause;
+	int			mouse;
 	int			max_cps;
 	int			nb_frames_to_skip;
 	int			skipped_frames;
@@ -207,9 +212,9 @@ int				jump_to_mem(int pc);
 /*
 ** print_info.c
 */
-int		print_proces_info(int i);
-int		print_player_info(int i);
-int		print_init_info(int i);
-int		print_vm_info();
+int				print_proces_info(int i);
+int				print_player_info(int i);
+int				print_init_info(int i);
+int				print_vm_info();
 
 #endif

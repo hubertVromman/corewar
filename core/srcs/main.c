@@ -104,11 +104,29 @@ void	*reader_func(void *rien)
 			g_all.visu.max_cps++;
 		else if (buf[0] == 'r')
 			g_all.visu.max_cps += 10;
+		else if (buf[0] == '\e')
+		{
+			read(0, buf, 1);
+			if (buf[0] == '[')
+			{
+				read(0, buf, 1);
+				if (buf[0] == 'A')
+				{
+					g_all.visu.max_cps += 3;
+					g_all.visu.mouse++;
+				}
+				else if (buf[0] == 'B')
+				{
+					g_all.visu.max_cps -= 3;
+					g_all.visu.mouse--;
+				}
+			}
+		}
 		if (g_all.visu.max_cps <= 0)
 			g_all.visu.max_cps = 1;
 		if (g_all.visu.max_cps > 1000)
 			g_all.visu.max_cps = 1000;
-		g_all.visu.nb_frames_to_skip = g_all.visu.max_cps / 100;
+		// g_all.visu.nb_frames_to_skip = g_all.visu.max_cps / 100;
 	}
 	return (NULL);
 }
@@ -121,10 +139,11 @@ int		display_start()
 	{
 		signal(SIGINT, exit_ctrl_c);
 		pthread_create(&(g_all.visu.reader_thread), NULL, reader_func, NULL);
-		ft_printf(HIDE_CURSOR CLEAR_SCREEN);
+		ft_printf(HIDE_CURSOR SAVE_SCREEN "\e[H");
 		dump_memory_colored();
 		for (int j = 0; j < g_all.nb_champ; j++)
 			increment_pc(g_all.champ[j].proces, 0);
+		print_vm_info();
 	}
 	else
 	{

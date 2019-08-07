@@ -28,7 +28,7 @@ int		increment_pc(t_proces *proces, int nb_byte)
 	if (g_all.flags[VISU])
 	{
 		jump_to_mem(proces->pc);
-		ft_printf(RGB_PRINT_BG COLOR_PRINT CHAR_HEX_PRINT, (proces->champ->color_rgb >> 16) & 0xff, (proces->champ->color_rgb >> 8) & 0xff, (proces->champ->color_rgb >> 0) & 0xff, 30, g_all.arena[proces->pc]);
+		ft_printf(RGB_PRINT_BG COLOR_PRINT CHAR_HEX_PRINT, (proces->color_rgb >> 16) & 0xff, (proces->color_rgb >> 8) & 0xff, (proces->color_rgb >> 0) & 0xff, 30, g_all.arena[proces->pc]);
 		ft_printf(RESET_COLOR);
 	}
 	return (proces->pc);
@@ -40,9 +40,9 @@ int		write_byte(t_proces *proces, int address, char to_write)
 	g_all.arena[address] = to_write;
 	if (g_all.flags[VISU])
 	{
-		g_all.color[address] = proces->champ->color_rgb;
+		g_all.color[address] = proces->color_rgb;
 		jump_to_mem(address);
-		ft_printf(RGB_PRINT CHAR_HEX_PRINT, (proces->champ->color_rgb >> 16) & 0xff, (proces->champ->color_rgb >> 8) & 0xff, (proces->champ->color_rgb >> 0) & 0xff, g_all.arena[address]);
+		ft_printf(RGB_PRINT CHAR_HEX_PRINT, (proces->color_rgb >> 16) & 0xff, (proces->color_rgb >> 8) & 0xff, (proces->color_rgb >> 0) & 0xff, g_all.arena[address]);
 	}
 	proces = NULL;
 	return (0);

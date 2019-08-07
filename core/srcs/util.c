@@ -14,10 +14,8 @@
 
 int		get_cycle_left(int opcode)
 {
-	// ft_printf("=== opcode %d\n", opcode);
 	if (opcode < 1 || opcode > 16)
 	{
-		// ft_printf("ici\n");
 		return (1);
 	}
 	else
@@ -77,17 +75,18 @@ int		create_proces(int pc, t_proces *parent, t_champ *champ)
 	proc = &(champ->proces[champ->nb_proces]);
 	ft_bzero(proc, sizeof(t_proces));
 	proc->pc = pc;
+	proc->opcode = read_arena_op(proc->pc);
+	proc->cycle_left = get_cycle_left(proc->opcode);
 	proc->carry = 0;
-	proc->cycle_left = 0;
-	proc->opcode = 0;
 	proc->id_proces = g_all.id_proces;
 	if (parent)
 		ft_memcpy(proc->reg, parent->reg, REG_NUMBER * 4);
 	else
 		proc->reg[0] = champ->player_nb;
-		proc->champ = champ;
+	proc->champ = champ;
 	if (champ->nb_proces)
 		increment_pc(proc, 0);
+	proc->color_rgb = proc->champ->color_rgb + champ->nb_proces * COLOR_INCREMENT * 5;
 	champ->nb_proces++;
 	g_all.nb_proces_tot++;
 	g_all.id_proces++;
@@ -111,7 +110,7 @@ int		dump_memory()
 	return (0);
 }
 
-int		dump_memory_colored() // protection et utile que debut de game
+int		dump_memory_colored() // manque protection et utile que debut de game
 {
 	int		i;
 	int		j;

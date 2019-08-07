@@ -59,7 +59,6 @@ int		read_proces()
 	i = g_all.nb_champ;
 	while (i--)
 	{
-		if (g_all.flags[VISU])print_vm_info();
 		k = g_all.champ[i].nb_proces;
 		while (k--)
 		{
@@ -94,7 +93,7 @@ int		read_proces()
 
 int		update_cps()
 {
-	jump_to(0, 66);
+	jump_to(X, 2);
 	ft_printf("Cycles/second limit : %4d", g_all.visu.max_cps);
 	return (0);
 }
@@ -161,6 +160,7 @@ int		beg_battle()
 			}
 			check++;
 		}
+		if (g_all.flags[VISU])print_vm_info();
 	}
 	if (!g_all.flags[VISU])ft_printf("Contestant %d, \"%s\", has won !\n", g_all.champ[g_all.player_last_live].player_nb, g_all.champ[g_all.player_last_live].player_name);
 	else while(1);

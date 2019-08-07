@@ -33,6 +33,6 @@ int		jump_to_mem(int pc)
 void	exit_ctrl_c(int c)
 {
 	c = 0;
-	ft_printf(CLEAR_SCREEN);
+	ft_printf(RESTORE_SCREEN);
 	exit_func(0, 0);
 }

@@ -29,11 +29,11 @@ int		print_proces_info(int i)
 		k = -1;
 		while (++k < g_all.champ[n].nb_proces)
 		{
-			jump_to(X, i + k + l+ (n ? g_all.champ[n - 1].nb_proces : 0));
+			jump_to(X, i + k + l);
 			opcode = g_all.champ[n].proces[k].opcode;
-			ft_printf("player_nb %2d  |  proces_id %2d  |  pc %4d  |  opcode " CHAR_HEX_PRINT "  |  Name OP %5s  |  cycle_left %4d\n", g_all.champ[n].player_nb, g_all.champ[n].proces[k].id_proces, g_all.champ[n].proces[k].pc, opcode, g_op_tab[opcode].name, g_all.champ[n].proces[k].cycle_left);
+			ft_printf("player_nb %2d  |  proces_id %3d  |  pc %4d  |  opcode " CHAR_HEX_PRINT "  |  Name OP %5s  |  cycle_left %4d\n", g_all.champ[n].player_nb, g_all.champ[n].proces[k].id_proces, g_all.champ[n].proces[k].pc, opcode, opcode > 0 && opcode < 16 ? g_op_tab[opcode - 1].name : "null", g_all.champ[n].proces[k].cycle_left);
 		}
-		n ? l += k : 0;
+		l += k;
 	}
 	return (0);
 }
@@ -48,7 +48,7 @@ int		print_player_info(int i)
 		jump_to(X, i);
 		ft_printf("PLAYER %d : ", g_all.champ[k].player_nb);
 		jump_to(X + 12, i);
-		ft_printf(GREEN "%s", g_all.champ[k].player_name);
+		ft_printf(RGB_PRINT "%s", (g_all.champ[k].color_rgb >> 16) & 0xff, (g_all.champ[k].color_rgb >> 8) & 0xff, (g_all.champ[k].color_rgb >> 0) & 0xff, g_all.champ[k].player_name);
 		i++;
 		jump_to(X + 5, i);
 		ft_printf(RESET_COLOR "Last live : %1$/20c %d", ' ', g_all.champ[k].lives_period);
@@ -72,10 +72,12 @@ int		print_init_info(int i)
 	{
 		jump_to(X, i);
 		i == 1 ? ft_printf("Cycles        : %4d", g_all.cycle) : 0;
-		i == 2 ? ft_printf("Nbr de proces : %4d", g_all.nb_proces_tot) : 0;
-		i == 3 ? ft_printf("Lives period  : %4d", lives) : 0;
-		i == 4 ? ft_printf("Cycle to die  :  %d", g_all.cycle_to_die) : 0;
+		// i == 2 ? ft_printf("Cycles/second limit : %4d", g_all.visu.max_cps) : 0;
+		i == 3 ? ft_printf("Nbr de proces : %4d", g_all.nb_proces_tot) : 0;
+		i == 4 ? ft_printf("Lives period  : %4d", lives) : 0;
+		i == 5 ? ft_printf("Cycle to die  : %4d", g_all.cycle_to_die) : 0;
 	}
+	i++;
 	i = print_player_info(i);
 	i++;
 	return (i);
