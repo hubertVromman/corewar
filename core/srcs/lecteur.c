@@ -6,7 +6,7 @@
 /*   By: sofchami <sofchami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/18 19:57:39 by sofchami          #+#    #+#             */
-/*   Updated: 2019/08/06 17:36:20 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/07 02:32:23 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,56 +48,6 @@ int		reset_proc()
 		}
 	}
 	return (total_lives_period);
-}
-
-int		print_vm_info()
-{
-	int i;
-	int k;
-	int n;
-	int x;
-	int lives;
-
-	i = -1;
-	lives = 0;
-	x = 250;
-	while (++i < g_all.nb_champ)
-		lives += g_all.champ[i].lives_period;
-	jump_to(x, 0);
-	ft_printf("%1$/30c Info %1$/30c\n", '-');
-	i = 0;
-	while (++i < 4)
-	{
-		jump_to(x, i);
-		i == 1 ? ft_printf("Cycles = %4d", g_all.cycle) : 0;
-		i == 2 ? ft_printf("Nbr de proces = %4d", g_all.nb_proces_tot) : 0;
-		i == 3 ? ft_printf("Lives period = %4d", lives) : 0;
-	}
-	i++;
-	n = -1;
-	while (++n < g_all.nb_champ)
-	{
-		k = -1;
-		while (++k < g_all.champ[n].nb_proces)
-		{
-			jump_to(x, i + k + (n ? g_all.champ[n - 1].nb_proces : 0));
-			ft_printf("player_nb %2d | proces_id %2d | pc %4d | opcode " CHAR_HEX_PRINT " | cycle_left %4d\n", g_all.champ[n].player_nb, k, g_all.champ[n].proces[k].pc, g_all.champ[n].proces[k].opcode, g_all.champ[n].proces[k].cycle_left);
-		}
-	}
-	if (g_all.max_proces <= g_all.nb_proces_tot)
-		g_all.max_proces = g_all.nb_proces_tot;
-	else
-	{
-		int tmp;
-		tmp = g_all.nb_proces_tot + i;
-		while (tmp < g_all.max_proces + i)
-		{
-			jump_to(x, tmp);
-			ft_printf("%1$/80c", ' ');
-			tmp++;
-		}
-	}
-	return (0);
 }
 
 int		read_proces()
@@ -190,7 +140,6 @@ int		beg_battle()
 	end = 1;
 	i = -1;
 	check = 0;
-	// ft_printf("begin battle\n");
 	while (end)
 	{
 		if (g_all.flags[VISU] && do_visu_stuff())

@@ -6,7 +6,7 @@
 #    By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/05 15:14:07 by hvromman          #+#    #+#              #
-#    Updated: 2019/07/28 14:58:55 by sofchami         ###   ########.fr        #
+#    Updated: 2019/08/07 02:31:50 by sofchami         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ OBJ = $(addprefix $(SRCS), $(FILES))
 COR_DIR = core/
 COR_FILE = corewar.h
 COR_H = $(addprefix $(COR_DIR), $(addprefix $(HEAD), $(COR_FILE)))
-COR_FILES = main.o error.o exit.o util.o util_instr.o champ_instance.o lecteur.o visu.o
+COR_FILES = main.o error.o exit.o util.o util_instr.o champ_instance.o lecteur.o visu.o print_info.o
 COR_OBJ = $(addprefix $(COR_DIR), $(addprefix $(SRCS), $(COR_FILES)))
 
 OP_DIR = operations/

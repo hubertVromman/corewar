@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/17 16:16:25 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/06 18:01:04 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/07 01:27:54 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int		play_sound(int i)
 	if (i == 1)
 	system("afplay sound/Ta_da.mp3 &");
 	if (i == 2)
-	system("afplay sound/power_off.mp3");
+	system("afplay sound/power_off.mp3 &");
 	return (0);
 }
 
@@ -64,7 +64,7 @@ int		detele_proces(t_champ *champ, int id_proces)
 	champ->nb_proces--;
 	g_all.nb_proces_tot--;
 	sort_proces(champ);
-	play_sound(2);
+	// play_sound(2);
 	return (0);
 }
 
@@ -78,7 +78,6 @@ int		create_proces(int pc, t_proces *parent, t_champ *champ)
 	ft_bzero(proc, sizeof(t_proces));
 	proc->pc = pc;
 	proc->carry = 0;
-
 	proc->cycle_left = 0;
 	proc->opcode = 0;
 	proc->id_proces = g_all.id_proces;
@@ -86,14 +85,13 @@ int		create_proces(int pc, t_proces *parent, t_champ *champ)
 		ft_memcpy(proc->reg, parent->reg, REG_NUMBER * 4);
 	else
 		proc->reg[0] = champ->player_nb;
+		proc->champ = champ;
 	if (champ->nb_proces)
 		increment_pc(proc, 0);
-	proc->champ = champ;
 	champ->nb_proces++;
 	g_all.nb_proces_tot++;
 	g_all.id_proces++;
-
-	g_all.cycle ? play_sound(1) :0;
+	// g_all.cycle ? play_sound(2) :0;
 	return(0);
 }
 

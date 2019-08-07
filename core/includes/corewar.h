@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:31:13 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/01 18:54:44 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/07 02:31:37 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP
 # define BLUE "\e[34m"
 # define MAGENTA "\e[35m"
 # define CYAN "\e[36m"
+
+# define X 250
 
 typedef struct	s_arg
 {
@@ -201,4 +203,13 @@ int				operation_zjmp(t_champ *champ, t_proces *proces, t_arg *args);
 void			exit_ctrl_c(int c);
 int				jump_to(int x, int y);
 int				jump_to_mem(int pc);
+
+/*
+** print_info.c
+*/
+int		print_proces_info(int i);
+int		print_player_info(int i);
+int		print_init_info(int i);
+int		print_vm_info();
+
 #endif

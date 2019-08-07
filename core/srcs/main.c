@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:28:49 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/06 18:27:51 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/07 01:59:33 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,8 +228,6 @@ int		init_all(int ac, char **av)
 
 int		main(int ac, char **av)
 {
-	int fd = open ("./f", O_RDWR | O_CREAT);
-	ft_printf("hello%>", fd);
 	init_all(ac, av);
 	display_start();
 	beg_battle();
