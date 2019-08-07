@@ -6,7 +6,7 @@
 /*   By: sofchami <sofchami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 02:28:56 by sofchami          #+#    #+#             */
-/*   Updated: 2019/08/07 02:33:51 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/07 03:29:04 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,13 @@ int		print_player_info(int i)
 	while (++k < g_all.nb_champ)
 	{
 		jump_to(X, i);
-		ft_printf("PLAYER %d : %s", g_all.champ[k].player_nb, g_all.champ[k].player_name);
+		ft_printf("PLAYER %d : ", g_all.champ[k].player_nb);
+		jump_to(X + 12, i);
+		ft_printf(GREEN "%s", g_all.champ[k].player_name);
 		i++;
 		jump_to(X + 5, i);
-		ft_printf("Last live : %1$/20c %d", ' ', g_all.champ[k].lives_period);
-		i++;
+		ft_printf(RESET_COLOR "Last live : %1$/20c %d", ' ', g_all.champ[k].lives_period);
+		i+=2;
 	}
 	i++;
 	return (i);
@@ -64,14 +66,15 @@ int		print_init_info(int i)
 	while (++i < g_all.nb_champ)
 		lives += g_all.champ[i].lives_period;
 	jump_to(X, 0);
-	ft_printf("%1$/40c Info %1$/40c\n", '-');
+	ft_printf(RESET_COLOR "%1$/42c Info %1$/42c\n", '-');
 	i = 0;
-	while (++i < 5)
+	while (++i < 6)
 	{
 		jump_to(X, i);
-		i == 1 ? ft_printf("Cycles = %4d", g_all.cycle) : 0;
-		i == 2 ? ft_printf("Nbr de proces = %4d", g_all.nb_proces_tot) : 0;
-		i == 3 ? ft_printf("Lives period = %4d", lives) : 0;
+		i == 1 ? ft_printf("Cycles        : %4d", g_all.cycle) : 0;
+		i == 2 ? ft_printf("Nbr de proces : %4d", g_all.nb_proces_tot) : 0;
+		i == 3 ? ft_printf("Lives period  : %4d", lives) : 0;
+		i == 4 ? ft_printf("Cycle to die  :  %d", g_all.cycle_to_die) : 0;
 	}
 	i = print_player_info(i);
 	i++;
