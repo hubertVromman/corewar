@@ -88,7 +88,6 @@ void	*reader_func(void *rien)
 	struct termios	org_opts;
 	rien = NULL;
 
-
 	res = tcgetattr(0, &org_opts);
 	org_opts.c_lflag = ISIG & ~(ICANON);
 	tcsetattr(0, TCSANOW, &org_opts);
@@ -139,10 +138,15 @@ int		display_start()
 	{
 		signal(SIGINT, exit_ctrl_c);
 		pthread_create(&(g_all.visu.reader_thread), NULL, reader_func, NULL);
+		struct ttysize	ts;
+		ioctl(0, TIOCGSIZE, &ts);
+		g_all.visu.nb_cols = ts.ts_cols;
+		g_all.visu.nb_lines = ts.ts_lines;
 		ft_printf(HIDE_CURSOR SAVE_SCREEN "\e[H");
 		dump_memory_colored();
 		for (int j = 0; j < g_all.nb_champ; j++)
 			increment_pc(g_all.champ[j].proces, 0);
+		print_header();
 		print_vm_info();
 	}
 	else
@@ -203,8 +207,6 @@ int		init_visu()
 	g_all.visu.max_cps = 50;
 	return (0);
 }
-
-#include <fcntl.h>
 
 int		init_all(int ac, char **av)
 {

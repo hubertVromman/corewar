@@ -87,13 +87,13 @@ int		read_proces()
 			}
 		}
 	}
-	if (!g_all.flags[VISU]) print_debug_info();
+	// if (!g_all.flags[VISU]) print_debug_info();
 	return (0);
 }
 
 int		update_cps()
 {
-	jump_to(X, 2);
+	jump_to(X, 2 + HEADER_HEIGHT);
 	ft_printf("Cycles/second limit : %4d", g_all.visu.max_cps);
 	return (0);
 }

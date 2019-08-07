@@ -40,7 +40,7 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP
 
 # define P1_COLOR 0x00008080
 # define P2_COLOR 0x00800080
-# define P3_COLOR 0x00800000
+# define P3_COLOR 0xEB34DB//0x00800000
 # define P4_COLOR 0x00000080
 
 # define COLOR_INCREMENT 0x00010101
@@ -56,6 +56,7 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP
 # define CYAN "\e[36m"
 
 # define X 250
+# define HEADER_HEIGHT 10
 
 typedef struct	s_arg
 {
@@ -104,6 +105,8 @@ typedef struct	s_visu
 	int			pause;
 	int			mouse;
 	int			max_cps;
+	int			nb_cols;
+	int			nb_lines;
 	int			nb_frames_to_skip;
 	int			skipped_frames;
 	pthread_t	reader_thread;
@@ -212,6 +215,7 @@ int				jump_to_mem(int pc);
 /*
 ** print_info.c
 */
+int				print_header();
 int				print_proces_info(int i);
 int				print_player_info(int i);
 int				print_init_info(int i);

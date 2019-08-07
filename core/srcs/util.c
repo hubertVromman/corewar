@@ -117,6 +117,7 @@ int		dump_memory_colored() // manque protection et utile que debut de game
 	int		c;
 
 	ft_printf("<b>");
+	jump_to(0, HEADER_HEIGHT);
 	char *s = malloc(MEM_SIZE * 3 + g_all.nb_champ * (19 + 19) + 4);
 	char *buffer;
 	i = -1;

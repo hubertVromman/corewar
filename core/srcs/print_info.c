@@ -12,6 +12,30 @@
 
 #include "corewar.h"
 
+int		print_header()
+{
+	int		offset_x;
+
+	offset_x = g_all.visu.nb_cols / 2 - 21;
+	ft_printf("<b>");
+	jump_to(offset_x, 1);
+	ft_printf("   _____                                  ");
+	jump_to(offset_x, 2);
+	ft_printf("  / ____|                                 ");
+	jump_to(offset_x, 3);
+	ft_printf(" | |     ___  _ __ _____      ____ _ _ __ ");
+	jump_to(offset_x, 4);
+	ft_printf(" | |    / _ \\| '__/ _ \\ \\ /\\ / / _` | '__|");
+	jump_to(offset_x, 5);
+	ft_printf(" | |___| (_) | | |  __/\\ V  V / (_| | |   ");
+	jump_to(offset_x, 6);
+	ft_printf("  \\_____\\___/|_|  \\___| \\_/\\_/ \\__,_|_|   ");
+	jump_to(offset_x, 7);
+	ft_printf("                                          ");
+	ft_printf("</>");
+return (0000);
+}
+
 int		print_proces_info(int i)
 {
 	int k;
@@ -65,18 +89,19 @@ int		print_init_info(int i)
 	lives = 0;
 	while (++i < g_all.nb_champ)
 		lives += g_all.champ[i].lives_period;
-	jump_to(X, 0);
+	jump_to(X, HEADER_HEIGHT);
 	ft_printf(RESET_COLOR "%1$/42c Info %1$/42c\n", '-');
 	i = 0;
 	while (++i < 6)
 	{
-		jump_to(X, i);
+		jump_to(X, i + HEADER_HEIGHT);
 		i == 1 ? ft_printf("Cycles        : %4d", g_all.cycle) : 0;
 		// i == 2 ? ft_printf("Cycles/second limit : %4d", g_all.visu.max_cps) : 0;
 		i == 3 ? ft_printf("Nbr de proces : %4d", g_all.nb_proces_tot) : 0;
 		i == 4 ? ft_printf("Lives period  : %4d", lives) : 0;
 		i == 5 ? ft_printf("Cycle to die  : %4d", g_all.cycle_to_die) : 0;
 	}
+	i+=HEADER_HEIGHT;
 	i++;
 	i = print_player_info(i);
 	i++;
@@ -101,6 +126,7 @@ int		print_vm_info()
 			ft_printf("%1$/80c", ' ');
 			tmp++;
 		}
+		g_all.max_proces = g_all.nb_proces_tot;
 	}
 	return (0);
 }
