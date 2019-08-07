@@ -46,7 +46,7 @@ int		float_func(long double nb, char *f, int w[2])
 	len = small_len + w[1] + (w[1] || f[4] ? 1 : 0);
 	sln = len + (nb < 0 || f[0] || f[1] ? 1 : 0);
 	size = ft_max(sln, w[0]);
-	if (!(created = realloc_g_str(size * f[9])))
+	if (!(created = realloc_g_str(size * *(int *)(f + 9))))
 		return (end_conv_nothing(-1, f, NULL, 0));
 	if (nb < 0)
 		created[0] = '-';
@@ -112,7 +112,7 @@ int		eloat_func(long double nb, char *f, int w[2], int is_upper)
 	len = 1 + w[1] + (w[1] || f[4] ? 1 : 0) + 4;
 	sln = len + (nb < 0 || f[0] || f[1] ? 1 : 0);
 	size = ft_max(sln, w[0]);
-	if (!(created = realloc_g_str(size * f[9])))
+	if (!(created = realloc_g_str(size * *(int *)(f + 9))))
 		return (end_conv_nothing(-1, f, NULL, 0));
 	if (nb < 0)
 		created[0] = '-';

@@ -19,7 +19,7 @@ int		percent_func(char *f, int width[2])
 	int		count;
 
 	size = ft_max(width[0], 1);
-	if (!(created = realloc_g_str(size * f[9])))
+	if (!(created = realloc_g_str(size * *(int *)(f + 9))))
 		return (end_conv_nothing(-1, f, NULL, 0));
 	count = -1;
 	while (++count < width[0])
@@ -44,7 +44,7 @@ int		p_func(uintmax_t number, char *f, int width[2])
 	len = (width[1] != -1 && !number ? width[1] : len);
 	s_len = ft_max(len, width[1]) + 2;
 	size = ft_max(s_len, width[0]);
-	if (!(created = realloc_g_str(size * f[9])))
+	if (!(created = realloc_g_str(size * *(int *)(f + 9))))
 		return (end_conv_nothing(-1, f, NULL, 0));
 	ft_memset(created, '0', size);
 	ft_hitoa_u(number, f[3] && size > s_len ? created + 2
@@ -65,7 +65,7 @@ int		not_correct_flag(char *f, int width[2])
 	while (f[pos] == 'h' || f[pos] == 'l' || f[pos] == 'z' || f[pos] == 'j')
 		pos++;
 	size = ft_max(width[0], f[pos] ? 1 : 0);
-	if (!(created = realloc_g_str(size * f[9])))
+	if (!(created = realloc_g_str(size * *(int *)(f + 9))))
 		return (end_conv_nothing(-1, f, NULL, 0));
 	ft_memset(created, (f[2] && !f[3] ? '0' : ' '), size);
 	created[f[3] ? 0 : size - 1] = f[pos];

@@ -69,7 +69,7 @@ int		signed_func(intmax_t number, char *f, int w[2])
 	len = len_intmax_t(number, f[5]);
 	slen = !number && !w[1] ? 0 : ft_max(len, w[1]) + s;
 	size = ft_max(slen, w[0]);
-	if (!(new = realloc_g_str(size * f[9])))
+	if (!(new = realloc_g_str(size * *(int *)(f + 9))))
 		return (end_conv_nothing(-1, f, NULL, 0));
 	ft_itoa_u(number, new + size - len, len, f[5]);
 	ft_memset(new, '0', trun(size - len));

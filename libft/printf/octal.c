@@ -44,7 +44,7 @@ int		octal_func(uintmax_t nb, char *f, int w[2])
 	size = !nb && !w[1] ? 0 : ft_max(len, w[1]);
 	slen = size + ((nb || !w[1]) && f[4] ? 1 : 0);
 	size = ft_max(size + ((nb || !w[1]) && f[4] ? 1 : 0), w[0]);
-	if (!(created = realloc_g_str(size * f[9])))
+	if (!(created = realloc_g_str(size * *(int *)(f + 9))))
 		return (end_conv_nothing(-1, f, NULL, 0));
 	ft_oitoa_u(nb, &created[size - len], len);
 	ft_memset(created, '0', trun(size - len) + (!nb && !w[1] && f[4] ? 1 : 0));

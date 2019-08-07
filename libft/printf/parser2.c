@@ -16,7 +16,7 @@ int		start(char **f, int w[2], char **fm, va_list ap)
 {
 	if (!fm || !*fm || !ap)
 		return (-1);
-	if (!(*f = ft_strnew(10)))
+	if (!(*f = ft_strnew(14)))
 		return (-1);
 	w[0] = -1;
 	w[1] = -1;
@@ -45,7 +45,7 @@ int		end(char *f, char **fm)
 		f[0] = 0;
 	if (f[3])
 		f[2] = 0;
-	if (f[9] < 1)
-		f[9] = 1;
+	if (*(int *)(f + 9) < 1)
+		*(int *)(f + 9) = 1;
 	return (0);
 }

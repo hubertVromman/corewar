@@ -61,7 +61,7 @@ int		unsigned_func(uintmax_t number, char *f, int w[2])
 	if (!number && w[1] == 0)
 		slen = 0;
 	size = ft_max(slen, w[0]);
-	if (!(created = realloc_g_str(size * f[9])))
+	if (!(created = realloc_g_str(size * *(int *)(f + 9))))
 		return (end_conv_nothing(-1, f, NULL, 0));
 	ft_uitoa_u(number, &created[size - len], len, f[5]);
 	ft_memset(created, '0', trun(size - len));

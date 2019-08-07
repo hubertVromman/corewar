@@ -42,7 +42,7 @@ int		hex_func(uintmax_t number, char *f, int w[2])
 	size = !number && !w[1] ? 0 : ft_max(len, w[1]);
 	slen = size + (number && f[4] ? 2 : 0);
 	size = ft_max(slen, w[0]);
-	if (!(created = realloc_g_str(size * f[9])))
+	if (!(created = realloc_g_str(size * *(int *)(f + 9))))
 		return (end_conv_nothing(-1, f, NULL, 0));
 	ft_hitoa_u(number, created + size - len, len);
 	ft_memset(created, '0', trun(size - len));
@@ -82,7 +82,7 @@ int		mhex_func(uintmax_t number, char *f, int w[2])
 	size = !number && !w[1] ? 0 : ft_max(len, w[1]);
 	slen = size + (number && f[4] ? 2 : 0);
 	size = ft_max(slen, w[0]);
-	if (!(created = realloc_g_str(size * f[9])))
+	if (!(created = realloc_g_str(size * *(int *)(f + 9))))
 		return (end_conv_nothing(-1, f, NULL, 0));
 	ft_mhitoa_u(number, created + size - len, len);
 	ft_memset(created, '0', trun(size - len));

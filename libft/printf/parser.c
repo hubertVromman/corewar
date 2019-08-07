@@ -69,7 +69,7 @@ void	check_convert(char fm, char *f)
 int		parser(va_list ap, char **fm)
 {
 	char	*f;
-	int		w[2];
+	int		w[3];
 	int		ret;
 
 	if (start(&f, w, fm, ap))
@@ -80,7 +80,7 @@ int		parser(va_list ap, char **fm)
 			f[ret] = 1;
 		else if (**fm == '.' || **fm == '/')
 			**fm == '.' ? (w[1] = check_prec(fm, ap)) :
-			(f[9] = check_prec(fm, ap));
+			(w[2] = check_prec(fm, ap), 4);
 		else if (ft_isdigit(**fm))
 			w[0] = check_width2(fm);
 		else if (**fm == '*')
@@ -91,5 +91,6 @@ int		parser(va_list ap, char **fm)
 			break ;
 		(*fm)++;
 	}
+	(ft_memcpy(f + 9, &(w[2]), 4));
 	return (end(f, fm) ? 0 : go_to_right_func(ap, f, w));
 }
