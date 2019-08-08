@@ -98,6 +98,101 @@ int		update_cps()
 	return (0);
 }
 
+char *avant_feu(int *si)
+{
+	int		i;
+	int		l;
+
+	char *s = NULL;
+	int s_size = 0;
+	char *buffer;
+	int siz;
+
+	i = 3583;
+	l = HEADER_HEIGHT + 56;
+	// ft_printf("<b>");
+	siz = ft_printf("\e[%d;%dH  %#>", HEADER_HEIGHT + 56 + 1, 0 + 1, &buffer);
+	s = realloc(s, s_size + siz);
+	ft_memcpy(s + s_size, buffer, siz);
+				free(buffer);
+	s_size += siz;
+	while (++i < MEM_SIZE)
+	{
+		siz = ft_printf(RGB_PRINT "%.2hhx%#>", (g_all.color[i] >> 16) & 0xff, (g_all.color[i] >> 8) & 0xff, (g_all.color[i] >> 0) & 0xff, g_all.arena[i], &buffer);
+		s = realloc(s, s_size + siz);
+		ft_memcpy(s + s_size, buffer, siz);
+				free(buffer);
+		s_size += siz;
+		if (!((i + 1) % 64) && ++l)
+		{
+			// jump_to(0, l);
+			siz = ft_printf("\e[%d;%dH %#>", l + 1, 1, &buffer);
+			s = realloc(s, s_size + siz);
+			ft_memcpy(s + s_size, buffer, siz);
+				free(buffer);
+			s_size += siz;
+		}
+		siz = ft_printf(" %#>", &buffer);
+			s = realloc(s, s_size + siz);
+			ft_memcpy(s + s_size, buffer, siz);
+				free(buffer);
+			s_size += siz;
+	}
+	// ft_printf("</>");
+	*si = s_size;
+	return s;
+}
+
+int feu(char *s, int s_size)
+{
+	int width = g_all.visu.nb_cols;
+	int height = g_all.visu.nb_lines;
+	int size = width * height;
+	char *b;
+	static int sofiane = 1;
+	if (sofiane == 1)
+		g_all.visu.feu = ft_memalloc(size * 2 + 1);
+	b = g_all.visu.feu;
+	char *ch = " .:^*xsS#$";
+	int color;
+
+	int siz;
+	// ft_printf("\e[%d;%dH", height - 18, width);
+	for (int i = 0; i < width/9; i++)
+		b[rand() % width + width * (height-1)]=65;
+	for (int i = 0; i < size; i++)
+	{
+		b[i]=(b[i]+b[i+1]+b[i+width]+b[i+width+1])/4;
+		if (b[i] > 15)
+			color=4;
+		else if (b[i]>9)
+			color = 3;
+		else if (b[i]>4)
+			color = 1;
+		else
+			color = 0;
+		if(i<size && i > size - 17 * width)
+		{
+			char *buffer;
+			siz = 0;
+			if (color != 0 && b[i] != 0)
+				siz = ft_printf("\e[%d;%dH\e[%dm%c%#>", i/width,i%width,30 + color, ch[(b[i]>9 ? 9 : b[i])], &buffer);
+			else if (i%width > 193 || i/width > 74)
+				siz = ft_printf("\e[%d;%dH\e[%dm%c%#>", i/width,i%width,30 + color, ' ', &buffer);
+			if (siz)
+			{
+				s = realloc(s, s_size + siz);
+				ft_memcpy(s + s_size, buffer, siz);
+				s_size += siz;
+				free(buffer);
+			}
+		}
+	}
+	write(1, s, s_size);
+	sofiane--;
+	return 9;
+}
+
 int		do_visu_stuff()
 {
 	int		i;
@@ -125,6 +220,12 @@ int		do_visu_stuff()
 	}
 	else
 	{
+		if (g_all.visu.flame)
+		{
+			int size;
+			char *s = avant_feu(&size);
+			feu(s, size);
+		}
 		g_all.visu.skipped_frames = 0;
 		return (0);
 	}

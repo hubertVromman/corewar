@@ -12,6 +12,21 @@
 
 #include "corewar.h"
 
+int		print_border_side()
+{
+	int i;
+
+	i = -1;
+	while (++i < g_all.visu.nb_lines - 8)
+	{
+		jump_to(g_all.visu.nb_cols - 1, i);
+		ft_printf(RGB_PRINT_BG "%c", (BORDER >> 16) & 0xff, (BORDER >> 8) & 0xff,(BORDER >> 0) & 0xff, ' ');
+		jump_to(0, i);
+		ft_printf(RGB_PRINT_BG "%c", (BORDER >> 16) & 0xff, (BORDER >> 8) & 0xff,(BORDER >> 0) & 0xff, ' ');
+	}
+	return (0);
+}
+
 int		print_border()
 {
 	int i;
@@ -76,7 +91,7 @@ int		print_proces_info(int i)
 		k = -1;
 		while (++k < g_all.champ[n].nb_proces)
 		{
-			if (i + k + l > g_all.visu.nb_lines - 10)
+			if (i + k + l > g_all.visu.nb_lines - 20)
 				return (0);
 			jump_to(X, i + k + l);
 			opcode = g_all.champ[n].proces[k].opcode;

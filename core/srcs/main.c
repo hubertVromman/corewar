@@ -103,6 +103,8 @@ void	*reader_func(void *rien)
 			g_all.visu.max_cps++;
 		else if (buf[0] == 'r')
 			g_all.visu.max_cps += 10;
+		else if (buf[0] == 'f')
+			g_all.visu.flame = 1;
 		else if (buf[0] == '\e')
 		{
 			read(0, buf, 1);

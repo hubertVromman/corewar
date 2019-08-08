@@ -110,6 +110,8 @@ typedef struct	s_visu
 	int			nb_lines;
 	int			nb_frames_to_skip;
 	int			skipped_frames;
+	int			flame;
+	char		*feu;
 	pthread_t	reader_thread;
 }				t_visu;
 
@@ -222,5 +224,6 @@ int				print_player_info(int i);
 int				print_init_info(int i);
 int				print_vm_info();
 int				print_border();
+int				print_border_side();
 
 #endif
