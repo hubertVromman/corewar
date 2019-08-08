@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   visu.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hvromman <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/24 11:38:07 by hvromman          #+#    #+#             */
-/*   Updated: 2019/07/24 11:38:10 by hvromman         ###   ########.fr       */
+/*   Updated: 2019/08/08 03:25:20 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int		jump_to_mem(int pc)
 	int		offset_x;
 	int		offset_y;
 
-	offset_x = 0;
+	offset_x = 2;
 	offset_y = 10;
 	pc = calc_pc(pc);
 	jump_to(offset_x + (pc % 64) * 3, offset_y + pc / 64);

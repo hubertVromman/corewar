@@ -6,20 +6,41 @@
 /*   By: sofchami <sofchami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 02:28:56 by sofchami          #+#    #+#             */
-/*   Updated: 2019/08/07 03:29:04 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/08 03:24:26 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
 
+int		print_border()
+{
+	int i;
+
+	i = -1;
+	while (++i < g_all.visu.nb_lines - 8)
+	{
+		jump_to(g_all.visu.nb_cols - 1, i);
+		ft_printf(RGB_PRINT_BG "%c", (TEST >> 16) & 0xff, (TEST >> 8) & 0xff,(TEST >> 0) & 0xff, ' ');
+		jump_to(0, i);
+		ft_printf(RGB_PRINT_BG "%c", (TEST >> 16) & 0xff, (TEST >> 8) & 0xff,(TEST >> 0) & 0xff, ' ');
+	}
+	return (0);
+}
+
 int		print_header()
 {
 	int		offset_x;
+	int		screen_lenght;
+	char	*space;
 
+	screen_lenght = g_all.visu.nb_cols;
 	offset_x = g_all.visu.nb_cols / 2 - 21;
+	space = ft_memset(ft_strnew(screen_lenght), ' ', screen_lenght);
 	ft_printf("<b>");
+	jump_to(0,0);
+	ft_printf(RGB_PRINT_BG "%*c", (TEST >> 16) & 0xff, (TEST >> 8) & 0xff,(TEST >> 0) & 0xff, screen_lenght, ' ');
 	jump_to(offset_x, 1);
-	ft_printf("   _____                                  ");
+	ft_printf(RESET_COLOR "   _____                                  ");
 	jump_to(offset_x, 2);
 	ft_printf("  / ____|                                 ");
 	jump_to(offset_x, 3);
@@ -33,6 +54,10 @@ int		print_header()
 	jump_to(offset_x, 7);
 	ft_printf("                                          ");
 	ft_printf("</>");
+	jump_to(0, 8);
+	ft_printf(RGB_PRINT_BG "%*c", (TEST >> 16) & 0xff, (TEST >> 8) & 0xff,(TEST >> 0) & 0xff, screen_lenght, ' ');
+	jump_to(0, g_all.visu.nb_lines - 9);
+	ft_printf(RGB_PRINT_BG "%*c", (TEST >> 16) & 0xff, (TEST >> 8) & 0xff,(TEST >> 0) & 0xff, screen_lenght, ' ');
 	return (0);
 }
 
@@ -53,6 +78,8 @@ int		print_proces_info(int i)
 		k = -1;
 		while (++k < g_all.champ[n].nb_proces)
 		{
+			if (i + k + l > g_all.visu.nb_lines - 10)
+				return (0);
 			jump_to(X, i + k + l);
 			opcode = g_all.champ[n].proces[k].opcode;
 			ft_printf("player_nb %2d  |  proces_id %3d  |  pc %4d  |  opcode " CHAR_HEX_PRINT "  |  Name OP %5s  |  cycle_left %4d\n", g_all.champ[n].player_nb, g_all.champ[n].proces[k].id_proces, g_all.champ[n].proces[k].pc, opcode, opcode > 0 && opcode < 16 ? g_op_tab[opcode - 1].name : "null", g_all.champ[n].proces[k].cycle_left);
@@ -76,6 +103,9 @@ int		print_player_info(int i)
 		i++;
 		jump_to(X + 5, i);
 		ft_printf(RESET_COLOR "Last live : %1$/20c %d", ' ', g_all.champ[k].lives_period);
+		i++;
+		jump_to(X + 5, i);
+		ft_printf(RESET_COLOR "Nbr de proces : %1$/16c %d", ' ', g_all.champ[k].nb_proces);
 		i+=2;
 	}
 	i++;

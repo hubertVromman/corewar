@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:28:49 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/07 01:59:33 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/08 02:55:30 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,7 @@ int		display_start()
 		for (int j = 0; j < g_all.nb_champ; j++)
 			increment_pc(g_all.champ[j].proces, 0);
 		print_header();
+		print_border();
 		print_vm_info();
 	}
 	else

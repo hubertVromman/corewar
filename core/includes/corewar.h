@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:31:13 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/07 02:31:37 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/08 02:55:44 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP
 # define P2_COLOR 0x00800080
 # define P3_COLOR 0xEB34DB//0x00800000
 # define P4_COLOR 0x00000080
+# define TEST 0x00fffe63
 
 # define COLOR_INCREMENT 0x00010101
 
@@ -55,7 +56,7 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP
 # define MAGENTA "\e[35m"
 # define CYAN "\e[36m"
 
-# define X 250
+# define X 265
 # define HEADER_HEIGHT 10
 
 typedef struct	s_arg
@@ -220,5 +221,6 @@ int				print_proces_info(int i);
 int				print_player_info(int i);
 int				print_init_info(int i);
 int				print_vm_info();
+int				print_border();
 
 #endif

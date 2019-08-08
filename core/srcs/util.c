@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/17 16:16:25 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/07 01:27:54 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/08 04:43:42 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,9 @@ int		create_proces(int pc, t_proces *parent, t_champ *champ)
 	else
 		proc->reg[0] = champ->player_nb;
 	proc->champ = champ;
+	proc->color_rgb = proc->champ->color_rgb + champ->nb_proces * COLOR_INCREMENT * 5;
 	if (champ->nb_proces)
 		increment_pc(proc, 0);
-	proc->color_rgb = proc->champ->color_rgb + champ->nb_proces * COLOR_INCREMENT * 5;
 	champ->nb_proces++;
 	g_all.nb_proces_tot++;
 	g_all.id_proces++;
@@ -113,40 +113,26 @@ int		dump_memory()
 int		dump_memory_colored() // manque protection et utile que debut de game
 {
 	int		i;
-	int		j;
-	int		c;
+	int		p;
+	int		l;
 
-	ft_printf("<b>");
-	jump_to(0, HEADER_HEIGHT);
-	char *s = malloc(MEM_SIZE * 3 + g_all.nb_champ * (19 + 19) + 4);
-	char *buffer;
 	i = -1;
-	j = 0;
+	p = 0;
+	l = HEADER_HEIGHT;
+	ft_printf("<b>");
+	jump_to(2, HEADER_HEIGHT);
 	while (++i < MEM_SIZE)
 	{
-		c = -1;
-		while (++c < g_all.nb_champ)
-		{
-			if (i == g_all.champ[c].proces->pc)
-			{
-				ft_printf(RGB_PRINT "%#>", (g_all.champ[c].color_rgb >> 16) & 0xff, (g_all.champ[c].color_rgb >> 8) & 0xff, (g_all.champ[c].color_rgb >> 0) & 0xff, &buffer);
-				memcpy(s + i * 3 + j, buffer, 19);
-				j += 19;
-			}
-		}
-		ft_printf(CHAR_HEX_PRINT "%c%#>", g_all.arena[i], (i + 1) % 64 ? ' ' : '\n', &buffer);
-		memcpy(s + i * 3 + j, buffer, 3);
-		c = -1;
-		while (++c < g_all.nb_champ)
-		{
-			if (i == g_all.champ[c].proces->pc + g_all.champ[c].exec_size - 1)
-			{
-				ft_printf(RGB_PRINT "%#>", 0x80, 0x80, 0x80, &buffer);
-				memcpy(s + (i + 1) * 3 + j, buffer, 19);
-				j += 19;
-			}
-		}
+		if (i >= g_all.champ[p].proces->pc && i < (g_all.champ[p].proces->pc + g_all.champ[p].exec_size))
+			ft_printf(RGB_PRINT "%.2hhx", (g_all.champ[p].color_rgb >> 16) & 0xff, (g_all.champ[p].color_rgb >> 8) & 0xff, (g_all.champ[p].color_rgb >> 0) & 0xff, g_all.arena[i]);
+		else
+			ft_printf(RESET_COLOR "%.2hhx", g_all.arena[i]);
+		if (!((i + 1) % 64) && ++l)
+			jump_to(2, l);
+		else
+			ft_printf(" ");
+		if (p < (g_all.nb_champ - 1) && i + 1 == g_all.champ[p + 1].proces->pc)
+			p++;
 	}
-	write(1, s, MEM_SIZE * 3 + g_all.nb_champ * (19 + 19));
 	return (0);
 }
