@@ -22,7 +22,7 @@ int		string_func(char *s, char *flag, int width[2], int fr)
 		s = "(null)";
 	len = (width[1] != -1) ? ft_min(width[1], ft_strlen(s)) : ft_strlen(s);
 	size = ft_max(len, width[0]);
-	if (!(created = realloc_g_str(size * flag[9])))
+	if (!(created = realloc_g_str(size * *(int *)(flag + 9))))
 		return (end_conv_nothing(-1, flag, NULL, 0));
 	ft_memcpy(created, s, len);
 	if (!flag[3])
@@ -45,7 +45,7 @@ int		char_func(unsigned char c, char *flag, int width[2])
 
 	len = 1;
 	size = ft_max(len, width[0]);
-	if (!(created = realloc_g_str(size * flag[9])))
+	if (!(created = realloc_g_str(size * *(int *)(flag + 9))))
 		return (end_conv_nothing(-1, flag, NULL, 0));
 	ft_memset(created, (flag[2] && !flag[3] ? '0' : ' '), size);
 	created[(flag[3] ? 0 : size - 1)] = c;

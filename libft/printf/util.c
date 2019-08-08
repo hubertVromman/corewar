@@ -71,10 +71,10 @@ int		end_conv(char *created, char *flag, int length)
 {
 	char	mult;
 
-	mult = flag[9];
+	mult = *(int *)(flag + 9);
 	while (mult--)
 		g_str = ft_strljoin(g_str, created, g_len, length);
-	g_len += length * flag[9];
+	g_len += length * *(int *)(flag + 9);
 	ft_strdel(&created);
 	ft_strdel(&flag);
 	return ((g_str ? 0 : -1));
@@ -83,8 +83,8 @@ int		end_conv(char *created, char *flag, int length)
 int		end_conv_nothing(int to_return, char *flag, char *new, int size)
 {
 	if (!to_return)
-		while (--flag[9] > 0)
-			ft_memcpy(new + flag[9] * size, new, size);
+		while (--*(int *)(flag + 9) > 0)
+			ft_memcpy(new + *(int *)(flag + 9) * size, new, size);
 	free(flag);
 	return (to_return);
 }

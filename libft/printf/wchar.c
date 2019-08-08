@@ -126,7 +126,7 @@ int		lstring_func(wchar_t *s, char *flag, int width[2])
 		return (end_conv_nothing(-1, flag, NULL, 0));
 	size = ft_max(width[0], len);
 	tmp = created;
-	if (!(created = realloc_g_str(size * flag[9])))
+	if (!(created = realloc_g_str(size * *(int *)(flag + 9))))
 		return (end_conv_nothing(-1, flag, NULL, 0));
 	ft_memcpy(created + (flag[3] ? 0 : size - len), tmp, len);
 	free(tmp);

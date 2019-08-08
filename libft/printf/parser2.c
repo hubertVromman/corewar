@@ -20,11 +20,13 @@ int		start(char **f, int w[2], char **fm, va_list ap)
 		return (-1);
 	w[0] = -1;
 	w[1] = -1;
+	w[2] = 0;
 	return (0);
 }
 
-int		end(char *f, char **fm)
+int		end(char *f, char **fm, int w[3])
 {
+	ft_memcpy(f + 9, &(w[2]), 4);
 	if (!**fm)
 		return (-1);
 	if (!f[7])

@@ -56,7 +56,7 @@ char	**g_outstr;
 int		balise_func(char **fm, int *pos);
 int		ft_printf(const char *restrict format, ...);
 int		start(char **f, int w[2], char **fm, va_list ap);
-int		end(char *f, char **fm);
+int		end(char *f, char **fm, int w[3]);
 int		parser(va_list ap, char **fm);
 int		go_to_right_func(va_list ap, char *f, int w[2]);
 

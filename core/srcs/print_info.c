@@ -33,7 +33,7 @@ int		print_header()
 	jump_to(offset_x, 7);
 	ft_printf("                                          ");
 	ft_printf("</>");
-return (0000);
+	return (0);
 }
 
 int		print_proces_info(int i)
