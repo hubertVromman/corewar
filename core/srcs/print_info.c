@@ -6,7 +6,7 @@
 /*   By: sofchami <sofchami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 02:28:56 by sofchami          #+#    #+#             */
-/*   Updated: 2019/08/08 03:24:26 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/08 04:55:44 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,14 @@ int		print_border()
 	while (++i < g_all.visu.nb_lines - 8)
 	{
 		jump_to(g_all.visu.nb_cols - 1, i);
-		ft_printf(RGB_PRINT_BG "%c", (TEST >> 16) & 0xff, (TEST >> 8) & 0xff,(TEST >> 0) & 0xff, ' ');
+		ft_printf(RGB_PRINT_BG "%c", (BORDER >> 16) & 0xff, (BORDER >> 8) & 0xff,(BORDER >> 0) & 0xff, ' ');
 		jump_to(0, i);
-		ft_printf(RGB_PRINT_BG "%c", (TEST >> 16) & 0xff, (TEST >> 8) & 0xff,(TEST >> 0) & 0xff, ' ');
+		ft_printf(RGB_PRINT_BG "%c", (BORDER >> 16) & 0xff, (BORDER >> 8) & 0xff,(BORDER >> 0) & 0xff, ' ');
 	}
+	jump_to(0, 8);
+	ft_printf(RGB_PRINT_BG "%*c", (BORDER >> 16) & 0xff, (BORDER >> 8) & 0xff,(BORDER >> 0) & 0xff, g_all.visu.nb_cols, ' ');
+	jump_to(0, g_all.visu.nb_lines - 9);
+	ft_printf(RGB_PRINT_BG "%*c", (BORDER >> 16) & 0xff, (BORDER >> 8) & 0xff,(BORDER >> 0) & 0xff, g_all.visu.nb_cols, ' ');
 	return (0);
 }
 
@@ -31,14 +35,12 @@ int		print_header()
 {
 	int		offset_x;
 	int		screen_lenght;
-	char	*space;
 
 	screen_lenght = g_all.visu.nb_cols;
 	offset_x = g_all.visu.nb_cols / 2 - 21;
-	space = ft_memset(ft_strnew(screen_lenght), ' ', screen_lenght);
 	ft_printf("<b>");
 	jump_to(0,0);
-	ft_printf(RGB_PRINT_BG "%*c", (TEST >> 16) & 0xff, (TEST >> 8) & 0xff,(TEST >> 0) & 0xff, screen_lenght, ' ');
+	ft_printf(RGB_PRINT_BG "%*c", (BORDER >> 16) & 0xff, (BORDER >> 8) & 0xff,(BORDER >> 0) & 0xff, screen_lenght, ' ');
 	jump_to(offset_x, 1);
 	ft_printf(RESET_COLOR "   _____                                  ");
 	jump_to(offset_x, 2);
@@ -54,10 +56,6 @@ int		print_header()
 	jump_to(offset_x, 7);
 	ft_printf("                                          ");
 	ft_printf("</>");
-	jump_to(0, 8);
-	ft_printf(RGB_PRINT_BG "%*c", (TEST >> 16) & 0xff, (TEST >> 8) & 0xff,(TEST >> 0) & 0xff, screen_lenght, ' ');
-	jump_to(0, g_all.visu.nb_lines - 9);
-	ft_printf(RGB_PRINT_BG "%*c", (TEST >> 16) & 0xff, (TEST >> 8) & 0xff,(TEST >> 0) & 0xff, screen_lenght, ' ');
 	return (0);
 }
 

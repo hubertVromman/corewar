@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/17 16:16:25 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/08 04:43:42 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/08 05:00:12 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ int		dump_memory_colored() // manque protection et utile que debut de game
 		if (i >= g_all.champ[p].proces->pc && i < (g_all.champ[p].proces->pc + g_all.champ[p].exec_size))
 			ft_printf(RGB_PRINT "%.2hhx", (g_all.champ[p].color_rgb >> 16) & 0xff, (g_all.champ[p].color_rgb >> 8) & 0xff, (g_all.champ[p].color_rgb >> 0) & 0xff, g_all.arena[i]);
 		else
-			ft_printf(RESET_COLOR "%.2hhx", g_all.arena[i]);
+			ft_printf(RGB_PRINT "%.2hhx", 78, 78, 78, g_all.arena[i]);
 		if (!((i + 1) % 64) && ++l)
 			jump_to(2, l);
 		else

@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:31:13 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/08 02:55:44 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/08 05:07:36 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,10 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP
 # define MERROR -2
 
 # define P1_COLOR 0x00008080
-# define P2_COLOR 0x00800080
+# define P2_COLOR 0x00800000
 # define P3_COLOR 0xEB34DB//0x00800000
 # define P4_COLOR 0x00000080
-# define TEST 0x00fffe63
+# define BORDER 0x00A8A8A8
 
 # define COLOR_INCREMENT 0x00010101
 
