@@ -6,7 +6,7 @@
 /*   By: sofchami <sofchami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/18 19:57:39 by sofchami          #+#    #+#             */
-/*   Updated: 2019/08/07 02:32:23 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/09 07:06:12 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int		reset_proc()
 				g_all.champ[i].proces[k].lives_period = 0;
 			}
 		}
+		g_all.champ[i].lives_period = 0;
 	}
 	return (total_lives_period);
 }

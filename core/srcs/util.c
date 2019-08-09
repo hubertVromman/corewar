@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/17 16:16:25 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/08 05:00:12 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/09 03:35:11 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,12 @@ int		create_proces(int pc, t_proces *parent, t_champ *champ)
 	proc->pc = pc;
 	proc->opcode = read_arena_op(proc->pc);
 	proc->cycle_left = get_cycle_left(proc->opcode);
-	proc->carry = 0;
 	proc->id_proces = g_all.id_proces;
 	if (parent)
+	{
 		ft_memcpy(proc->reg, parent->reg, REG_NUMBER * 4);
+		proc->carry = parent->carry;		
+	}
 	else
 		proc->reg[0] = champ->player_nb;
 	proc->champ = champ;
