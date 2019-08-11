@@ -6,7 +6,7 @@
 /*   By: sofchami <sofchami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 02:28:56 by sofchami          #+#    #+#             */
-/*   Updated: 2019/08/09 06:38:35 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/10 22:00:29 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ int		print_player_info(int i)
 		ft_printf(RGB_PRINT "%s", (g_all.champ[k].color_rgb >> 16) & 0xff, (g_all.champ[k].color_rgb >> 8) & 0xff, (g_all.champ[k].color_rgb >> 0) & 0xff, g_all.champ[k].player_name);
 		i++;
 		jump_to(X + 5, i);
-		ft_printf(RESET_COLOR "Last live : %1$/20c %d", ' ', g_all.champ[k].last_live);
+		ft_printf(RESET_COLOR "Last live : %1$/17c %4d", ' ', g_all.champ[k].last_live);
 		i++;
 		jump_to(X + 5, i);
 		ft_printf(RESET_COLOR "live period : %1$/16c %3d", ' ', g_all.champ[k].lives_period);
@@ -175,7 +175,7 @@ int		print_vm_info()
 
 	i = print_init_info(-1);
 	print_proces_info(i);
-	print_reg_info(g_all.champ[0].proces);
+	// print_reg_info(g_all.champ[0].proces);
 	if (g_all.max_proces <= g_all.nb_proces_tot)
 		g_all.max_proces = g_all.nb_proces_tot;
 	else

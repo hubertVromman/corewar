@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:28:49 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/09 08:10:24 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/11 04:28:27 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,6 +247,16 @@ int		init_all(int ac, char **av)
 	}
 	init_func_pointer();
 	init_visu();
+	return (0);
+}
+
+void		*sound_feu()
+{
+	while (1)
+	{
+		system("afplay sound/feu.mp3 &");
+		sleep(11);
+	}
 	return (0);
 }
 

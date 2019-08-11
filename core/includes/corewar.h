@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:31:13 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/08 05:07:36 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/11 04:26:29 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <pthread.h>
 # include <sys/ioctl.h>
 # include <termios.h>
+# include <pthread.h>
 
 enum	e_error_code { NOT_COR_FILE = 1, OPEN_FAIL, TOO_LARGE, READ_ERROR};
 
@@ -131,6 +132,7 @@ typedef struct	s_a
 	int			dump_period;
 	int			next_champ_nb;
 	int			player_last_live;
+	pthread_t	thread_id;
 	int			(*func[16]) (t_champ *champ, t_proces *proces, t_arg *args);
 	char		flags[sizeof(OP)];
 	t_visu		visu;
@@ -164,6 +166,7 @@ int				dump_memory_colored();
 ** main.c
 */
 int				print_debug_info();
+void			*sound_feu();
 
 /*
 ** util_instr.c
@@ -225,5 +228,6 @@ int				print_init_info(int i);
 int				print_vm_info();
 int				print_border();
 int				print_border_side();
+int				print_reg_info(t_proces *proces);
 
 #endif

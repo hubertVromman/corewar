@@ -6,7 +6,7 @@
 /*   By: sofchami <sofchami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/18 19:57:39 by sofchami          #+#    #+#             */
-/*   Updated: 2019/08/09 07:06:12 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/11 06:20:44 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,10 @@ int		read_proces()
 					}
 					else
 					{
-						increment_pc(&g_all.champ[i].proces[k], 1);
+						if (g_all.champ[i].proces[k].opcode > 1 && g_all.champ[i].proces[k].opcode < 16)
+							increment_pc(&g_all.champ[i].proces[k], g_op_tab[g_all.champ[i].proces[k].opcode - 1].nb_params + 2);
+						else
+							increment_pc(&g_all.champ[i].proces[k], 1);
 					}
 					g_all.champ[i].proces[k].opcode = read_arena_op(g_all.champ[i].proces[k].pc);
 					g_all.champ[i].proces[k].cycle_left = get_cycle_left(g_all.champ[i].proces[k].opcode);
@@ -223,6 +226,7 @@ int		do_visu_stuff()
 	{
 		if (g_all.visu.flame)
 		{
+			pthread_create(&g_all.thread_id, NULL, sound_feu, NULL);
 			int size;
 			char *s = avant_feu(&size);
 			feu(s, size);
