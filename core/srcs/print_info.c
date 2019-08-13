@@ -6,7 +6,7 @@
 /*   By: sofchami <sofchami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 02:28:56 by sofchami          #+#    #+#             */
-/*   Updated: 2019/08/10 22:00:29 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/13 02:47:33 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,15 @@ int		print_reg_info(t_proces *proces)
 	jump_to(X - 70, HEADER_HEIGHT);
 	ft_printf("Id proces = %d", proces->id_proces);
 	jump_to(X - 70, HEADER_HEIGHT + 1);
-	ft_printf("reg 0  : %5d | reg 1  : %5d | reg 2  : %5d | reg 3  : %5d", proces->reg[0],proces->reg[1], proces->reg[2], proces->reg[3]);
+	ft_printf("reg 0  : %5d | reg 1  : %5d | reg 2  : %5d", proces->reg[0],proces->reg[1], proces->reg[2]);
 	jump_to(X - 70, HEADER_HEIGHT + 2);
-	ft_printf("reg 4  : %5d | reg 5  : %5d | reg 6  : %5d | reg 7  : %5d", proces->reg[4],proces->reg[5], proces->reg[6], proces->reg[7]);
+	ft_printf("reg 3  : %5d | reg 4  : %5d | reg 5  : %5d", proces->reg[3],proces->reg[4], proces->reg[5]);
 	jump_to(X - 70, HEADER_HEIGHT + 3);
-	ft_printf("reg 8  : %5d | reg 9  : %5d | reg 10 : %5d | reg 11 : %5d", proces->reg[8],proces->reg[9], proces->reg[10], proces->reg[11]);
+	ft_printf("reg 6  : %5d | reg 7  : %5d | reg 8  : %5d", proces->reg[6],proces->reg[7], proces->reg[8]);
 	jump_to(X - 70, HEADER_HEIGHT + 4);
-	ft_printf("reg 12 : %5d | reg 13 : %5d | reg 14 : %5d | reg 15 : %5d", proces->reg[12],proces->reg[13], proces->reg[14], proces->reg[15]);
+	ft_printf("reg 9  : %5d | reg 10 : %5d | reg 11 : %5d", proces->reg[9],proces->reg[10], proces->reg[11]);
+	jump_to(X - 70, HEADER_HEIGHT + 5);
+	ft_printf("reg 12 : %5d | reg 13 : %5d | reg 14 : %5d", proces->reg[12],proces->reg[13], proces->reg[14]);
 	return (0);
 }
 
@@ -175,7 +177,7 @@ int		print_vm_info()
 
 	i = print_init_info(-1);
 	print_proces_info(i);
-	// print_reg_info(g_all.champ[0].proces);
+	print_reg_info(g_all.champ[0].proces);
 	if (g_all.max_proces <= g_all.nb_proces_tot)
 		g_all.max_proces = g_all.nb_proces_tot;
 	else

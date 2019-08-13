@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/14 17:22:58 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/11 04:28:28 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/12 20:34:44 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int		exit_func(int exit_code, int dp_usage)
 		ft_printf("malloc error\n%>", 2);
 	if (!exit_code && g_all.nb_errors)
 		exit_code = g_all.nb_errors;
+	system("pkill afplay");
 	free_all();
 	pthread_join(g_all.thread_id, NULL);
 	exit(exit_code);

@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/16 15:51:38 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/11 06:21:15 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/13 04:22:03 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int		get_ind(int *pc, int mod, int no_go, int one_byte)
 	second_char = g_all.arena[calc_pc((*pc)++)] & 0xff;
 	if (no_go)
 		return ((short)(first_char | second_char));
-	return (read_byte(calc_pc(initial_pc - (one_byte ? 0 : 4) + (mod ? (short)(first_char | second_char) % IDX_MOD : (short)(first_char | second_char))), one_byte ? 1 : 4));
+	return (read_byte(calc_pc(initial_pc - (one_byte ? 4 : 2) + (mod ? (short)(first_char | second_char) % IDX_MOD : (short)(first_char | second_char))), one_byte ? 1 : 4)); // (one_byte ? 4 : 2) a ete modifier, a verifier
 }
 
 int		read_byte(int pc, int size)
@@ -131,7 +131,6 @@ t_arg	*get_arguments(t_proces *proces)
 			to_return[i].type = T_IND;
 			to_return[i].size = 2;
 			to_return[i].value = get_ind(&tmp_pc, opcode != LLD_OP && opcode != LLDI_OP, opcode == ST_OP, opcode == STI_OP);
-
 		}
 		else if (codage & 1 << (7 - 2 * i)) // 10 -> DIR
 		{
