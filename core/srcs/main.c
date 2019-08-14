@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:28:49 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/11 04:28:27 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/13 23:56:51 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,7 +257,7 @@ void		*sound_feu()
 		system("afplay sound/feu.mp3 &");
 		sleep(11);
 	}
-	return (0);
+	pthread_exit(NULL);
 }
 
 int		main(int ac, char **av)

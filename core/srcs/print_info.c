@@ -6,7 +6,7 @@
 /*   By: sofchami <sofchami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 02:28:56 by sofchami          #+#    #+#             */
-/*   Updated: 2019/08/13 02:47:33 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/14 04:52:19 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,15 @@ int		print_reg_info(t_proces *proces)
 	jump_to(X - 70, HEADER_HEIGHT);
 	ft_printf("Id proces = %d", proces->id_proces);
 	jump_to(X - 70, HEADER_HEIGHT + 1);
-	ft_printf("reg 0  : %5d | reg 1  : %5d | reg 2  : %5d", proces->reg[0],proces->reg[1], proces->reg[2]);
+	ft_printf("reg 0  : %10d | reg 1  : %10d | reg 2  : %10d", proces->reg[0],proces->reg[1], proces->reg[2]);
 	jump_to(X - 70, HEADER_HEIGHT + 2);
-	ft_printf("reg 3  : %5d | reg 4  : %5d | reg 5  : %5d", proces->reg[3],proces->reg[4], proces->reg[5]);
+	ft_printf("reg 3  : %10d | reg 4  : %10d | reg 5  : %10d", proces->reg[3],proces->reg[4], proces->reg[5]);
 	jump_to(X - 70, HEADER_HEIGHT + 3);
-	ft_printf("reg 6  : %5d | reg 7  : %5d | reg 8  : %5d", proces->reg[6],proces->reg[7], proces->reg[8]);
+	ft_printf("reg 6  : %10d | reg 7  : %10d | reg 8  : %10d", proces->reg[6],proces->reg[7], proces->reg[8]);
 	jump_to(X - 70, HEADER_HEIGHT + 4);
-	ft_printf("reg 9  : %5d | reg 10 : %5d | reg 11 : %5d", proces->reg[9],proces->reg[10], proces->reg[11]);
+	ft_printf("reg 9  : %10d | reg 10 : %10d | reg 11 : %10d", proces->reg[9],proces->reg[10], proces->reg[11]);
 	jump_to(X - 70, HEADER_HEIGHT + 5);
-	ft_printf("reg 12 : %5d | reg 13 : %5d | reg 14 : %5d", proces->reg[12],proces->reg[13], proces->reg[14]);
+	ft_printf("reg 12 : %10d | reg 13 : %10d | reg 14 : %10d", proces->reg[12],proces->reg[13], proces->reg[14]);
 	return (0);
 }
 
@@ -112,7 +112,7 @@ int		print_proces_info(int i)
 				return (0);
 			jump_to(X, i + k + l);
 			opcode = g_all.champ[n].proces[k].opcode;
-			ft_printf("player_nb %2d  |  proces_id %3d  |  pc %4d  |  opcode " CHAR_HEX_PRINT "  |  Name OP %5s  |  cycle_left %4d\n", g_all.champ[n].player_nb, g_all.champ[n].proces[k].id_proces, g_all.champ[n].proces[k].pc, opcode, opcode > 0 && opcode < 16 ? g_op_tab[opcode - 1].name : "null", g_all.champ[n].proces[k].cycle_left);
+			ft_printf("player_nb %2d  |  proces_id %3d  |  pc %4d  |  opcode " CHAR_HEX_PRINT "  |  Name OP %5s  |  cycle_left %4d\n", g_all.champ[n].player_nb, g_all.champ[n].proces[k].id_proces, g_all.champ[n].proces[k].pc, opcode, opcode > 0 && opcode < 17 ? g_op_tab[opcode - 1].name : "null", g_all.champ[n].proces[k].cycle_left);
 		}
 		l += k;
 	}
@@ -184,10 +184,10 @@ int		print_vm_info()
 	{
 		int tmp;
 		tmp = g_all.nb_proces_tot + i;
-		while (tmp < g_all.max_proces + i)
+		while (tmp <= g_all.max_proces + i)
 		{
 			jump_to(X, tmp);
-			ft_printf("%1$/80c", ' ');
+			ft_printf("%1$/95c", ' ');
 			tmp++;
 		}
 		g_all.max_proces = g_all.nb_proces_tot;

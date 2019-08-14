@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:31:13 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/13 01:18:48 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/14 05:30:39 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP
 # define MERROR -2
 
 # define P1_COLOR 0x00008080
-// # define P1_COLOR 0x0000ffff
 # define P2_COLOR 0x00800000
 # define P3_COLOR 0xEB34DB//0x00800000
 # define P4_COLOR 0x00000080
@@ -128,14 +127,18 @@ typedef struct	s_a
 	int			nb_errors;
 	int			id_proces;
 	int			nb_proces_tot;
+	int			thread;
 	int			max_proces;
 	int			cycle;
 	int			dump_period;
 	int			next_champ_nb;
 	int			player_last_live;
+	char		*flamme;
+	int			size_flamme;
 	pthread_t	thread_id;
 	int			(*func[16]) (t_champ *champ, t_proces *proces, t_arg *args);
 	char		flags[sizeof(OP)];
+	t_proces	*queu[100];
 	t_visu		visu;
 	char		arena[MEM_SIZE];
 	int			color[MEM_SIZE];

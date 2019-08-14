@@ -6,7 +6,7 @@
 /*   By: sofchami <sofchami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/18 19:57:39 by sofchami          #+#    #+#             */
-/*   Updated: 2019/08/13 04:22:17 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/14 06:32:44 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,49 @@ int		reset_proc()
 	return (total_lives_period);
 }
 
+int		do_actions(int i, int k)
+{
+	int l;
+	t_arg *arg;
+
+	l = 0;
+	arg = get_arguments(&g_all.champ[i].proces[k]);
+	if (arg && (g_all.champ[i].proces[k].opcode > 0 && g_all.champ[i].proces[k].opcode < 17 ) && g_all.func[g_all.champ[i].proces[k].opcode - 1](&g_all.champ[i], &g_all.champ[i].proces[k], arg) != 0)
+	{
+		increment_pc(&g_all.champ[i].proces[k], g_all.champ[i].proces[k].opcode == ZJMP_OP ? 0 : arg[0].size + arg[1].size + arg[2].size + arg[3].size + g_op_tab[g_all.champ[i].proces[k].opcode - 1].codage + 1);
+		g_all.queu[l] = &g_all.champ[i].proces[k];
+		l++;
+	}
+	else
+	{
+		if (g_all.champ[i].proces[k].opcode > 1 && g_all.champ[i].proces[k].opcode < 16)
+			increment_pc(&g_all.champ[i].proces[k], g_op_tab[g_all.champ[i].proces[k].opcode - 1].nb_params + 2);
+		else
+			increment_pc(&g_all.champ[i].proces[k], 1);
+	}
+	return (l);
+}
+
+int		read_opcode(int l)
+{
+	int i;
+
+	i = -1;
+	while (++i < l)
+	{
+		g_all.queu[i]->opcode = read_arena_op(g_all.queu[i]->pc);
+		g_all.queu[i]->cycle_left = get_cycle_left(g_all.queu[i]->opcode);
+	}
+	return (0);
+}
+
 int		read_proces()
 {
 	int i;
 	int k;
-	t_arg *arg;
+	int		l;
 
+	ft_bzero(&g_all.queu, sizeof(g_all.queu));
 	i = g_all.nb_champ;
 	while (i--)
 	{
@@ -68,20 +105,7 @@ int		read_proces()
 				g_all.champ[i].proces[k].cycle_left--;
 				if (!g_all.champ[i].proces[k].cycle_left)
 				{
-					arg = get_arguments(&g_all.champ[i].proces[k]);
-					if (arg && (g_all.champ[i].proces[k].opcode > 0 && g_all.champ[i].proces[k].opcode < 17 ) && g_all.func[g_all.champ[i].proces[k].opcode - 1](&g_all.champ[i], &g_all.champ[i].proces[k], arg) != 0)
-					{
-						increment_pc(&g_all.champ[i].proces[k], g_all.champ[i].proces[k].opcode == ZJMP_OP ? 0 : arg[0].size + arg[1].size + arg[2].size + arg[3].size + g_op_tab[g_all.champ[i].proces[k].opcode - 1].codage + 1);
-					}
-					else
-					{
-						if (g_all.champ[i].proces[k].opcode > 1 && g_all.champ[i].proces[k].opcode < 16)
-							increment_pc(&g_all.champ[i].proces[k], g_op_tab[g_all.champ[i].proces[k].opcode - 1].nb_params + 2);
-						else
-							increment_pc(&g_all.champ[i].proces[k], 1);
-					}
-					g_all.champ[i].proces[k].opcode = read_arena_op(g_all.champ[i].proces[k].pc);
-					g_all.champ[i].proces[k].cycle_left = get_cycle_left(g_all.champ[i].proces[k].opcode);
+					l = do_actions(i, k);
 				}
 			}
 			else // utilité de ce else ? normalement il devrait pas rentrer dedans...
@@ -91,6 +115,7 @@ int		read_proces()
 			}
 		}
 	}
+	read_opcode(l);
 	// if (!g_all.flags[VISU]) print_debug_info();
 	return (0);
 }
@@ -197,11 +222,19 @@ int feu(char *s, int s_size)
 	return 9;
 }
 
+void	*test_thread()
+{
+	g_all.flamme = avant_feu(&g_all.size_flamme);
+	feu(g_all.flamme, g_all.size_flamme);
+	pthread_exit(NULL);
+}
+
 int		do_visu_stuff()
 {
 	int		i;
 	int		sleep_time;
 	int		current_cps;
+	pthread_t check;
 
 	current_cps = g_all.visu.max_cps;
 	update_cps();
@@ -226,10 +259,15 @@ int		do_visu_stuff()
 	{
 		if (g_all.visu.flame)
 		{
-			pthread_create(&g_all.thread_id, NULL, sound_feu, NULL);
-			int size;
-			char *s = avant_feu(&size);
-			feu(s, size);
+			if (!g_all.thread)
+				pthread_create(&g_all.thread_id, NULL, sound_feu, NULL);
+			g_all.thread = 1;;
+			// int size;
+			// char *s = avant_feu(&size);
+			// g_all.flamme = avant_feu(&g_all.size_flamme);
+			pthread_create(&check, NULL, test_thread, NULL);
+			// feu(s, size);
+			pthread_join(check, NULL);
 		}
 		g_all.visu.skipped_frames = 0;
 		return (0);
