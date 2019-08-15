@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/16 15:51:38 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/13 04:22:03 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/15 06:32:29 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,30 +19,41 @@ int		calc_pc(int pc)
 
 int		increment_pc(t_proces *proces, int nb_byte)
 {
+	int pos;
+
+	pos = jump_to_buf(proces->pc);
 	if (g_all.flags[VISU])
 	{
-		jump_to_mem(proces->pc);
-		ft_printf(RGB_PRINT CHAR_HEX_PRINT, (g_all.color[proces->pc] >> 16) & 0xff, (g_all.color[proces->pc] >> 8) & 0xff, (g_all.color[proces->pc] >> 0) & 0xff, g_all.arena[proces->pc]);
+		// jump_to_mem(proces->pc);
+		write_to_buffer(g_all.visu.next_frame + pos, g_all.arena[proces->pc], proces->color_rgb, proces->color_rgb);
+		// ft_printf(RGB_PRINT CHAR_HEX_PRINT, (g_all.color[proces->pc] >> 16) & 0xff, (g_all.color[proces->pc] >> 8) & 0xff, (g_all.color[proces->pc] >> 0) & 0xff, g_all.arena[proces->pc]);
 	}
 	proces->pc = calc_pc(proces->pc + nb_byte);
+	pos = jump_to_buf(proces->pc + nb_byte);
 	if (g_all.flags[VISU])
 	{
-		jump_to_mem(proces->pc);
-		ft_printf(RGB_PRINT_BG COLOR_PRINT CHAR_HEX_PRINT, (proces->color_rgb >> 16) & 0xff, (proces->color_rgb >> 8) & 0xff, (proces->color_rgb >> 0) & 0xff, 30, g_all.arena[proces->pc]);
-		ft_printf(RESET_COLOR);
+		write_to_buffer(g_all.visu.next_frame + pos, g_all.arena[proces->pc], proces->color_rgb, proces->color_rgb);
+		// jump_to_mem(proces->pc);
+		// ft_printf(RGB_PRINT_BG COLOR_PRINT CHAR_HEX_PRINT, (proces->color_rgb >> 16) & 0xff, (proces->color_rgb >> 8) & 0xff, (proces->color_rgb >> 0) & 0xff, 30, g_all.arena[proces->pc]);
+		// ft_printf(RESET_COLOR);
+		// g_all.visu.current_frame.back_color = proces->color_rgb;
 	}
 	return (proces->pc);
 }
 
 int		write_byte(t_proces *proces, int address, char to_write)
 {
+	int pos;
+
 	address = calc_pc(address);
 	g_all.arena[address] = to_write;
 	if (g_all.flags[VISU])
 	{
-		g_all.color[address] = proces->color_rgb;
-		jump_to_mem(address);
-		ft_printf(RGB_PRINT CHAR_HEX_PRINT, (proces->color_rgb >> 16) & 0xff, (proces->color_rgb >> 8) & 0xff, (proces->color_rgb >> 0) & 0xff, g_all.arena[address]);
+		pos = jump_to_buf(address);
+		write_to_buffer(g_all.visu.next_frame + pos, to_write, proces->color_rgb, proces->color_rgb);
+		// g_all.color[address] = proces->color_rgb;
+		// jump_to_mem(address);
+		// ft_printf(RGB_PRINT CHAR_HEX_PRINT, (proces->color_rgb >> 16) & 0xff, (proces->color_rgb >> 8) & 0xff, (proces->color_rgb >> 0) & 0xff, g_all.arena[address]);
 	}
 	proces = NULL;
 	return (0);

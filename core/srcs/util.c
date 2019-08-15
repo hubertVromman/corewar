@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/17 16:16:25 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/12 22:40:22 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/15 07:14:10 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int		dump_memory()
 	return (0);
 }
 
-int		dump_memory_colored() // manque protection et utile que debut de game
+int		dump_memory_colored()
 {
 	int		i;
 	int		p;
@@ -133,6 +133,30 @@ int		dump_memory_colored() // manque protection et utile que debut de game
 			jump_to(2, l);
 		else
 			ft_printf(" ");
+		if (p < (g_all.nb_champ - 1) && i + 1 == g_all.champ[p + 1].proces->pc)
+			p++;
+	}
+	return (0);
+}
+
+int		init_current_frame()
+{
+	int i;
+	int p;
+	int pos;
+
+	i = -1;
+	p = 0;
+	g_all.visu.current_frame = ft_memalloc(g_all.visu.nb_cols * g_all.visu.nb_lines);
+	ft_bzero(g_all.visu.current_frame, g_all.visu.nb_cols * g_all.visu.nb_lines);
+	// ft_memset(g_all.visu.current_frame, ' ', g_all.visu.nb_cols * g_all.visu.nb_lines);
+	while (++i < MEM_SIZE)
+	{
+		pos = jump_to_buf(i);
+		if (i >= g_all.champ[p].proces->pc && i < (g_all.champ[p].proces->pc + g_all.champ[p].exec_size))
+		{
+			write_to_buffer(g_all.visu.current_frame + pos, g_all.arena[i], g_all.champ[p].proces->color_rgb, g_all.champ[p].proces->color_rgb);
+		}
 		if (p < (g_all.nb_champ - 1) && i + 1 == g_all.champ[p + 1].proces->pc)
 			p++;
 	}

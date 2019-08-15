@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:31:13 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/14 05:30:39 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/15 07:07:06 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,6 +184,7 @@ int				create_proces(int pc, t_proces *parent, t_champ *champ);
 int				detele_proces(t_champ *champ, int id_proces);
 int				dump_memory();
 int				dump_memory_colored();
+int				init_current_frame();
 
 /*
 ** main.c
@@ -240,6 +241,7 @@ int				operation_zjmp(t_champ *champ, t_proces *proces, t_arg *args);
 void			exit_ctrl_c(int c);
 int				jump_to(int x, int y);
 int				jump_to_mem(int pc);
+int				jump_to_buf(int pc);
 
 /*
 ** print_info.c

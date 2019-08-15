@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:28:49 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/13 23:56:51 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/15 07:14:29 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -316,6 +316,7 @@ int		main(int ac, char **av)
 	// ft_printf("%#.8x\n", pr.back_color);
 	// ft_printf("%d\n", sizeof(t_printable));
 	init_all(ac, av);
+	init_current_frame();
 	display_start();
 	beg_battle();
 	exit_func(0, 0);
