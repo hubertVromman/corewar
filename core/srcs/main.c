@@ -138,12 +138,6 @@ int		display_start()
 
 	if (g_all.flags[VISU])
 	{
-		signal(SIGINT, exit_ctrl_c);
-		pthread_create(&(g_all.visu.reader_thread), NULL, reader_func, NULL);
-		struct ttysize	ts;
-		ioctl(0, TIOCGSIZE, &ts);
-		g_all.visu.nb_cols = ts.ts_cols;
-		g_all.visu.nb_lines = ts.ts_lines;
 		ft_printf(HIDE_CURSOR SAVE_SCREEN "\e[H");
 		dump_memory_colored();
 		for (int j = 0; j < g_all.nb_champ; j++)
@@ -204,10 +198,68 @@ int		sort_champs()
 	return (0);
 }
 
+int		save_memory_colored()
+{
+	int		i;
+	int		p;
+	int		l;
+
+	i = -1;
+	p = 0;
+	l = HEADER_HEIGHT;
+	ft_printf("<b>");
+	jump_to(2, HEADER_HEIGHT);
+	while (++i < MEM_SIZE)
+	{
+		if (i >= g_all.champ[p].proces->pc && i < (g_all.champ[p].proces->pc + g_all.champ[p].exec_size))
+			ft_printf(RGB_PRINT "%.2hhx", (g_all.champ[p].color_rgb >> 16) & 0xff, (g_all.champ[p].color_rgb >> 8) & 0xff, (g_all.champ[p].color_rgb >> 0) & 0xff, g_all.arena[i]);
+		else
+			ft_printf(RGB_PRINT "%.2hhx", 0x80, 0x80, 0x80, g_all.arena[i]);
+		if (!((i + 1) % 64) && ++l)
+			jump_to(2, l);
+		else
+			ft_printf(" ");
+		if (p < (g_all.nb_champ - 1) && i + 1 == g_all.champ[p + 1].proces->pc)
+			p++;
+	}
+	return (0);
+}
+
 int		init_visu()
 {
+	int		i;
+	int		j;
+	struct ttysize	ts;
+
+	ioctl(0, TIOCGSIZE, &ts);
+	g_all.visu.nb_cols = ts.ts_cols;
+	g_all.visu.nb_lines = ts.ts_lines;
+	ft_memset(g_all.color, 0x80, sizeof(g_all.color));
+	i = -1;
+	while (++i < g_all.nb_champ)
+	{
+		if (i == 0)
+			g_all.champ[i].color_rgb = P1_COLOR;
+		else if (i == 1)
+			g_all.champ[i].color_rgb = P2_COLOR;
+		else if (i == 2)
+			g_all.champ[i].color_rgb = P3_COLOR;
+		else if (i == 3)
+			g_all.champ[i].color_rgb = P4_COLOR;
+		j = -1;
+		while (++j < g_all.champ[i].exec_size)
+			g_all.color[(g_all.pos_depart * i) + j] = g_all.champ[i].color_rgb;
+	}
 	g_all.visu.pause = 1;
 	g_all.visu.max_cps = 50;
+	if (!(g_all.visu.flame_buf = ft_memalloc(sizeof(t_printable) * g_all.visu.nb_cols * FLAME_HEIGHT)))
+		exit_func(MERROR, 0);
+	if (!(g_all.visu.current_frame = ft_memalloc(sizeof(t_printable) * g_all.visu.nb_cols * g_all.visu.nb_lines)))
+		exit_func(MERROR, 0);
+	if (!(g_all.visu.next_frame = ft_memalloc(sizeof(t_printable) * g_all.visu.nb_cols * g_all.visu.nb_lines)))
+		exit_func(MERROR, 0);
+	signal(SIGINT, exit_ctrl_c);
+	pthread_create(&(g_all.visu.thread_reader), NULL, reader_func, NULL);
 	return (0);
 }
 
@@ -220,33 +272,22 @@ int		init_all(int ac, char **av)
 	g_all.header_size = 16 + PROG_NAME_LENGTH + COMMENT_LENGTH;
 	g_all.cycle_to_die = CYCLE_TO_DIE;
 	parse_arg(ac, av);
-	if (g_all.nb_champ < 1)
+	if (g_all.nb_champ < 1 || g_all.nb_champ > 4)
 		exit_func(-1, 1);
 	g_all.pos_depart = MEM_SIZE / g_all.nb_champ;
 	sort_champs();
-	ft_memset(g_all.color, 0x80, sizeof(g_all.color));
+	if (g_all.flags[VISU])
+		init_visu();
 	while (++i < g_all.nb_champ)
 	{
-		g_all.champ[i].color_id = 31 + i % 6;
-		if (i == 0)
-			g_all.champ[i].color_rgb = P1_COLOR;
-		else if (i == 1)
-			g_all.champ[i].color_rgb = P2_COLOR;
-		else if (i == 2)
-			g_all.champ[i].color_rgb = P3_COLOR;
-		else if (i == 3)
-			g_all.champ[i].color_rgb = P4_COLOR;
-		g_all.champ[i].player_nb = 0 - g_all.champ[i].player_nb;
+		g_all.champ[i].player_nb = 0 - g_all.champ[i].player_nb; // a changer
 		ft_memcpy(g_all.arena + (g_all.pos_depart * i),
 			g_all.champ[i].exec_file, g_all.champ[i].exec_size);
-		for (int j = 0; j < g_all.champ[i].exec_size; j++)
-			g_all.color[(g_all.pos_depart * i) + j] = g_all.champ[i].color_rgb;
 		create_proces(g_all.pos_depart * i, NULL, &(g_all.champ[i])); //gestion d'erreur
 		g_all.champ[i].proces[0].opcode = g_all.arena[g_all.champ[i].proces->pc];
 		g_all.champ[i].proces[0].cycle_left = get_cycle_left(g_all.champ[i].proces->opcode);
 	}
 	init_func_pointer();
-	init_visu();
 	return (0);
 }
 
@@ -260,8 +301,15 @@ void		*sound_feu()
 	pthread_exit(NULL);
 }
 
+#include <limits.h>
+
 int		main(int ac, char **av)
 {
+	ft_printf("%d\n", OPEN_MAX);
+	// t_printable pr;
+	// pr.back_color = 0x08888888 & 0x00ffffff;
+	// ft_printf("%#.8x\n", pr.back_color);
+	// ft_printf("%d\n", sizeof(t_printable));
 	init_all(ac, av);
 	display_start();
 	beg_battle();

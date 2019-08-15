@@ -14,6 +14,9 @@
 
 int		free_all(void)
 {
+	free(g_all.visu.flame_buf);
+	free(g_all.visu.current_frame);
+	free(g_all.visu.next_frame);
 	return (0);
 }
 
@@ -44,6 +47,6 @@ int		exit_func(int exit_code, int dp_usage)
 		exit_code = g_all.nb_errors;
 	system("pkill afplay");
 	free_all();
-	pthread_join(g_all.thread_id, NULL);
+	// pthread_join(g_all.thread_id, NULL);
 	exit(exit_code);
 }

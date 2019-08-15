@@ -41,7 +41,7 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP
 
 # define P1_COLOR 0x00008080
 # define P2_COLOR 0x00800000
-# define P3_COLOR 0xEB34DB//0x00800000
+# define P3_COLOR 0x00EB34DB//0x00800000
 # define P4_COLOR 0x00000080
 # define BORDER 0x00A8A8A8
 
@@ -57,8 +57,20 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP
 # define MAGENTA "\e[35m"
 # define CYAN "\e[36m"
 
-# define X 265
 # define HEADER_HEIGHT 10
+# define MEMORY_OFFSET_X 2
+# define FLAME_HEIGHT 18
+
+# define X 265
+
+# define NB_OPERATIONS sizeof(g_op_tab) / sizeof(t_op)
+
+typedef struct	s_printable
+{
+	char			to_print;
+	unsigned int	fore_color : 24;
+	unsigned int	back_color : 24;
+}				t_printable;
 
 typedef struct	s_arg
 {
@@ -91,7 +103,6 @@ typedef struct	s_champ
 	int			exec_size;
 	int			last_live;
 	int			player_nb;
-	int			color_id;
 	int			color_rgb;
 	t_proces	*proces;
 	char		*file_name;
@@ -112,8 +123,16 @@ typedef struct	s_visu
 	int			nb_frames_to_skip;
 	int			skipped_frames;
 	int			flame;
+	int			offset_memory_x;
+	int			offset_memory_y;
 	char		*feu;
-	pthread_t	reader_thread;
+	t_printable	*flame_buf;
+	t_printable	*current_frame;
+	t_printable	*next_frame;
+	pthread_t	thread_calcul;
+	pthread_t	thread_flamme;
+	pthread_t	thread_reader;
+	pthread_t	thread_sound;
 }				t_visu;
 
 typedef struct	s_a
@@ -127,16 +146,16 @@ typedef struct	s_a
 	int			nb_errors;
 	int			id_proces;
 	int			nb_proces_tot;
-	int			thread;
 	int			max_proces;
+	int			check;
+	int			end;
 	int			cycle;
 	int			dump_period;
 	int			next_champ_nb;
 	int			player_last_live;
 	char		*flamme;
 	int			size_flamme;
-	pthread_t	thread_id;
-	int			(*func[16]) (t_champ *champ, t_proces *proces, t_arg *args);
+	int			(*func[NB_OPERATIONS]) (t_champ *champ, t_proces *proces, t_arg *args);
 	char		flags[sizeof(OP)];
 	t_proces	*queu[100];
 	t_visu		visu;

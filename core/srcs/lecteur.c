@@ -95,6 +95,7 @@ int		read_proces()
 
 	ft_bzero(&g_all.queu, sizeof(g_all.queu));
 	i = g_all.nb_champ;
+	l = 0;
 	while (i--)
 	{
 		k = g_all.champ[i].nb_proces;
@@ -178,10 +179,9 @@ int feu(char *s, int s_size)
 	int height = g_all.visu.nb_lines;
 	int size = width * height;
 	char *b;
-	static int sofiane = 1;
-	if (sofiane == 1)
-		g_all.visu.feu = ft_memalloc(size * 2 + 1);
-	b = g_all.visu.feu;
+
+
+	b = (void*)g_all.visu.flame_buf;
 	char *ch = " .:^*xsS#$";
 	int color;
 
@@ -218,7 +218,6 @@ int feu(char *s, int s_size)
 		}
 	}
 	write(1, s, s_size);
-	sofiane--;
 	return 9;
 }
 
@@ -226,6 +225,35 @@ void	*test_thread()
 {
 	g_all.flamme = avant_feu(&g_all.size_flamme);
 	feu(g_all.flamme, g_all.size_flamme);
+	pthread_exit(NULL);
+}
+
+void	*th_calcul()
+{
+	int i;
+
+	i = -1;
+	g_all.visu.nb_frames_to_skip = 1;
+	while (++i < g_all.visu.nb_frames_to_skip && g_all.end)
+	{
+		g_all.cycle++;
+		read_proces();
+		g_all.ctd++;
+		if (g_all.ctd == g_all.cycle_to_die)
+		{
+			g_all.ctd = 0;
+			if ((g_all.end = reset_proc()) >= NBR_LIVE || g_all.check == MAX_CHECKS)
+			{
+				g_all.cycle_to_die -= CYCLE_DELTA;
+				g_all.check = 0;
+				if (g_all.cycle_to_die <= 0 || g_all.nb_proces_tot == 0)
+				{
+					g_all.end = 0;
+				}
+			}
+		g_all.check++;
+		}
+	}
 	pthread_exit(NULL);
 }
 
@@ -240,6 +268,7 @@ int		do_visu_stuff()
 	update_cps();
 	i = 0;
 	sleep_time = 1000 / g_all.visu.max_cps;
+	pthread_create(&g_all.visu.thread_calcul, NULL, th_calcul, NULL);
 	while (i < sleep_time)
 	{
 		i += 10;
@@ -251,6 +280,7 @@ int		do_visu_stuff()
 			i = 0;
 		}
 	}
+	pthread_join(g_all.visu.thread_calcul, NULL);
 	if (g_all.visu.pause)
 	{
 		return (1);
@@ -259,15 +289,10 @@ int		do_visu_stuff()
 	{
 		if (g_all.visu.flame)
 		{
-			if (!g_all.thread)
-				pthread_create(&g_all.thread_id, NULL, sound_feu, NULL);
-			g_all.thread = 1;;
-			// int size;
-			// char *s = avant_feu(&size);
-			// g_all.flamme = avant_feu(&g_all.size_flamme);
+			if (!g_all.visu.thread_sound)
+				pthread_create(&g_all.visu.thread_sound, NULL, sound_feu, NULL);
 			pthread_create(&check, NULL, test_thread, NULL);
-			// feu(s, size);
-			pthread_join(check, NULL);
+			// pthread_join(check, NULL);
 		}
 		g_all.visu.skipped_frames = 0;
 		return (0);
@@ -276,37 +301,36 @@ int		do_visu_stuff()
 
 int		beg_battle()
 {
-	int end;
-	int i;
-	int check;
-
-	end = 1;
-	i = -1;
-	check = 0;
-	while (end)
+	g_all.end = 1;
+	while (g_all.end)
 	{
-		if (g_all.flags[VISU] && do_visu_stuff())
-			continue;
-		g_all.cycle++;
-		read_proces();
-		g_all.ctd++;
-		if (g_all.ctd == g_all.cycle_to_die)
+		// if (g_all.flags[VISU] && do_visu_stuff())
+		if (g_all.flags[VISU])
+				do_visu_stuff();
+			// continue;
+		else
 		{
-			g_all.ctd = 0;
-			if ((end = reset_proc()) >= NBR_LIVE || check == MAX_CHECKS)
+			g_all.cycle++;
+			read_proces();
+			g_all.ctd++;
+			if (g_all.ctd == g_all.cycle_to_die)
 			{
-				g_all.cycle_to_die -= CYCLE_DELTA;
-				check = 0;
-				if (g_all.cycle_to_die <= 0 || g_all.nb_proces_tot == 0)
+				g_all.ctd = 0;
+				if ((g_all.end = reset_proc()) >= NBR_LIVE || g_all.check == MAX_CHECKS)
 				{
-					end = 0;
+					g_all.cycle_to_die -= CYCLE_DELTA;
+					g_all.check = 0;
+					if (g_all.cycle_to_die <= 0 || g_all.nb_proces_tot == 0)
+					{
+						g_all.end = 0;
+					}
 				}
+				g_all.check++;
 			}
-			check++;
 		}
 		if (g_all.flags[VISU])print_vm_info();
 	}
 	if (!g_all.flags[VISU])ft_printf("Contestant %d, \"%s\", has won !\n", g_all.champ[g_all.player_last_live].player_nb, g_all.champ[g_all.player_last_live].player_name);
-	else while(1);
+	else {ft_printf("fin\n");while(1);}
 	return (0);
 }
