@@ -128,67 +128,19 @@ int		update_cps()
 	return (0);
 }
 
-char *avant_feu(int *si)
-{
-	int		i;
-	int		l;
-
-	char *s = NULL;
-	int s_size = 0;
-	char *buffer;
-	int siz;
-
-	i = 3583;
-	l = HEADER_HEIGHT + 56;
-	// ft_printf("<b>");
-	siz = ft_printf("\e[%d;%dH  %#>", HEADER_HEIGHT + 56 + 1, 0 + 1, &buffer);
-	s = realloc(s, s_size + siz);
-	ft_memcpy(s + s_size, buffer, siz);
-				free(buffer);
-	s_size += siz;
-	while (++i < MEM_SIZE)
-	{
-		siz = ft_printf(RGB_PRINT "%.2hhx%#>", (g_all.color[i] >> 16) & 0xff, (g_all.color[i] >> 8) & 0xff, (g_all.color[i] >> 0) & 0xff, g_all.arena[i], &buffer);
-		s = realloc(s, s_size + siz);
-		ft_memcpy(s + s_size, buffer, siz);
-				free(buffer);
-		s_size += siz;
-		if (!((i + 1) % 64) && ++l)
-		{
-			// jump_to(0, l);
-			siz = ft_printf("\e[%d;%dH %#>", l + 1, 1, &buffer);
-			s = realloc(s, s_size + siz);
-			ft_memcpy(s + s_size, buffer, siz);
-				free(buffer);
-			s_size += siz;
-		}
-		siz = ft_printf(" %#>", &buffer);
-			s = realloc(s, s_size + siz);
-			ft_memcpy(s + s_size, buffer, siz);
-				free(buffer);
-			s_size += siz;
-	}
-	// ft_printf("</>");
-	*si = s_size;
-	return s;
-}
-
-int feu(char *s, int s_size)
+void	*th_feu()
 {
 	int width = g_all.visu.nb_cols;
-	int height = g_all.visu.nb_lines;
+	int height = FLAME_HEIGHT;
 	int size = width * height;
 	char *b;
 
-
-	b = (void*)g_all.visu.flame_buf;
+	b = g_all.visu.feu;
 	char *ch = " .:^*xsS#$";
 	int color;
 
-	int siz;
-	// ft_printf("\e[%d;%dH", height - 18, width);
-	for (int i = 0; i < width/9; i++)
-		b[rand() % width + width * (height-1)]=65;
+	for (int i = 0; i < width / 9; i++)
+		b[rand() % width + width * (height - 1)] = 65;
 	for (int i = 0; i < size; i++)
 	{
 		b[i]=(b[i]+b[i+1]+b[i+width]+b[i+width+1])/4;
@@ -202,29 +154,10 @@ int feu(char *s, int s_size)
 			color = 0;
 		if(i<size && i > size - 17 * width)
 		{
-			char *buffer;
-			siz = 0;
 			if (color != 0 && b[i] != 0)
-				siz = ft_printf("\e[%d;%dH\e[%dm%c%#>", i/width,i%width,30 + color, ch[(b[i]>9 ? 9 : b[i])], &buffer);
-			else if (i%width > 193 || i/width > 74)
-				siz = ft_printf("\e[%d;%dH\e[%dm%c%#>", i/width,i%width,30 + color, ' ', &buffer);
-			if (siz)
-			{
-				s = realloc(s, s_size + siz);
-				ft_memcpy(s + s_size, buffer, siz);
-				s_size += siz;
-				free(buffer);
-			}
+				ft_printf("\e[%d;%dH\e[%dm%c%#>", i/width,i%width,30 + color, ch[(b[i]>9 ? 9 : b[i])]);
 		}
 	}
-	write(1, s, s_size);
-	return 9;
-}
-
-void	*test_thread()
-{
-	g_all.flamme = avant_feu(&g_all.size_flamme);
-	feu(g_all.flamme, g_all.size_flamme);
 	pthread_exit(NULL);
 }
 
@@ -262,13 +195,16 @@ int		do_visu_stuff()
 	int		i;
 	int		sleep_time;
 	int		current_cps;
-	pthread_t check;
 
 	current_cps = g_all.visu.max_cps;
 	update_cps();
 	i = 0;
 	sleep_time = 1000 / g_all.visu.max_cps;
-	pthread_create(&g_all.visu.thread_calcul, NULL, th_calcul, NULL);
+	if (!g_all.visu.pause)
+	{
+		pthread_create(&g_all.visu.thread_calcul, NULL, th_calcul, NULL);
+		pthread_create(&g_all.visu.thread_flamme, NULL, th_feu, NULL);
+	}
 	while (i < sleep_time)
 	{
 		i += 10;
@@ -277,10 +213,12 @@ int		do_visu_stuff()
 		{
 			update_cps();
 			current_cps = g_all.visu.max_cps;
+			sleep_time = 1000 / g_all.visu.max_cps;
 			i = 0;
 		}
 	}
 	pthread_join(g_all.visu.thread_calcul, NULL);
+	pthread_join(g_all.visu.thread_flamme, NULL);
 	if (g_all.visu.pause)
 	{
 		return (1);
@@ -291,8 +229,6 @@ int		do_visu_stuff()
 		{
 			if (!g_all.visu.thread_sound)
 				pthread_create(&g_all.visu.thread_sound, NULL, sound_feu, NULL);
-			pthread_create(&check, NULL, test_thread, NULL);
-			// pthread_join(check, NULL);
 		}
 		g_all.visu.skipped_frames = 0;
 		return (0);

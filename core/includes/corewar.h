@@ -153,8 +153,6 @@ typedef struct	s_a
 	int			dump_period;
 	int			next_champ_nb;
 	int			player_last_live;
-	char		*flamme;
-	int			size_flamme;
 	int			(*func[NB_OPERATIONS]) (t_champ *champ, t_proces *proces, t_arg *args);
 	char		flags[sizeof(OP)];
 	t_proces	*queu[100];

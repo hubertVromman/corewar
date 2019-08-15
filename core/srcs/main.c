@@ -231,6 +231,7 @@ int		init_visu()
 	int		j;
 	struct ttysize	ts;
 
+	srand(time(NULL));
 	ioctl(0, TIOCGSIZE, &ts);
 	g_all.visu.nb_cols = ts.ts_cols;
 	g_all.visu.nb_lines = ts.ts_lines;
@@ -257,6 +258,8 @@ int		init_visu()
 	if (!(g_all.visu.current_frame = ft_memalloc(sizeof(t_printable) * g_all.visu.nb_cols * g_all.visu.nb_lines)))
 		exit_func(MERROR, 0);
 	if (!(g_all.visu.next_frame = ft_memalloc(sizeof(t_printable) * g_all.visu.nb_cols * g_all.visu.nb_lines)))
+		exit_func(MERROR, 0);
+	if (!(g_all.visu.feu = ft_memalloc(g_all.visu.nb_cols * FLAME_HEIGHT * 2)))
 		exit_func(MERROR, 0);
 	signal(SIGINT, exit_ctrl_c);
 	pthread_create(&(g_all.visu.thread_reader), NULL, reader_func, NULL);
