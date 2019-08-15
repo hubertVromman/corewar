@@ -125,9 +125,11 @@ typedef struct	s_visu
 	int			flame;
 	int			offset_memory_x;
 	int			offset_memory_y;
+	int			offset_flame_y;
 	char		*feu;
 	t_printable	*flame_buf;
 	t_printable	*current_frame;
+	t_printable	*current_frame_flame;
 	t_printable	*next_frame;
 	pthread_t	thread_calcul;
 	pthread_t	thread_flamme;

@@ -236,6 +236,7 @@ int		init_visu()
 	g_all.visu.nb_cols = ts.ts_cols;
 	g_all.visu.nb_lines = ts.ts_lines;
 	ft_memset(g_all.color, 0x80, sizeof(g_all.color));
+	g_all.visu.offset_flame_y = g_all.visu.nb_lines - 18;
 	i = -1;
 	while (++i < g_all.nb_champ)
 	{
@@ -253,9 +254,11 @@ int		init_visu()
 	}
 	g_all.visu.pause = 1;
 	g_all.visu.max_cps = 50;
-	if (!(g_all.visu.flame_buf = ft_memalloc(sizeof(t_printable) * g_all.visu.nb_cols * FLAME_HEIGHT)))
+	if (!(g_all.visu.flame_buf = malloc(sizeof(t_printable) * g_all.visu.nb_cols * FLAME_HEIGHT)))
 		exit_func(MERROR, 0);
 	if (!(g_all.visu.current_frame = ft_memalloc(sizeof(t_printable) * g_all.visu.nb_cols * g_all.visu.nb_lines)))
+		exit_func(MERROR, 0);
+	if (!(g_all.visu.current_frame_flame = ft_memalloc(sizeof(t_printable) * g_all.visu.nb_cols * g_all.visu.nb_lines)))
 		exit_func(MERROR, 0);
 	if (!(g_all.visu.next_frame = ft_memalloc(sizeof(t_printable) * g_all.visu.nb_cols * g_all.visu.nb_lines)))
 		exit_func(MERROR, 0);

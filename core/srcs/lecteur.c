@@ -139,24 +139,23 @@ void	*th_feu()
 	char *ch = " .:^*xsS#$";
 	int color;
 
+	ft_bzero(g_all.visu.flame_buf, sizeof(t_printable) * FLAME_HEIGHT * width);
+
 	for (int i = 0; i < width / 9; i++)
 		b[rand() % width + width * (height - 1)] = 65;
 	for (int i = 0; i < size; i++)
 	{
 		b[i]=(b[i]+b[i+1]+b[i+width]+b[i+width+1])/4;
 		if (b[i] > 15)
-			color=4;
+			color = 0x000000ff;
 		else if (b[i]>9)
-			color = 3;
+			color = 0x00ffff00;
 		else if (b[i]>4)
-			color = 1;
+			color = 0x00ff0000;
 		else
 			color = 0;
-		if(i<size && i > size - 17 * width)
-		{
-			if (color != 0 && b[i] != 0)
-				ft_printf("\e[%d;%dH\e[%dm%c%#>", i/width,i%width,30 + color, ch[(b[i]>9 ? 9 : b[i])]);
-		}
+		if (color != 0 && b[i] != 0)
+			write_to_buffer(g_all.visu.flame_buf + i, ch[(b[i]>9 ? 9 : b[i])], color, 0);
 	}
 	pthread_exit(NULL);
 }
@@ -190,6 +189,14 @@ void	*th_calcul()
 	pthread_exit(NULL);
 }
 
+int		print_char(t_printable printable)
+{
+	ft_printf(RGB_PRINT_BG, (printable.back_color >> 16) & 0xff, (printable.back_color >> 8) & 0xff, (printable.back_color >> 0) & 0xff);
+	ft_printf(RGB_PRINT, (printable.fore_color >> 16) & 0xff, (printable.fore_color >> 8) & 0xff, (printable.fore_color >> 0) & 0xff);
+	ft_printf("%c", printable.to_print);
+	return (0);
+}
+
 int		do_visu_stuff()
 {
 	int		i;
@@ -202,8 +209,11 @@ int		do_visu_stuff()
 	sleep_time = 1000 / g_all.visu.max_cps;
 	if (!g_all.visu.pause)
 	{
+		ft_bzero(g_all.visu.next_frame, (g_all.visu.nb_lines - FLAME_HEIGHT) * g_all.visu.nb_cols * sizeof(t_printable));
+		ft_memcpy(g_all.visu.next_frame + g_all.visu.offset_flame_y * g_all.visu.nb_cols, g_all.visu.current_frame + g_all.visu.offset_flame_y * g_all.visu.nb_cols, FLAME_HEIGHT * g_all.visu.nb_cols * sizeof(t_printable));
 		pthread_create(&g_all.visu.thread_calcul, NULL, th_calcul, NULL);
-		pthread_create(&g_all.visu.thread_flamme, NULL, th_feu, NULL);
+		if (g_all.visu.flame)
+			pthread_create(&g_all.visu.thread_flamme, NULL, th_feu, NULL);
 	}
 	while (i < sleep_time)
 	{
@@ -225,12 +235,24 @@ int		do_visu_stuff()
 	}
 	else
 	{
+		for (int l = 0; l < FLAME_HEIGHT * g_all.visu.nb_cols; l++)
+		{
+			if (g_all.visu.flame_buf[l].to_print)
+				ft_memcpy(g_all.visu.next_frame + g_all.visu.offset_flame_y * g_all.visu.nb_cols + l, g_all.visu.flame_buf + l, sizeof(t_printable));
+		}
+		for (int l = 0; l < g_all.visu.nb_lines * g_all.visu.nb_cols; l++)
+		{
+			if (g_all.visu.next_frame[l].to_print)
+			{
+				jump_to(l % g_all.visu.nb_cols, l / g_all.visu.nb_cols);
+				print_char(g_all.visu.next_frame[l]);
+			}
+		}
 		if (g_all.visu.flame)
 		{
 			if (!g_all.visu.thread_sound)
 				pthread_create(&g_all.visu.thread_sound, NULL, sound_feu, NULL);
 		}
-		g_all.visu.skipped_frames = 0;
 		return (0);
 	}
 }
