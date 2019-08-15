@@ -95,7 +95,7 @@ typedef struct	s_proces
 	t_champ		*champ;
 }				t_proces;
 
-typedef struct	s_champ
+struct			s_champ
 {
 	int			nb_proces;
 	int			lives_period;
@@ -111,7 +111,7 @@ typedef struct	s_champ
 	char		*player_name;
 	char		*comment;
 	size_t		file_size;
-}				t_champ;
+};
 
 typedef struct	s_visu
 {
@@ -252,5 +252,10 @@ int				print_vm_info();
 int				print_border();
 int				print_border_side();
 int				print_reg_info(t_proces *proces);
+
+/*
+** util_visu.c
+*/
+int				write_to_buffer(t_printable *strct, char c, int f_color, int b_color);
 
 #endif

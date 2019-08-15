@@ -305,7 +305,6 @@ void		*sound_feu()
 
 int		main(int ac, char **av)
 {
-	ft_printf("%d\n", OPEN_MAX);
 	// t_printable pr;
 	// pr.back_color = 0x08888888 & 0x00ffffff;
 	// ft_printf("%#.8x\n", pr.back_color);

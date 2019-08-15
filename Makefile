@@ -27,7 +27,7 @@ OBJ = $(addprefix $(SRCS), $(FILES))
 COR_DIR = core/
 COR_FILE = corewar.h
 COR_H = $(addprefix $(COR_DIR), $(addprefix $(HEAD), $(COR_FILE)))
-COR_FILES = main.o error.o exit.o util.o util_instr.o champ_instance.o lecteur.o visu.o print_info.o
+COR_FILES = main.o error.o exit.o util.o util_instr.o champ_instance.o lecteur.o visu.o print_info.o util_visu.o
 COR_OBJ = $(addprefix $(COR_DIR), $(addprefix $(SRCS), $(COR_FILES)))
 
 OP_DIR = operations/
