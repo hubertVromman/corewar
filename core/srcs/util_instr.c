@@ -50,6 +50,8 @@ int		write_byte(t_proces *proces, int address, char to_write)
 	if (g_all.flags[VISU])
 	{
 		pos = jump_to_buf(address);
+		int fd = open ("f", O_CREAT | O_APPEND | O_RDWR, 0755);
+		ft_printf("%d %d\n%>", address, pos, fd);
 		ft_printf(CHAR_HEX_PRINT "%#>", g_all.arena[address], &buf);
 		write_to_buffer(g_all.visu.next_frame + pos + 1, buf[0], proces->color_rgb, 0);
 		write_to_buffer(g_all.visu.next_frame + pos + 2, buf[1], proces->color_rgb, 0);
