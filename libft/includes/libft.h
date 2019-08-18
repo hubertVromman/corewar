@@ -95,5 +95,6 @@ int					get_next_line(const int fd, char **line);
 int					ft_printf(const char *restrict format, ...);
 int					ft_isspace(char c);
 int					ft_atoi_base(const char *str, char *base);
+int					ft_swap(int *n1, int *n2);
 
 #endif

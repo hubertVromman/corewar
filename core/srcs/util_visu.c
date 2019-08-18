@@ -19,3 +19,18 @@ int		write_to_buffer(t_printable *strct, char c, int f_color, int b_color)
 	strct->back_color = b_color & 0x00ffffff;
 	return (0);
 }
+
+int		add_string_to_buffer(t_printable *strct, char *str, int f_color, int b_color)
+{
+	int		i;
+
+	i = -1;
+	while (str[++i])
+	{
+		if (str[i] != ' ')
+		{
+			write_to_buffer(strct + i, str[i], f_color, b_color);
+		}
+	}
+	return (0);
+}

@@ -43,7 +43,8 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP
 # define P2_COLOR 0x00800000
 # define P3_COLOR 0x00EB34DB//0x00800000
 # define P4_COLOR 0x00000080
-# define BORDER 0x00A8A8A8
+# define BORDER_COLOR 0x00A8A8A8
+# define VM_COLOR 0x787878
 
 # define COLOR_INCREMENT 0x00010101
 
@@ -58,8 +59,11 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP
 # define CYAN "\e[36m"
 
 # define HEADER_HEIGHT 10
+# define MEMORY_HEIGHT 64
 # define MEMORY_OFFSET_X 2
 # define FLAME_HEIGHT 18
+
+# define SCREEN_HEIGHT (MEMORY_HEIGHT + HEADER_HEIGHT + 1)
 
 # define X 265
 
@@ -214,6 +218,7 @@ int				beg_battle();
 int	 			read_proces();
 int				reset_proc();
 int				read_arena_op(int pc);
+int				print_char(t_printable printable, int pos);
 
 /*
 ** operations
@@ -259,5 +264,6 @@ int				print_reg_info(t_proces *proces);
 ** util_visu.c
 */
 int				write_to_buffer(t_printable *strct, char c, int f_color, int b_color);
+int				add_string_to_buffer(t_printable *strct, char *str, int f_color, int b_color);
 
 #endif

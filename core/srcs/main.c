@@ -139,12 +139,11 @@ int		display_start()
 	if (g_all.flags[VISU])
 	{
 		ft_printf(HIDE_CURSOR SAVE_SCREEN "\e[H");
-		dump_memory_colored();
-		for (int j = 0; j < g_all.nb_champ; j++)
-			increment_pc(g_all.champ[j].proces, 0);
-		print_header();
-		print_border();
-		print_vm_info();
+		init_current_frame();
+		// dump_memory_colored();
+		// print_header();
+		// print_border();
+		// print_vm_info();
 	}
 	else
 	{
@@ -307,8 +306,6 @@ void		*sound_feu()
 	pthread_exit(NULL);
 }
 
-#include <limits.h>
-
 int		main(int ac, char **av)
 {
 	// t_printable pr;
@@ -316,7 +313,6 @@ int		main(int ac, char **av)
 	// ft_printf("%#.8x\n", pr.back_color);
 	// ft_printf("%d\n", sizeof(t_printable));
 	init_all(ac, av);
-	init_current_frame();
 	display_start();
 	beg_battle();
 	exit_func(0, 0);

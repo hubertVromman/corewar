@@ -144,21 +144,49 @@ int		init_current_frame()
 	int i;
 	int p;
 	int pos;
+	char *buf = NULL;
 
 	i = -1;
 	p = 0;
-	g_all.visu.current_frame = ft_memalloc(g_all.visu.nb_cols * g_all.visu.nb_lines);
-	ft_bzero(g_all.visu.current_frame, g_all.visu.nb_cols * g_all.visu.nb_lines);
-	// ft_memset(g_all.visu.current_frame, ' ', g_all.visu.nb_cols * g_all.visu.nb_lines);
 	while (++i < MEM_SIZE)
 	{
 		pos = jump_to_buf(i);
 		if (i >= g_all.champ[p].proces->pc && i < (g_all.champ[p].proces->pc + g_all.champ[p].exec_size))
 		{
-			write_to_buffer(g_all.visu.current_frame + pos, g_all.arena[i], g_all.champ[p].proces->color_rgb, g_all.champ[p].proces->color_rgb);
+			ft_printf(CHAR_HEX_PRINT "%#>", g_all.arena[i], &buf);
+			write_to_buffer(g_all.visu.current_frame + pos, ' ', g_all.champ[p].proces->color_rgb, 0);
+			write_to_buffer(g_all.visu.current_frame + pos + 1, buf[0], g_all.champ[p].proces->color_rgb, 0);
+			write_to_buffer(g_all.visu.current_frame + pos + 2, buf[1], g_all.champ[p].proces->color_rgb, 0);
+		}
+		else
+		{
+			write_to_buffer(g_all.visu.current_frame + pos, ' ', VM_COLOR, 0);
+			write_to_buffer(g_all.visu.current_frame + pos + 1, '0', VM_COLOR, 0);
+			write_to_buffer(g_all.visu.current_frame + pos + 2, '0', VM_COLOR, 0);
 		}
 		if (p < (g_all.nb_champ - 1) && i + 1 == g_all.champ[p + 1].proces->pc)
 			p++;
+	}
+	print_border();
+	print_header();
+	for (int j = 0; j < g_all.nb_champ; j++)
+	{
+		pos = jump_to_buf(g_all.champ[j].proces->pc) + 1;
+		int tmp = g_all.visu.current_frame[pos].fore_color;
+		g_all.visu.current_frame[pos].fore_color = g_all.visu.current_frame[pos].back_color;
+		g_all.visu.current_frame[pos].back_color = tmp;
+
+		pos++;
+		tmp = g_all.visu.current_frame[pos].fore_color;
+		g_all.visu.current_frame[pos].fore_color = g_all.visu.current_frame[pos].back_color;
+		g_all.visu.current_frame[pos].back_color = tmp;
+	}
+	for (int j = 0 ; j < g_all.visu.nb_cols * g_all.visu.nb_lines; j++)
+	{
+		if (g_all.visu.current_frame[j].to_print)
+		{
+			print_char(g_all.visu.current_frame[j], j);
+		}
 	}
 	return (0);
 }

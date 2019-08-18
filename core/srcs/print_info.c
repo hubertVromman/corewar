@@ -37,9 +37,9 @@ int		print_border_side()
 	while (++i < g_all.visu.nb_lines - 8)
 	{
 		jump_to(g_all.visu.nb_cols - 1, i);
-		ft_printf(RGB_PRINT_BG "%c", (BORDER >> 16) & 0xff, (BORDER >> 8) & 0xff,(BORDER >> 0) & 0xff, ' ');
+		ft_printf(RGB_PRINT_BG "%c", (BORDER_COLOR >> 16) & 0xff, (BORDER_COLOR >> 8) & 0xff,(BORDER_COLOR >> 0) & 0xff, ' ');
 		jump_to(0, i);
-		ft_printf(RGB_PRINT_BG "%c", (BORDER >> 16) & 0xff, (BORDER >> 8) & 0xff,(BORDER >> 0) & 0xff, ' ');
+		ft_printf(RGB_PRINT_BG "%c", (BORDER_COLOR >> 16) & 0xff, (BORDER_COLOR >> 8) & 0xff,(BORDER_COLOR >> 0) & 0xff, ' ');
 	}
 	return (0);
 }
@@ -49,45 +49,32 @@ int		print_border()
 	int i;
 
 	i = -1;
-	while (++i < g_all.visu.nb_lines - 8)
+	while (++i < SCREEN_HEIGHT) // vertical lines
 	{
-		jump_to(g_all.visu.nb_cols - 1, i);
-		ft_printf(RGB_PRINT_BG "%c", (BORDER >> 16) & 0xff, (BORDER >> 8) & 0xff,(BORDER >> 0) & 0xff, ' ');
-		jump_to(0, i);
-		ft_printf(RGB_PRINT_BG "%c", (BORDER >> 16) & 0xff, (BORDER >> 8) & 0xff,(BORDER >> 0) & 0xff, ' ');
+		write_to_buffer(g_all.visu.current_frame + g_all.visu.nb_cols * (i + 1) - 1, ' ', 0, BORDER_COLOR);
+		write_to_buffer(g_all.visu.current_frame + g_all.visu.nb_cols * i, ' ', 0, BORDER_COLOR);
 	}
-	jump_to(0, 8);
-	ft_printf(RGB_PRINT_BG "%*c", (BORDER >> 16) & 0xff, (BORDER >> 8) & 0xff,(BORDER >> 0) & 0xff, g_all.visu.nb_cols, ' ');
-	jump_to(0, g_all.visu.nb_lines - 9);
-	ft_printf(RGB_PRINT_BG "%*c", (BORDER >> 16) & 0xff, (BORDER >> 8) & 0xff,(BORDER >> 0) & 0xff, g_all.visu.nb_cols, ' ');
+	i = -1;
+	while (++i < g_all.visu.nb_cols) // horizontal lines
+	{
+		write_to_buffer(g_all.visu.current_frame + 0 * g_all.visu.nb_cols + i, ' ', 0, BORDER_COLOR);
+		write_to_buffer(g_all.visu.current_frame + 8 * g_all.visu.nb_cols + i, ' ', 0, BORDER_COLOR);
+		write_to_buffer(g_all.visu.current_frame + SCREEN_HEIGHT * g_all.visu.nb_cols + i, ' ', 0, BORDER_COLOR);
+	}
 	return (0);
 }
 
 int		print_header()
 {
 	int		offset_x;
-	int		screen_lenght;
 
-	screen_lenght = g_all.visu.nb_cols;
 	offset_x = g_all.visu.nb_cols / 2 - 21;
-	ft_printf("<b>");
-	jump_to(0,0);
-	ft_printf(RGB_PRINT_BG "%*c", (BORDER >> 16) & 0xff, (BORDER >> 8) & 0xff,(BORDER >> 0) & 0xff, screen_lenght, ' ');
-	jump_to(offset_x, 1);
-	ft_printf(RESET_COLOR "   _____                                  ");
-	jump_to(offset_x, 2);
-	ft_printf("  / ____|                                 ");
-	jump_to(offset_x, 3);
-	ft_printf(" | |     ___  _ __ _____      ____ _ _ __ ");
-	jump_to(offset_x, 4);
-	ft_printf(" | |    / _ \\| '__/ _ \\ \\ /\\ / / _` | '__|");
-	jump_to(offset_x, 5);
-	ft_printf(" | |___| (_) | | |  __/\\ V  V / (_| | |   ");
-	jump_to(offset_x, 6);
-	ft_printf("  \\_____\\___/|_|  \\___| \\_/\\_/ \\__,_|_|   ");
-	jump_to(offset_x, 7);
-	ft_printf("                                          ");
-	ft_printf("</>");
+	add_string_to_buffer(g_all.visu.current_frame + offset_x + g_all.visu.nb_cols * 1, "   _____                                  ", 0x999999, 0);
+	add_string_to_buffer(g_all.visu.current_frame + offset_x + g_all.visu.nb_cols * 2, "  / ____|                                 ", 0x999999, 0);
+	add_string_to_buffer(g_all.visu.current_frame + offset_x + g_all.visu.nb_cols * 3, " | |     ___  _ __ _____      ____ _ _ __ ", 0x999999, 0);
+	add_string_to_buffer(g_all.visu.current_frame + offset_x + g_all.visu.nb_cols * 4, " | |    / _ \\| '__/ _ \\ \\ /\\ / / _` | '__|", 0x999999, 0);
+	add_string_to_buffer(g_all.visu.current_frame + offset_x + g_all.visu.nb_cols * 5, " | |___| (_) | | |  __/\\ V  V / (_| | |   ", 0x999999, 0);
+	add_string_to_buffer(g_all.visu.current_frame + offset_x + g_all.visu.nb_cols * 6, "  \\_____\\___/|_|  \\___| \\_/\\_/ \\__,_|_|   ", 0x999999, 0);
 	return (0);
 }
 

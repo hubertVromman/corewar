@@ -20,23 +20,22 @@ int		calc_pc(int pc)
 int		increment_pc(t_proces *proces, int nb_byte)
 {
 	int pos;
+	char *buf = NULL;
 
-	pos = jump_to_buf(proces->pc);
 	if (g_all.flags[VISU])
 	{
-		// jump_to_mem(proces->pc);
-		write_to_buffer(g_all.visu.next_frame + pos, g_all.arena[proces->pc], proces->color_rgb, proces->color_rgb);
-		// ft_printf(RGB_PRINT CHAR_HEX_PRINT, (g_all.color[proces->pc] >> 16) & 0xff, (g_all.color[proces->pc] >> 8) & 0xff, (g_all.color[proces->pc] >> 0) & 0xff, g_all.arena[proces->pc]);
+		pos = jump_to_buf(proces->pc);
+		ft_printf(CHAR_HEX_PRINT "%#>", g_all.arena[proces->pc], &buf);
+		write_to_buffer(g_all.visu.next_frame + pos + 1, buf[0], g_all.color[proces->pc], 0);
+		write_to_buffer(g_all.visu.next_frame + pos + 2, buf[1], g_all.color[proces->pc], 0);
 	}
 	proces->pc = calc_pc(proces->pc + nb_byte);
-	pos = jump_to_buf(proces->pc + nb_byte);
 	if (g_all.flags[VISU])
 	{
-		write_to_buffer(g_all.visu.next_frame + pos, g_all.arena[proces->pc], proces->color_rgb, proces->color_rgb);
-		// jump_to_mem(proces->pc);
-		// ft_printf(RGB_PRINT_BG COLOR_PRINT CHAR_HEX_PRINT, (proces->color_rgb >> 16) & 0xff, (proces->color_rgb >> 8) & 0xff, (proces->color_rgb >> 0) & 0xff, 30, g_all.arena[proces->pc]);
-		// ft_printf(RESET_COLOR);
-		// g_all.visu.current_frame.back_color = proces->color_rgb;
+		pos = jump_to_buf(proces->pc);
+		ft_printf(CHAR_HEX_PRINT "%#>", g_all.arena[proces->pc], &buf);
+		write_to_buffer(g_all.visu.next_frame + pos + 1, buf[0], 0, proces->color_rgb);
+		write_to_buffer(g_all.visu.next_frame + pos + 2, buf[1], 0, proces->color_rgb);
 	}
 	return (proces->pc);
 }
@@ -44,16 +43,17 @@ int		increment_pc(t_proces *proces, int nb_byte)
 int		write_byte(t_proces *proces, int address, char to_write)
 {
 	int pos;
+	char *buf = NULL;
 
 	address = calc_pc(address);
 	g_all.arena[address] = to_write;
 	if (g_all.flags[VISU])
 	{
 		pos = jump_to_buf(address);
-		write_to_buffer(g_all.visu.next_frame + pos, to_write, proces->color_rgb, proces->color_rgb);
-		// g_all.color[address] = proces->color_rgb;
-		// jump_to_mem(address);
-		// ft_printf(RGB_PRINT CHAR_HEX_PRINT, (proces->color_rgb >> 16) & 0xff, (proces->color_rgb >> 8) & 0xff, (proces->color_rgb >> 0) & 0xff, g_all.arena[address]);
+		ft_printf(CHAR_HEX_PRINT "%#>", g_all.arena[address], &buf);
+		write_to_buffer(g_all.visu.next_frame + pos + 1, buf[0], proces->color_rgb, 0);
+		write_to_buffer(g_all.visu.next_frame + pos + 2, buf[1], proces->color_rgb, 0);
+		g_all.color[address] = proces->color_rgb;
 	}
 	proces = NULL;
 	return (0);
