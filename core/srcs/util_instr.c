@@ -26,16 +26,16 @@ int		increment_pc(t_proces *proces, int nb_byte)
 	{
 		pos = jump_to_buf(proces->pc);
 		ft_printf(CHAR_HEX_PRINT "%#>", g_all.arena[proces->pc], &buf);
-		write_to_buffer(g_all.visu.next_frame + pos + 1, buf[0], g_all.color[proces->pc], 0);
-		write_to_buffer(g_all.visu.next_frame + pos + 2, buf[1], g_all.color[proces->pc], 0);
+		write_to_buffer(g_all.visu.next_frame + pos, buf[0], g_all.color[proces->pc], 0);
+		write_to_buffer(g_all.visu.next_frame + pos + 1, buf[1], g_all.color[proces->pc], 0);
 	}
 	proces->pc = calc_pc(proces->pc + nb_byte);
 	if (g_all.flags[VISU])
 	{
 		pos = jump_to_buf(proces->pc);
 		ft_printf(CHAR_HEX_PRINT "%#>", g_all.arena[proces->pc], &buf);
-		write_to_buffer(g_all.visu.next_frame + pos + 1, buf[0], 0, proces->color_rgb);
-		write_to_buffer(g_all.visu.next_frame + pos + 2, buf[1], 0, proces->color_rgb);
+		write_to_buffer(g_all.visu.next_frame + pos, buf[0], 0, proces->color_rgb);
+		write_to_buffer(g_all.visu.next_frame + pos + 1, buf[1], 0, proces->color_rgb);
 	}
 	return (proces->pc);
 }
@@ -50,11 +50,9 @@ int		write_byte(t_proces *proces, int address, char to_write)
 	if (g_all.flags[VISU])
 	{
 		pos = jump_to_buf(address);
-		int fd = open ("f", O_CREAT | O_APPEND | O_RDWR, 0755);
-		ft_printf("%d %d\n%>", address, pos, fd);
 		ft_printf(CHAR_HEX_PRINT "%#>", g_all.arena[address], &buf);
-		write_to_buffer(g_all.visu.next_frame + pos + 1, buf[0], proces->color_rgb, 0);
-		write_to_buffer(g_all.visu.next_frame + pos + 2, buf[1], proces->color_rgb, 0);
+		write_to_buffer(g_all.visu.next_frame + pos, buf[0], proces->color_rgb, 0);
+		write_to_buffer(g_all.visu.next_frame + pos + 1, buf[1], proces->color_rgb, 0);
 		g_all.color[address] = proces->color_rgb;
 	}
 	proces = NULL;
@@ -128,7 +126,8 @@ t_arg	*get_arguments(t_proces *proces)
 	int				codage;
 
 	tmp_pc = proces->pc;
-	opcode = g_all.arena[tmp_pc++];
+	tmp_pc++;
+	opcode = proces->opcode;
 	if (opcode < 1 || opcode > 16)
 		return (NULL);
 	codage = g_op_tab[opcode - 1].codage ? g_all.arena[calc_pc(tmp_pc++)] : get_codage(opcode);

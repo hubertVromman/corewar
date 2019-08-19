@@ -197,33 +197,6 @@ int		sort_champs()
 	return (0);
 }
 
-int		save_memory_colored()
-{
-	int		i;
-	int		p;
-	int		l;
-
-	i = -1;
-	p = 0;
-	l = HEADER_HEIGHT;
-	ft_printf("<b>");
-	jump_to(2, HEADER_HEIGHT);
-	while (++i < MEM_SIZE)
-	{
-		if (i >= g_all.champ[p].proces->pc && i < (g_all.champ[p].proces->pc + g_all.champ[p].exec_size))
-			ft_printf(RGB_PRINT "%.2hhx", (g_all.champ[p].color_rgb >> 16) & 0xff, (g_all.champ[p].color_rgb >> 8) & 0xff, (g_all.champ[p].color_rgb >> 0) & 0xff, g_all.arena[i]);
-		else
-			ft_printf(RGB_PRINT "%.2hhx", 0x80, 0x80, 0x80, g_all.arena[i]);
-		if (!((i + 1) % 64) && ++l)
-			jump_to(2, l);
-		else
-			ft_printf(" ");
-		if (p < (g_all.nb_champ - 1) && i + 1 == g_all.champ[p + 1].proces->pc)
-			p++;
-	}
-	return (0);
-}
-
 int		init_visu()
 {
 	int		i;

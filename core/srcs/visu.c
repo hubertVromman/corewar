@@ -44,7 +44,7 @@ int		jump_to_buf(int pc)
 	int		pos;
 	int		pos_x;
 
-	offset_x = 2;
+	offset_x = MEMORY_OFFSET_X;
 	offset_y = 10;
 	pc = calc_pc(pc);
 	pos_x = pc % 64;

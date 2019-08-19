@@ -41,6 +41,7 @@ ASM_FILES = main.o error.o exit.o io.o util.o util2.o header.o body.o label.o wr
 ASM_OBJ = $(addprefix $(ASM_DIR), $(addprefix $(SRCS), $(ASM_FILES)))
 
 SANITIZE = -fsanitize=address
+O3 = -O3
 
 RED=\033[0;91m
 GREEN=\033[0;92m
@@ -80,6 +81,11 @@ debug_asm: $(ASM_OBJ) $(OBJ)
 debug_corewar: $(OP_OBJ) $(COR_OBJ) $(OBJ)
 	@make -C $(LIB)
 	@$(CC) $(CFLAGS) -o $@ $^ -L$(LIB) -lft $(SANITIZE)
+	@echo "$@ compiled$(NC)"
+
+O3_corewar: $(OP_OBJ) $(COR_OBJ) $(OBJ)
+	@make -C $(LIB)
+	@$(CC) $(CFLAGS) -o $(COR) $^ -L$(LIB) -lft $(O3)
 	@echo "$@ compiled$(NC)"
 
 re: fclean all

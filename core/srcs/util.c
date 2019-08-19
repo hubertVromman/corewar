@@ -154,15 +154,15 @@ int		init_current_frame()
 		if (i >= g_all.champ[p].proces->pc && i < (g_all.champ[p].proces->pc + g_all.champ[p].exec_size))
 		{
 			ft_printf(CHAR_HEX_PRINT "%#>", g_all.arena[i], &buf);
-			write_to_buffer(g_all.visu.current_frame + pos, ' ', g_all.champ[p].proces->color_rgb, 0);
-			write_to_buffer(g_all.visu.current_frame + pos + 1, buf[0], g_all.champ[p].proces->color_rgb, 0);
-			write_to_buffer(g_all.visu.current_frame + pos + 2, buf[1], g_all.champ[p].proces->color_rgb, 0);
+			write_to_buffer(g_all.visu.current_frame + pos, buf[0], g_all.champ[p].proces->color_rgb, 0);
+			write_to_buffer(g_all.visu.current_frame + pos + 1, buf[1], g_all.champ[p].proces->color_rgb, 0);
+			write_to_buffer(g_all.visu.current_frame + pos + 2, ' ', g_all.champ[p].proces->color_rgb, 0);
 		}
 		else
 		{
-			write_to_buffer(g_all.visu.current_frame + pos, ' ', VM_COLOR, 0);
+			write_to_buffer(g_all.visu.current_frame + pos, '0', VM_COLOR, 0);
 			write_to_buffer(g_all.visu.current_frame + pos + 1, '0', VM_COLOR, 0);
-			write_to_buffer(g_all.visu.current_frame + pos + 2, '0', VM_COLOR, 0);
+			write_to_buffer(g_all.visu.current_frame + pos + 2, ' ', VM_COLOR, 0);
 		}
 		if (p < (g_all.nb_champ - 1) && i + 1 == g_all.champ[p + 1].proces->pc)
 			p++;
@@ -171,7 +171,7 @@ int		init_current_frame()
 	print_header();
 	for (int j = 0; j < g_all.nb_champ; j++)
 	{
-		pos = jump_to_buf(g_all.champ[j].proces->pc) + 1;
+		pos = jump_to_buf(g_all.champ[j].proces->pc);
 		int tmp = g_all.visu.current_frame[pos].fore_color;
 		g_all.visu.current_frame[pos].fore_color = g_all.visu.current_frame[pos].back_color;
 		g_all.visu.current_frame[pos].back_color = tmp;
@@ -181,6 +181,7 @@ int		init_current_frame()
 		g_all.visu.current_frame[pos].fore_color = g_all.visu.current_frame[pos].back_color;
 		g_all.visu.current_frame[pos].back_color = tmp;
 	}
+	ft_memcpy(g_all.visu.current_frame_flame, g_all.visu.current_frame, g_all.visu.nb_cols * g_all.visu.nb_lines);
 	for (int j = 0 ; j < g_all.visu.nb_cols * g_all.visu.nb_lines; j++)
 	{
 		if (g_all.visu.current_frame[j].to_print)

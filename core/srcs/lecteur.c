@@ -165,7 +165,7 @@ void	*th_calcul()
 	int i;
 
 	i = -1;
-	g_all.visu.nb_frames_to_skip = 1;
+	// g_all.visu.nb_frames_to_skip = 1;
 	while (++i < g_all.visu.nb_frames_to_skip && g_all.end)
 	{
 		g_all.cycle++;
@@ -229,7 +229,7 @@ int		do_visu_stuff()
 	if (!g_all.visu.pause)
 	{
 		ft_bzero(g_all.visu.next_frame, g_all.visu.nb_lines * g_all.visu.nb_cols * sizeof(t_printable));
-		// ft_memcpy(g_all.visu.next_frame + g_all.visu.offset_flame_y * g_all.visu.nb_cols, g_all.visu.current_frame + g_all.visu.offset_flame_y * g_all.visu.nb_cols, FLAME_HEIGHT * g_all.visu.nb_cols * sizeof(t_printable));
+		ft_memcpy(g_all.visu.next_frame + g_all.visu.offset_flame_y * g_all.visu.nb_cols, g_all.visu.current_frame + g_all.visu.offset_flame_y * g_all.visu.nb_cols, FLAME_HEIGHT * g_all.visu.nb_cols * sizeof(t_printable));
 		pthread_create(&g_all.visu.thread_calcul, NULL, th_calcul, NULL);
 		if (g_all.visu.flame)
 			pthread_create(&g_all.visu.thread_flamme, NULL, th_feu, NULL);
@@ -254,17 +254,26 @@ int		do_visu_stuff()
 	}
 	else
 	{
-		// for (int l = 0; l < FLAME_HEIGHT * g_all.visu.nb_cols; l++)
-		// {
-		// 	if (g_all.visu.flame_buf[l].to_print)
-		// 		ft_memcpy(g_all.visu.next_frame + g_all.visu.offset_flame_y * g_all.visu.nb_cols + l, g_all.visu.flame_buf + l, sizeof(t_printable));
-		// }
-		for (int l = 0; l < g_all.visu.nb_lines * g_all.visu.nb_cols; l++)
+		for (int l = 0; l < (g_all.visu.nb_lines) * g_all.visu.nb_cols; l++)
 		{
-			if (ft_memcmp(g_all.visu.next_frame + l, g_all.visu.current_frame + l, sizeof(t_printable)))
+			if (g_all.visu.next_frame[l].to_print && ft_memcmp(g_all.visu.next_frame + l, g_all.visu.current_frame + l, sizeof(t_printable)))
 			{
 				ft_memcpy(g_all.visu.current_frame + l, g_all.visu.next_frame + l, sizeof(t_printable));
-				print_char(g_all.visu.current_frame[l], l);
+			}
+		}
+		for (int l = 0; l < FLAME_HEIGHT * g_all.visu.nb_cols; l++)
+		{
+			if (g_all.visu.flame_buf[l].to_print)
+			ft_memcpy(g_all.visu.next_frame + g_all.visu.offset_flame_y * g_all.visu.nb_cols + l, g_all.visu.flame_buf + l, sizeof(t_printable));
+			if (!(g_all.visu.next_frame[g_all.visu.offset_flame_y * g_all.visu.nb_cols + l].to_print))
+				g_all.visu.next_frame[g_all.visu.offset_flame_y * g_all.visu.nb_cols + l].to_print = ' ';
+		}
+		for (int l = 0; l < g_all.visu.nb_lines * g_all.visu.nb_cols; l++)
+		{
+			if (ft_memcmp(g_all.visu.next_frame + l, g_all.visu.current_frame_flame + l, sizeof(t_printable)))
+			{
+				ft_memcpy(g_all.visu.current_frame_flame + l, g_all.visu.next_frame + l, sizeof(t_printable));
+				print_char(g_all.visu.current_frame_flame[l], l);
 			}
 		}
 		if (g_all.visu.flame)
@@ -274,10 +283,12 @@ int		do_visu_stuff()
 		}
 		return (0);
 	}
+	return (1);
 }
 
 int		beg_battle()
 {
+	g_all.visu.nb_frames_to_skip = 10;
 	g_all.end = 1;
 	while (g_all.end)
 	{

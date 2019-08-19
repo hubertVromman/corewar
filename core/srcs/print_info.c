@@ -29,20 +29,20 @@ int		print_reg_info(t_proces *proces)
 	return (0);
 }
 
-int		print_border_side()
-{
-	int i;
+// int		print_border_side()
+// {
+// 	int i;
 
-	i = -1;
-	while (++i < g_all.visu.nb_lines - 8)
-	{
-		jump_to(g_all.visu.nb_cols - 1, i);
-		ft_printf(RGB_PRINT_BG "%c", (BORDER_COLOR >> 16) & 0xff, (BORDER_COLOR >> 8) & 0xff,(BORDER_COLOR >> 0) & 0xff, ' ');
-		jump_to(0, i);
-		ft_printf(RGB_PRINT_BG "%c", (BORDER_COLOR >> 16) & 0xff, (BORDER_COLOR >> 8) & 0xff,(BORDER_COLOR >> 0) & 0xff, ' ');
-	}
-	return (0);
-}
+// 	i = -1;
+// 	while (++i < g_all.visu.nb_lines - 8)
+// 	{
+// 		jump_to(g_all.visu.nb_cols - 1, i);
+// 		ft_printf(RGB_PRINT_BG "%c", (BORDER_COLOR >> 16) & 0xff, (BORDER_COLOR >> 8) & 0xff,(BORDER_COLOR >> 0) & 0xff, ' ');
+// 		jump_to(0, i);
+// 		ft_printf(RGB_PRINT_BG "%c", (BORDER_COLOR >> 16) & 0xff, (BORDER_COLOR >> 8) & 0xff,(BORDER_COLOR >> 0) & 0xff, ' ');
+// 	}
+// 	return (0);
+// }
 
 int		print_border()
 {
