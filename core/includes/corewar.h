@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:31:13 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/15 07:07:06 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/20 20:37:30 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP
 # define MEMORY_HEIGHT 64
 # define MEMORY_OFFSET_X 3
 # define FLAME_HEIGHT 18
+# define MAX_NAME_LENGHT 30
 
 # define SCREEN_HEIGHT (MEMORY_HEIGHT + HEADER_HEIGHT + 1)
 
@@ -265,5 +266,6 @@ int				print_reg_info(t_proces *proces);
 */
 int				write_to_buffer(t_printable *strct, char c, int f_color, int b_color);
 int				add_string_to_buffer(t_printable *strct, char *str, int f_color, int b_color);
+int				add_name_to_buffer(t_printable *strct, char *str, int f_color, int b_color);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: sofchami <sofchami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 02:28:56 by sofchami          #+#    #+#             */
-/*   Updated: 2019/08/14 04:52:19 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/20 21:10:48 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,15 @@ int		print_border()
 	while (++i < SCREEN_HEIGHT) // vertical lines
 	{
 		write_to_buffer(g_all.visu.current_frame + g_all.visu.nb_cols * (i + 1) - 1, ' ', 0, BORDER_COLOR);
+		write_to_buffer(g_all.visu.current_frame + g_all.visu.nb_cols * (i + 1) - 2, ' ', 0, BORDER_COLOR);
+		if (i >= HEADER_HEIGHT - 2)
+		{
+			write_to_buffer(g_all.visu.current_frame + g_all.visu.nb_cols * (i + 1) - 102, ' ', 0, BORDER_COLOR);
+			write_to_buffer(g_all.visu.current_frame + g_all.visu.nb_cols * (i + 1) - 103, ' ', 0, BORDER_COLOR);
+		}
 		write_to_buffer(g_all.visu.current_frame + g_all.visu.nb_cols * i, ' ', 0, BORDER_COLOR);
+		write_to_buffer(g_all.visu.current_frame + g_all.visu.nb_cols * i + 1, ' ', 0, BORDER_COLOR);
+
 	}
 	i = -1;
 	while (++i < g_all.visu.nb_cols) // horizontal lines
@@ -88,8 +96,8 @@ int		print_proces_info(int i)
 	n = -1;
 	l = 0;
 	jump_to(X, i);
-	ft_printf("%1$/40c All proces %1$/40c\n", '-');
-	i++;
+	// ft_printf("%1$/40c All proces %1$/40c\n", '-');
+	// i++;
 	while (++n < g_all.nb_champ)
 	{
 		k = -1;
@@ -113,19 +121,15 @@ int		print_player_info(int i)
 	k = -1;
 	while (++k < g_all.nb_champ)
 	{
-		jump_to(X, i);
-		ft_printf("PLAYER %d : ", g_all.champ[k].player_nb);
-		jump_to(X + 12, i);
-		ft_printf(RGB_PRINT "%s", (g_all.champ[k].color_rgb >> 16) & 0xff, (g_all.champ[k].color_rgb >> 8) & 0xff, (g_all.champ[k].color_rgb >> 0) & 0xff, g_all.champ[k].player_name);
 		i++;
-		jump_to(X + 5, i);
-		ft_printf(RESET_COLOR "Last live : %1$/17c %4d", ' ', g_all.champ[k].last_live);
+		jump_to(k < 2 ? X + 25 : X + 75,k < 2 ? i : i - 10);
+		ft_printf(RESET_COLOR ": %4d", g_all.champ[k].last_live);
 		i++;
-		jump_to(X + 5, i);
-		ft_printf(RESET_COLOR "live period : %1$/16c %3d", ' ', g_all.champ[k].lives_period);
+		jump_to(k < 2 ? X + 25 : X + 75,k < 2 ? i : i - 10);
+		ft_printf(RESET_COLOR ": %4d", g_all.champ[k].lives_period);
 		i++;
-		jump_to(X + 5, i);
-		ft_printf(RESET_COLOR "Nbr de proces : %1$/14c %3d", ' ', g_all.champ[k].nb_proces);
+		jump_to(k < 2 ? X + 25 : X + 75,k < 2 ? i : i - 10);
+		ft_printf(RESET_COLOR ": %4d", g_all.champ[k].nb_proces);
 		i+=2;
 	}
 	i++;
@@ -135,21 +139,21 @@ int		print_player_info(int i)
 int		print_init_info(int i)
 {
 	int lives;
+	// char *buf = NULL;
 
 	lives = 0;
 	while (++i < g_all.nb_champ)
 		lives += g_all.champ[i].lives_period;
-	jump_to(X, HEADER_HEIGHT);
-	ft_printf(RESET_COLOR "%1$/42c Info %1$/42c\n", '-');
+	ft_printf(RESET_COLOR);
 	i = 0;
 	while (++i < 6)
 	{
-		jump_to(X, i + HEADER_HEIGHT);
-		i == 1 ? ft_printf("Cycles        : %4d", g_all.cycle) : 0;
+		jump_to(X + 20, i + HEADER_HEIGHT);
+		i == 1 ? ft_printf(": %4d", g_all.cycle) : 0;
 		// i == 2 ? ft_printf("Cycles/second limit : %4d", g_all.visu.max_cps) : 0;
-		i == 3 ? ft_printf("Nbr de proces : %4d", g_all.nb_proces_tot) : 0;
-		i == 4 ? ft_printf("Lives period  : %4d", lives) : 0;
-		i == 5 ? ft_printf("Cycle to die  : %4d", g_all.cycle_to_die) : 0;
+		i == 3 ? ft_printf(": %4d", g_all.nb_proces_tot) : 0;
+		i == 4 ? ft_printf(": %4d", lives) : 0;
+		i == 5 ? ft_printf(": %4d", g_all.cycle_to_die) : 0;
 	}
 	i+=HEADER_HEIGHT;
 	i++;
@@ -163,15 +167,15 @@ int		print_vm_info()
 	int i;
 
 	i = print_init_info(-1);
-	print_proces_info(i);
-	print_reg_info(g_all.champ[0].proces);
+	print_proces_info(29);
+	// print_reg_info(g_all.champ[0].proces);
 	if (g_all.max_proces <= g_all.nb_proces_tot)
 		g_all.max_proces = g_all.nb_proces_tot;
 	else
 	{
 		int tmp;
 		tmp = g_all.nb_proces_tot + i;
-		while (tmp <= g_all.max_proces + i)
+		while (tmp <= g_all.max_proces + i || tmp > SCREEN_HEIGHT)
 		{
 			jump_to(X, tmp);
 			ft_printf("%1$/95c", ' ');

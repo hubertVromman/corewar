@@ -6,7 +6,7 @@
 /*   By: sofchami <sofchami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/18 19:57:39 by sofchami          #+#    #+#             */
-/*   Updated: 2019/08/15 06:29:56 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/20 18:02:54 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,8 +123,8 @@ int		read_proces()
 
 int		update_cps()
 {
-	jump_to(X, 2 + HEADER_HEIGHT);
-	ft_printf("Cycles/second limit : %4d", g_all.visu.max_cps);
+	jump_to(X + 20, 2 + HEADER_HEIGHT);
+	ft_printf(": %4d", g_all.visu.max_cps);
 	return (0);
 }
 
