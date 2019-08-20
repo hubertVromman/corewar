@@ -6,7 +6,7 @@
 /*   By: sofchami <sofchami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 02:28:56 by sofchami          #+#    #+#             */
-/*   Updated: 2019/08/20 21:10:48 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/20 23:54:16 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,23 +91,23 @@ int		print_proces_info(int i)
 	int k;
 	int n;
 	int l;
+	int stop;
 	int opcode;
 
 	n = -1;
 	l = 0;
+	stop = 0;
 	jump_to(X, i);
-	// ft_printf("%1$/40c All proces %1$/40c\n", '-');
-	// i++;
-	while (++n < g_all.nb_champ)
+	while (++n < g_all.nb_champ && stop < SCREEN_HEIGHT)
 	{
 		k = -1;
-		while (++k < g_all.champ[n].nb_proces)
+		while (++k < g_all.champ[n].nb_proces && stop < SCREEN_HEIGHT)
 		{
 			if (i + k + l > g_all.visu.nb_lines - 20)
 				return (0);
 			jump_to(X, i + k + l);
 			opcode = g_all.champ[n].proces[k].opcode;
-			ft_printf("player_nb %2d  |  proces_id %3d  |  pc %4d  |  opcode " CHAR_HEX_PRINT "  |  Name OP %5s  |  cycle_left %4d\n", g_all.champ[n].player_nb, g_all.champ[n].proces[k].id_proces, g_all.champ[n].proces[k].pc, opcode, opcode > 0 && opcode < 17 ? g_op_tab[opcode - 1].name : "null", g_all.champ[n].proces[k].cycle_left);
+			ft_printf("  player_nb %2d  |  pc %4d  |  opcode " CHAR_HEX_PRINT "  |  Name OP %5s  |  cycle_left %4d\n", g_all.champ[n].player_nb, g_all.champ[n].proces[k].pc, opcode, opcode > 0 && opcode < 17 ? g_op_tab[opcode - 1].name : "null", g_all.champ[n].proces[k].cycle_left);
 		}
 		l += k;
 	}
@@ -167,7 +167,7 @@ int		print_vm_info()
 	int i;
 
 	i = print_init_info(-1);
-	print_proces_info(29);
+	print_proces_info(30);
 	// print_reg_info(g_all.champ[0].proces);
 	if (g_all.max_proces <= g_all.nb_proces_tot)
 		g_all.max_proces = g_all.nb_proces_tot;
@@ -175,7 +175,7 @@ int		print_vm_info()
 	{
 		int tmp;
 		tmp = g_all.nb_proces_tot + i;
-		while (tmp <= g_all.max_proces + i || tmp > SCREEN_HEIGHT)
+		while (tmp <= g_all.max_proces + i && tmp > SCREEN_HEIGHT)
 		{
 			jump_to(X, tmp);
 			ft_printf("%1$/95c", ' ');
