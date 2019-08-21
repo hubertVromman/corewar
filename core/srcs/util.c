@@ -53,15 +53,22 @@ int		play_sound(int i)
 
 int		detele_proces(t_champ *champ, int id_proces)
 {
+	int		pos;
+	char	*buf;
+
 	if (g_all.flags[VISU])
 	{
-		jump_to_mem(champ->proces[id_proces].pc);
-		ft_printf(CHAR_HEX_PRINT, g_all.arena[champ->proces[id_proces].pc]);
+		buf = NULL;
+		pos = jump_to_buf(champ->proces[id_proces].pc);
+		ft_printf(CHAR_HEX_PRINT "%#>", g_all.arena[champ->proces[id_proces].pc], &buf);
+		write_to_buffer(g_all.visu.next_frame + pos, buf[0], g_all.color[champ->proces[id_proces].pc], 0);
+		write_to_buffer(g_all.visu.next_frame + pos + 1, buf[1], g_all.color[champ->proces[id_proces].pc], 0);
+		free(buf);
 	}
-	ft_memcpy(&(champ->proces[id_proces]), &(champ->proces[champ->nb_proces - 1]), sizeof(t_proces));
+	ft_memcpy(&(champ->proces[id_proces]), &(champ->proces[id_proces + 1]), sizeof(t_proces) * (champ->nb_proces - 1 - id_proces));
 	champ->nb_proces--;
 	g_all.nb_proces_tot--;
-	sort_proces(champ);
+	// sort_proces(champ);
 	// play_sound(2);
 	return (0);
 }
@@ -231,8 +238,8 @@ int		init_current_frame()
 		g_all.visu.current_frame[pos].fore_color = g_all.visu.current_frame[pos].back_color;
 		g_all.visu.current_frame[pos].back_color = tmp;
 	}
-	ft_memcpy(g_all.visu.current_frame_flame, g_all.visu.current_frame, g_all.visu.nb_cols * g_all.visu.nb_lines);
-	for (int j = 0 ; j < g_all.visu.nb_cols * g_all.visu.nb_lines; j++)
+	ft_memcpy(g_all.visu.current_frame_flame, g_all.visu.current_frame, g_all.visu.screen_size);
+	for (int j = 0 ; j < g_all.visu.screen_size; j++)
 	{
 		if (g_all.visu.current_frame[j].to_print)
 		{

@@ -13,8 +13,7 @@
 COR = corewar
 ASM = asm
 
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -O3
 SRCS = srcs/
 HEAD = includes/
 LIB = libft/
@@ -81,11 +80,6 @@ debug_asm: $(ASM_OBJ) $(OBJ)
 debug_corewar: $(OP_OBJ) $(COR_OBJ) $(OBJ)
 	@make -C $(LIB)
 	@$(CC) $(CFLAGS) -o $@ $^ -L$(LIB) -lft $(SANITIZE)
-	@echo "$@ compiled$(NC)"
-
-O3_corewar: $(OP_OBJ) $(COR_OBJ) $(OBJ)
-	@make -C $(LIB)
-	@$(CC) $(CFLAGS) -o $(COR) $^ -L$(LIB) -lft $(O3)
 	@echo "$@ compiled$(NC)"
 
 re: fclean all

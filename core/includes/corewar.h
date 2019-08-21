@@ -60,9 +60,10 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP
 
 # define HEADER_HEIGHT 10
 # define MEMORY_HEIGHT 64
-# define MEMORY_OFFSET_X 3
+# define MEMORY_OFFSET_X 4
 # define FLAME_HEIGHT 18
 # define MAX_NAME_LENGHT 30
+# define PROCES_HEIGHT (MEMORY_HEIGHT - 21) // a changer
 
 # define SCREEN_HEIGHT (MEMORY_HEIGHT + HEADER_HEIGHT + 1)
 
@@ -125,8 +126,8 @@ typedef struct	s_visu
 	int			max_cps;
 	int			nb_cols;
 	int			nb_lines;
+	int			screen_size;
 	int			nb_frames_to_skip;
-	int			skipped_frames;
 	int			flame;
 	int			offset_memory_x;
 	int			offset_memory_y;

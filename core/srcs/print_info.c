@@ -98,16 +98,17 @@ int		print_proces_info(int i)
 	l = 0;
 	stop = 0;
 	jump_to(X, i);
-	while (++n < g_all.nb_champ && stop < SCREEN_HEIGHT)
+	while (++n < g_all.nb_champ && stop < PROCES_HEIGHT)
 	{
 		k = -1;
-		while (++k < g_all.champ[n].nb_proces && stop < SCREEN_HEIGHT)
+		while (++k < g_all.champ[n].nb_proces && stop < PROCES_HEIGHT)
 		{
-			if (i + k + l > g_all.visu.nb_lines - 20)
-				return (0);
+			// if (i + k + l > g_all.visu.nb_lines - 20)
+			// 	return (0);
 			jump_to(X, i + k + l);
 			opcode = g_all.champ[n].proces[k].opcode;
 			ft_printf("  player_nb %2d  |  pc %4d  |  opcode " CHAR_HEX_PRINT "  |  Name OP %5s  |  cycle_left %4d\n", g_all.champ[n].player_nb, g_all.champ[n].proces[k].pc, opcode, opcode > 0 && opcode < 17 ? g_op_tab[opcode - 1].name : "null", g_all.champ[n].proces[k].cycle_left);
+			stop++;
 		}
 		l += k;
 	}

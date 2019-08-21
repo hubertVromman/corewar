@@ -164,8 +164,9 @@ void	*th_calcul()
 {
 	int i;
 
+	ft_bzero(g_all.visu.next_frame, g_all.visu.screen_size * sizeof(t_printable));
+	ft_memcpy(g_all.visu.next_frame + g_all.visu.offset_flame_y * g_all.visu.nb_cols, g_all.visu.current_frame + g_all.visu.offset_flame_y * g_all.visu.nb_cols, FLAME_HEIGHT * g_all.visu.nb_cols * sizeof(t_printable));
 	i = -1;
-	// g_all.visu.nb_frames_to_skip = 1;
 	while (++i < g_all.visu.nb_frames_to_skip && g_all.end)
 	{
 		g_all.cycle++;
@@ -191,27 +192,27 @@ void	*th_calcul()
 
 int		print_char(t_printable printable, int pos)
 {
-	static int previous_bg = 0;
-	static int previous_fg = 0;
-	static int previous_pos = -1;
+	// static int previous_bg = 0;
+	// static int previous_fg = 0;
+	// static int previous_pos = -1;
 
-	if (previous_pos + 1 != pos)
-	{
+	// if (previous_pos + 1 != pos)
+	// {
 		jump_to(pos % g_all.visu.nb_cols, pos / g_all.visu.nb_cols);
-		previous_pos = pos;
-	}
-	else
-		previous_pos++;
-	if (previous_bg != printable.back_color)
-	{
+	// 	previous_pos = pos;
+	// }
+	// else
+	// 	previous_pos++;
+	// if (previous_bg != printable.back_color)
+	// {
 		ft_printf(RGB_PRINT_BG, (printable.back_color >> 16) & 0xff, (printable.back_color >> 8) & 0xff, (printable.back_color >> 0) & 0xff);
-		previous_bg = printable.back_color;
-	}
-	if (previous_fg != printable.fore_color)
-	{
+	// 	previous_bg = printable.back_color;
+	// }
+	// if (previous_fg != printable.fore_color)
+	// {
 		ft_printf(RGB_PRINT, (printable.fore_color >> 16) & 0xff, (printable.fore_color >> 8) & 0xff, (printable.fore_color >> 0) & 0xff);
-		previous_fg = printable.fore_color;
-	}
+	// 	previous_fg = printable.fore_color;
+	// }
 	ft_printf("%c", printable.to_print);
 	return (0);
 }
@@ -228,8 +229,6 @@ int		do_visu_stuff()
 	sleep_time = 1000 / g_all.visu.max_cps;
 	if (!g_all.visu.pause)
 	{
-		ft_bzero(g_all.visu.next_frame, g_all.visu.nb_lines * g_all.visu.nb_cols * sizeof(t_printable));
-		ft_memcpy(g_all.visu.next_frame + g_all.visu.offset_flame_y * g_all.visu.nb_cols, g_all.visu.current_frame + g_all.visu.offset_flame_y * g_all.visu.nb_cols, FLAME_HEIGHT * g_all.visu.nb_cols * sizeof(t_printable));
 		pthread_create(&g_all.visu.thread_calcul, NULL, th_calcul, NULL);
 		if (g_all.visu.flame)
 			pthread_create(&g_all.visu.thread_flamme, NULL, th_feu, NULL);
@@ -254,23 +253,24 @@ int		do_visu_stuff()
 	}
 	else
 	{
-		for (int l = 0; l < (g_all.visu.nb_lines) * g_all.visu.nb_cols; l++)
+		for (int l = 0; l < g_all.visu.screen_size; l++)
 		{
 			if (g_all.visu.next_frame[l].to_print && ft_memcmp(g_all.visu.next_frame + l, g_all.visu.current_frame + l, sizeof(t_printable)))
 			{
 				ft_memcpy(g_all.visu.current_frame + l, g_all.visu.next_frame + l, sizeof(t_printable));
 			}
 		}
-		for (int l = 0; l < FLAME_HEIGHT * g_all.visu.nb_cols; l++)
+		if (g_all.visu.flame)
+			for (int l = 0; l < FLAME_HEIGHT * g_all.visu.nb_cols; l++)
+			{
+				if (g_all.visu.flame_buf[l].to_print)
+					ft_memcpy(g_all.visu.next_frame + g_all.visu.offset_flame_y * g_all.visu.nb_cols + l, g_all.visu.flame_buf + l, sizeof(t_printable));
+				if (!(g_all.visu.next_frame[g_all.visu.offset_flame_y * g_all.visu.nb_cols + l].to_print))
+					g_all.visu.next_frame[g_all.visu.offset_flame_y * g_all.visu.nb_cols + l].to_print = ' ';
+			}
+		for (int l = 0; l < g_all.visu.screen_size; l++)
 		{
-			if (g_all.visu.flame_buf[l].to_print)
-			ft_memcpy(g_all.visu.next_frame + g_all.visu.offset_flame_y * g_all.visu.nb_cols + l, g_all.visu.flame_buf + l, sizeof(t_printable));
-			if (!(g_all.visu.next_frame[g_all.visu.offset_flame_y * g_all.visu.nb_cols + l].to_print))
-				g_all.visu.next_frame[g_all.visu.offset_flame_y * g_all.visu.nb_cols + l].to_print = ' ';
-		}
-		for (int l = 0; l < g_all.visu.nb_lines * g_all.visu.nb_cols; l++)
-		{
-			if (ft_memcmp(g_all.visu.next_frame + l, g_all.visu.current_frame_flame + l, sizeof(t_printable)))
+			if (g_all.visu.next_frame[l].to_print && ft_memcmp(g_all.visu.next_frame + l, g_all.visu.current_frame_flame + l, sizeof(t_printable)))
 			{
 				ft_memcpy(g_all.visu.current_frame_flame + l, g_all.visu.next_frame + l, sizeof(t_printable));
 				print_char(g_all.visu.current_frame_flame[l], l);
@@ -292,10 +292,8 @@ int		beg_battle()
 	g_all.end = 1;
 	while (g_all.end)
 	{
-		// if (g_all.flags[VISU] && do_visu_stuff())
 		if (g_all.flags[VISU])
 				do_visu_stuff();
-			// continue;
 		else
 		{
 			g_all.cycle++;

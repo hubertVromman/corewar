@@ -18,17 +18,17 @@ int		jump_to(int x, int y)
 	return (0);
 }
 
-int		jump_to_mem(int pc)
-{
-	int		offset_x;
-	int		offset_y;
+// int		jump_to_mem(int pc)
+// {
+// 	int		offset_x;
+// 	int		offset_y;
 
-	offset_x = 2;
-	offset_y = 10;
-	pc = calc_pc(pc);
-	jump_to(offset_x + (pc % 64) * 3, offset_y + pc / 64);
-	return (0);
-}
+// 	offset_x = 2;
+// 	offset_y = 10;
+// 	pc = calc_pc(pc);
+// 	jump_to(offset_x + (pc % 64) * 3, offset_y + pc / 64);
+// 	return (0);
+// }
 
 void	exit_ctrl_c(int c)
 {

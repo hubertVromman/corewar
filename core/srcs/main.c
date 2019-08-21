@@ -104,7 +104,7 @@ void	*reader_func(void *rien)
 		else if (buf[0] == 'r')
 			g_all.visu.max_cps += 10;
 		else if (buf[0] == 'f')
-			g_all.visu.flame = 1;
+			g_all.visu.flame = !g_all.visu.flame;
 		else if (buf[0] == '\e')
 		{
 			read(0, buf, 1);
@@ -127,7 +127,7 @@ void	*reader_func(void *rien)
 			g_all.visu.max_cps = 1;
 		if (g_all.visu.max_cps > 1000)
 			g_all.visu.max_cps = 1000;
-		// g_all.visu.nb_frames_to_skip = g_all.visu.max_cps / 100;
+		g_all.visu.nb_frames_to_skip = g_all.visu.max_cps / 10 + 1;
 	}
 	return (NULL);
 }
@@ -207,6 +207,7 @@ int		init_visu()
 	ioctl(0, TIOCGSIZE, &ts);
 	g_all.visu.nb_cols = ts.ts_cols;
 	g_all.visu.nb_lines = ts.ts_lines;
+	g_all.visu.screen_size = g_all.visu.nb_lines * g_all.visu.nb_cols;
 	ft_memset(g_all.color, 0x80, sizeof(g_all.color));
 	g_all.visu.offset_flame_y = g_all.visu.nb_lines - 18;
 	i = -1;
@@ -228,14 +229,19 @@ int		init_visu()
 	g_all.visu.max_cps = 50;
 	if (!(g_all.visu.flame_buf = malloc(sizeof(t_printable) * g_all.visu.nb_cols * FLAME_HEIGHT)))
 		exit_func(MERROR, 0);
-	if (!(g_all.visu.current_frame = ft_memalloc(sizeof(t_printable) * g_all.visu.nb_cols * g_all.visu.nb_lines)))
+	if (!(g_all.visu.current_frame = ft_memalloc(sizeof(t_printable) * g_all.visu.screen_size)))
 		exit_func(MERROR, 0);
-	if (!(g_all.visu.current_frame_flame = ft_memalloc(sizeof(t_printable) * g_all.visu.nb_cols * g_all.visu.nb_lines)))
+	if (!(g_all.visu.current_frame_flame = ft_memalloc(sizeof(t_printable) * g_all.visu.screen_size)))
 		exit_func(MERROR, 0);
-	if (!(g_all.visu.next_frame = ft_memalloc(sizeof(t_printable) * g_all.visu.nb_cols * g_all.visu.nb_lines)))
+	if (!(g_all.visu.next_frame = malloc(sizeof(t_printable) * g_all.visu.screen_size)))
 		exit_func(MERROR, 0);
-	if (!(g_all.visu.feu = ft_memalloc(g_all.visu.nb_cols * FLAME_HEIGHT * 2)))
+	if (!(g_all.visu.feu = malloc(g_all.visu.nb_cols * FLAME_HEIGHT * 2)))
 		exit_func(MERROR, 0);
+	for (int l = 0; l < g_all.visu.screen_size; l++)
+	{
+		g_all.visu.current_frame[l].to_print = ' ';
+		g_all.visu.current_frame_flame[l].to_print = ' ';
+	}
 	signal(SIGINT, exit_ctrl_c);
 	pthread_create(&(g_all.visu.thread_reader), NULL, reader_func, NULL);
 	return (0);
