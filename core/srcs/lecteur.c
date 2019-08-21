@@ -217,26 +217,39 @@ int		print_char(t_printable printable, int pos)
 	return (0);
 }
 
+int		copy_and_print_buffer(t_printable *dst, t_printable *src, int size)
+{
+	for (int l = 0; l < size; l++)
+	{
+		if (src[l].to_print && ft_memcmp(src + l, dst + l, sizeof(t_printable)))
+		{
+			ft_memcpy(dst + l, src + l, sizeof(t_printable));
+			print_char(dst[l], l);
+		}
+	}
+	return (0);
+}
+
 int		do_visu_stuff()
 {
-	int		i;
-	int		sleep_time;
-	int		current_cps;
+	int			i;
+	int			sleep_time;
+	static int	current_cps = 0;
+	int			has_frame;
 
-	current_cps = g_all.visu.max_cps;
-	update_cps();
 	i = 0;
-	sleep_time = 1000 / g_all.visu.max_cps;
+	has_frame = 0;
 	if (!g_all.visu.pause)
 	{
+		has_frame = 1;
 		pthread_create(&g_all.visu.thread_calcul, NULL, th_calcul, NULL);
 		if (g_all.visu.flame)
 			pthread_create(&g_all.visu.thread_flamme, NULL, th_feu, NULL);
 	}
+	sleep_time = 1000 / g_all.visu.max_cps;
 	while (i < sleep_time)
 	{
 		i += 10;
-		usleep(10 * 1000);
 		if (current_cps != g_all.visu.max_cps)
 		{
 			update_cps();
@@ -244,14 +257,11 @@ int		do_visu_stuff()
 			sleep_time = 1000 / g_all.visu.max_cps;
 			i = 0;
 		}
+		usleep(10 * 1000);
 	}
 	pthread_join(g_all.visu.thread_calcul, NULL);
 	pthread_join(g_all.visu.thread_flamme, NULL);
-	if (g_all.visu.pause)
-	{
-		return (1);
-	}
-	else
+	if (has_frame)
 	{
 		for (int l = 0; l < g_all.visu.screen_size; l++)
 		{
@@ -268,22 +278,14 @@ int		do_visu_stuff()
 				if (!(g_all.visu.next_frame[g_all.visu.offset_flame_y * g_all.visu.nb_cols + l].to_print))
 					g_all.visu.next_frame[g_all.visu.offset_flame_y * g_all.visu.nb_cols + l].to_print = ' ';
 			}
-		for (int l = 0; l < g_all.visu.screen_size; l++)
-		{
-			if (g_all.visu.next_frame[l].to_print && ft_memcmp(g_all.visu.next_frame + l, g_all.visu.current_frame_flame + l, sizeof(t_printable)))
-			{
-				ft_memcpy(g_all.visu.current_frame_flame + l, g_all.visu.next_frame + l, sizeof(t_printable));
-				print_char(g_all.visu.current_frame_flame[l], l);
-			}
-		}
-		if (g_all.visu.flame)
-		{
-			if (!g_all.visu.thread_sound)
-				pthread_create(&g_all.visu.thread_sound, NULL, sound_feu, NULL);
-		}
-		return (0);
+		copy_and_print_buffer(g_all.visu.current_frame_flame, g_all.visu.next_frame, g_all.visu.screen_size);
 	}
-	return (1);
+	if (g_all.visu.flame)
+	{
+		if (!g_all.visu.thread_sound)
+			pthread_create(&g_all.visu.thread_sound, NULL, sound_feu, NULL);
+	}
+	return (0);
 }
 
 int		beg_battle()
