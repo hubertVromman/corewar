@@ -71,6 +71,49 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP
 
 # define NB_OPERATIONS sizeof(g_op_tab) / sizeof(t_op)
 
+# define SIZE_ANIM_X 20
+# define SIZE_ANIM_Y 8
+
+typedef struct	s_endscreen
+{
+	int		ullx;
+	int		ulmx;
+	int		urmx;
+	int		urrx;
+	int		ruux;
+	int		rumx;
+	int		rbmx;
+	int		rbbx;
+	int		brrx;
+	int		brmx;
+	int		blmx;
+	int		bllx;
+	int		lbbx;
+	int		lbmx;
+	int		lumx;
+	int		luux;
+	int		ully;
+	int		ulmy;
+	int		urmy;
+	int		urry;
+	int		ruuy;
+	int		rumy;
+	int		rbmy;
+	int		rbby;
+	int		brry;
+	int		brmy;
+	int		blmy;
+	int		blly;
+	int		lbby;
+	int		lbmy;
+	int		lumy;
+	int		luuy;
+	int		cx;
+	int		cy;
+	int		*first_column;
+	int		*second_column;
+}				t_endscreen;
+
 typedef struct	s_printable
 {
 	char			to_print;
@@ -165,6 +208,7 @@ typedef struct	s_a
 	char		flags[sizeof(OP)];
 	t_proces	*queu[100];
 	t_visu		visu;
+	t_endscreen	end_screen;
 	char		arena[MEM_SIZE];
 	int			color[MEM_SIZE];
 }				t_a;

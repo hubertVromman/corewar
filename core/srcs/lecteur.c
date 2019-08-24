@@ -316,7 +316,7 @@ int		beg_battle()
 				g_all.check++;
 			}
 		}
-		if (g_all.flags[VISU])print_vm_info();
+		// if (g_all.flags[VISU])print_vm_info();
 	}
 	if (!g_all.flags[VISU])ft_printf("Contestant %d, \"%s\", has won !\n", g_all.champ[g_all.player_last_live].player_nb, g_all.champ[g_all.player_last_live].player_name);
 	else {ft_printf("fin\n");while(1);}

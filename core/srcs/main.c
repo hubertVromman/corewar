@@ -132,6 +132,42 @@ void	*reader_func(void *rien)
 	return (NULL);
 }
 
+int		get_line(int *buffer, int x1, int y1)
+{
+	int		dx;
+	int		dy;
+	float	f;
+	float	j;
+	int		x2;
+	int		y2;
+
+	int		sign;
+
+	x2 = g_all.end_screen.cx;
+	y2 = g_all.end_screen.cy;
+	for (int i = 0; i < g_all.end_screen.cy; i++)
+		buffer[i] = ft_max(x1, x2);
+	sign = 1;
+
+	if (y1 > y2)
+		ft_swap(&y1, &y2);
+
+	if (x1 > x2)
+		ft_swap(&x1, &x2);
+
+	dx = x2 - x1;
+	dy = y2 - y1;
+
+	f = (float) dx / dy;
+	j = sign == -1 ? x2 : x1;
+	for (int i = 0; i < dy; i++)
+	{
+		buffer[i] = (int) j;
+		j += f * sign;
+	}
+	return (0);
+}
+
 int		display_start()
 {
 	int		i;
@@ -140,10 +176,135 @@ int		display_start()
 	{
 		ft_printf(HIDE_CURSOR SAVE_SCREEN "\e[H");
 		init_current_frame();
-		// dump_memory_colored();
-		// print_header();
-		// print_border();
-		// print_vm_info();
+
+		for (int w = 0; ; w++)
+		{
+			get_line(g_all.end_screen.first_column, g_all.end_screen.ullx, g_all.end_screen.ully);
+			get_line(g_all.end_screen.second_column, g_all.end_screen.ulmx, g_all.end_screen.ulmy);
+			for (int j = 0; j < g_all.end_screen.cy; j++)
+			{
+				jump_to(g_all.end_screen.first_column[j], j);
+				for (int k = 0; k < g_all.end_screen.second_column[j] - g_all.end_screen.first_column[j]; k++)
+				{
+					ft_printf(COLOR_PRINT " ", 41 + w % 4);
+				}
+			}
+			get_line(g_all.end_screen.first_column, g_all.end_screen.urmx, g_all.end_screen.urmy);
+			get_line(g_all.end_screen.second_column, g_all.end_screen.urrx, g_all.end_screen.urry);
+			for (int j = 0; j < g_all.end_screen.cy / 2; j++)
+			{
+				ft_swap(g_all.end_screen.first_column + j, g_all.end_screen.first_column + g_all.end_screen.cy - 1 - j);
+				ft_swap(g_all.end_screen.second_column + j, g_all.end_screen.second_column + g_all.end_screen.cy - 1 - j);
+			}
+			for (int j = 0; j < g_all.end_screen.cy; j++)
+			{
+				jump_to(g_all.end_screen.first_column[j], j);
+				for (int k = 0; k < g_all.end_screen.second_column[j] - g_all.end_screen.first_column[j]; k++)
+				{
+					ft_printf(COLOR_PRINT " ", 41 + (w + 1) % 4);
+				}
+			}
+			get_line(g_all.end_screen.first_column, g_all.end_screen.ruux, g_all.end_screen.ruuy);
+			get_line(g_all.end_screen.second_column, g_all.end_screen.rumx, g_all.end_screen.rumy);
+			for (int j = 0; j < g_all.end_screen.cy / 2; j++)
+			{
+				ft_swap(g_all.end_screen.first_column + j, g_all.end_screen.first_column + g_all.end_screen.cy - 1 - j);
+				ft_swap(g_all.end_screen.second_column + j, g_all.end_screen.second_column + g_all.end_screen.cy - 1 - j);
+			}
+			for (int j = 0; j < g_all.end_screen.cy; j++)
+			{
+				jump_to(g_all.end_screen.first_column[j], j);
+				for (int k = 0; k < g_all.end_screen.second_column[j] - g_all.end_screen.first_column[j]; k++)
+				{
+					ft_printf(COLOR_PRINT " ", 41 + (w + 2) % 4);
+				}
+			}
+			get_line(g_all.end_screen.second_column, g_all.end_screen.rbmx, g_all.end_screen.rbmy);
+			get_line(g_all.end_screen.first_column, g_all.end_screen.rbbx, g_all.end_screen.rbby);
+			for (int j = 0; j < g_all.end_screen.cy; j++)
+			{
+				jump_to(g_all.end_screen.first_column[j], j + g_all.end_screen.cy);
+				for (int k = 0; k < g_all.end_screen.second_column[j] - g_all.end_screen.first_column[j]; k++)
+				{
+					ft_printf(COLOR_PRINT " ", 41 + (w + 3) % 4);
+				}
+			}
+
+			get_line(g_all.end_screen.second_column, g_all.end_screen.brrx, g_all.end_screen.brry);
+			get_line(g_all.end_screen.first_column, g_all.end_screen.brmx, g_all.end_screen.brmy);
+			for (int j = 0; j < g_all.end_screen.cy; j++)
+			{
+				jump_to(g_all.end_screen.first_column[j], j + g_all.end_screen.cy);
+				for (int k = 0; k < g_all.end_screen.second_column[j] - g_all.end_screen.first_column[j]; k++)
+				{
+					ft_printf(COLOR_PRINT " ", 41 + w % 4);
+				}
+			}
+			get_line(g_all.end_screen.second_column, g_all.end_screen.blmx, g_all.end_screen.blmy);
+			get_line(g_all.end_screen.first_column, g_all.end_screen.bllx, g_all.end_screen.blly);
+			for (int j = 0; j < g_all.end_screen.cy / 2; j++)
+			{
+				ft_swap(g_all.end_screen.first_column + j, g_all.end_screen.first_column + g_all.end_screen.cy - 1 - j);
+				ft_swap(g_all.end_screen.second_column + j, g_all.end_screen.second_column + g_all.end_screen.cy - 1 - j);
+			}
+			for (int j = 0; j < g_all.end_screen.cy; j++)
+			{
+				jump_to(g_all.end_screen.first_column[j], j + g_all.end_screen.cy);
+				for (int k = 0; k < g_all.end_screen.second_column[j] - g_all.end_screen.first_column[j]; k++)
+				{
+					ft_printf(COLOR_PRINT " ", 41 + (w + 1) % 4);
+				}
+			}
+			get_line(g_all.end_screen.first_column, g_all.end_screen.lbbx, g_all.end_screen.lbby);
+			get_line(g_all.end_screen.second_column, g_all.end_screen.lbmx, g_all.end_screen.lbmy);
+			for (int j = 0; j < g_all.end_screen.cy; j++)
+			{
+				g_all.end_screen.first_column[j] = g_all.end_screen.cx - g_all.end_screen.first_column[j];
+				g_all.end_screen.second_column[j] = g_all.end_screen.cx - g_all.end_screen.second_column[j];
+			}
+			for (int j = 0; j < g_all.end_screen.cy; j++)
+			{
+				ft_swap(g_all.end_screen.first_column + j, g_all.end_screen.second_column + j);
+				// ft_swap(g_all.end_screen.second_column + j, g_all.end_screen.second_column + g_all.end_screen.cy - 1 - j);
+			}
+			for (int j = 0; j < g_all.end_screen.cy; j++)
+			{
+				jump_to(g_all.end_screen.first_column[j], j + g_all.end_screen.cy);
+				for (int k = 0; k < g_all.end_screen.second_column[j] - g_all.end_screen.first_column[j]; k++)
+				{
+					ft_printf(COLOR_PRINT " ", 41 + (w + 2) % 4);
+				}
+			}
+			get_line(g_all.end_screen.second_column, g_all.end_screen.lumx, g_all.end_screen.lumy);
+			get_line(g_all.end_screen.first_column, g_all.end_screen.luux, g_all.end_screen.luuy);
+			for (int j = 0; j < g_all.end_screen.cy; j++)
+			{
+				g_all.end_screen.first_column[j] = g_all.end_screen.cx - g_all.end_screen.first_column[j];
+				g_all.end_screen.second_column[j] = g_all.end_screen.cx - g_all.end_screen.second_column[j];
+			}
+			for (int j = 0; j < g_all.end_screen.cy; j++)
+			{
+				ft_swap(g_all.end_screen.first_column + j, g_all.end_screen.second_column + j);
+				// ft_swap(g_all.end_screen.second_column + j, g_all.end_screen.second_column + g_all.end_screen.cy - 1 - j);
+			}
+			for (int j = 0; j < g_all.end_screen.cy / 2; j++)
+			{
+				ft_swap(g_all.end_screen.first_column + j, g_all.end_screen.first_column + g_all.end_screen.cy - 1 - j);
+				ft_swap(g_all.end_screen.second_column + j, g_all.end_screen.second_column + g_all.end_screen.cy - 1 - j);
+			}
+			for (int j = 0; j < g_all.end_screen.cy; j++)
+			{
+				jump_to(g_all.end_screen.first_column[j], j);
+				for (int k = 0; k < g_all.end_screen.second_column[j] - g_all.end_screen.first_column[j]; k++)
+				{
+					ft_printf(COLOR_PRINT " ", 41 + (w + 3) % 4);
+
+				}
+			}
+			usleep(300 * 1000);
+		}
+		// jump_to(g_all.end_screen.ulmx, g_all.end_screen.ulmy);
+		// ft_printf(RGB_PRINT_BG " ", 255, 0, 0);
 	}
 	else
 	{
@@ -197,6 +358,51 @@ int		sort_champs()
 	return (0);
 }
 
+int		init_end_screen()
+{
+	g_all.end_screen.ullx = g_all.visu.nb_cols / 4 - SIZE_ANIM_X;
+	g_all.end_screen.ully = 0;
+	g_all.end_screen.ulmx = g_all.visu.nb_cols / 4 + SIZE_ANIM_X;
+	g_all.end_screen.ulmy = 0;
+	g_all.end_screen.urmx = g_all.visu.nb_cols * 3 / 4 - SIZE_ANIM_X;
+	g_all.end_screen.urmy = 0;
+	g_all.end_screen.urrx = g_all.visu.nb_cols * 3 / 4 + SIZE_ANIM_X;
+	g_all.end_screen.urry = 0;
+	g_all.end_screen.ruux = g_all.visu.nb_cols;
+	g_all.end_screen.ruuy = g_all.visu.nb_lines / 4 - SIZE_ANIM_Y;
+	g_all.end_screen.rumx = g_all.visu.nb_cols;
+	g_all.end_screen.rumy = g_all.visu.nb_lines / 4 + SIZE_ANIM_Y;
+	g_all.end_screen.rbmx = g_all.visu.nb_cols;
+	g_all.end_screen.rbmy = g_all.visu.nb_lines * 3 / 4 - SIZE_ANIM_Y;
+	g_all.end_screen.rbbx = g_all.visu.nb_cols;
+	g_all.end_screen.rbby = g_all.visu.nb_lines * 3 / 4 + SIZE_ANIM_Y;
+
+	g_all.end_screen.brrx = g_all.visu.nb_cols * 3 / 4 + SIZE_ANIM_X;
+	g_all.end_screen.brry = g_all.visu.nb_lines;
+	g_all.end_screen.brmx = g_all.visu.nb_cols * 3 / 4 - SIZE_ANIM_X;
+	g_all.end_screen.brmy = g_all.visu.nb_lines;
+	g_all.end_screen.blmx = g_all.visu.nb_cols / 4 + SIZE_ANIM_X;
+	g_all.end_screen.blmy = g_all.visu.nb_lines;
+	g_all.end_screen.bllx = g_all.visu.nb_cols / 4 - SIZE_ANIM_X;
+	g_all.end_screen.blly = g_all.visu.nb_lines;
+	g_all.end_screen.lbbx = 0;
+	g_all.end_screen.lbby = g_all.visu.nb_lines * 3 / 4 + SIZE_ANIM_Y;
+	g_all.end_screen.lbmx = 0;
+	g_all.end_screen.lbmy = g_all.visu.nb_lines * 3 / 4 - SIZE_ANIM_Y;
+	g_all.end_screen.lumx = 0;
+	g_all.end_screen.lumy = g_all.visu.nb_lines / 4 + SIZE_ANIM_Y;
+	g_all.end_screen.luux = 0;
+	g_all.end_screen.luuy = g_all.visu.nb_lines / 4 - SIZE_ANIM_Y;
+
+	g_all.end_screen.cx = g_all.visu.nb_cols / 2;
+	g_all.end_screen.cy = g_all.visu.nb_lines / 2;
+	if (!(g_all.end_screen.first_column = malloc(sizeof(int) * g_all.visu.nb_lines / 2)))
+		exit_func(MERROR, 0);
+	if (!(g_all.end_screen.second_column = malloc(sizeof(int) * g_all.visu.nb_lines / 2)))
+		exit_func(MERROR, 0);
+	return (0);
+}
+
 int		init_visu()
 {
 	int		i;
@@ -244,6 +450,7 @@ int		init_visu()
 	}
 	signal(SIGINT, exit_ctrl_c);
 	pthread_create(&(g_all.visu.thread_reader), NULL, reader_func, NULL);
+	init_end_screen();
 	return (0);
 }
 
@@ -287,13 +494,8 @@ void		*sound_feu()
 
 int		main(int ac, char **av)
 {
-	// t_printable pr;
-	// pr.back_color = 0x08888888 & 0x00ffffff;
-	// ft_printf("%#.8x\n", pr.back_color);
-	// ft_printf("%d\n", sizeof(t_printable));
 	init_all(ac, av);
 	display_start();
 	beg_battle();
-	// while (1){}
 	exit_func(0, 0);
 }
