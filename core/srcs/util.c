@@ -30,7 +30,7 @@ int		sort_proces(t_champ *champ)
 	i = -1;
 	while (++i < champ->nb_proces)
 	{
-		if (i + 1 < champ->nb_proces && champ->proces[i].id_proces < champ->proces[i + 1].id_proces)
+		if (i + 1 < champ->nb_proces && champ->proces[i].id_proces > champ->proces[i + 1].id_proces)
 		{
 			tmp = champ->proces[i];
 			champ->proces[i] = champ->proces[i + 1];
@@ -99,7 +99,7 @@ int		create_proces(int pc, t_proces *parent, t_champ *champ)
 	champ->nb_proces++;
 	g_all.nb_proces_tot++;
 	g_all.id_proces++;
-	// g_all.cycle ? play_sound(2) :0;
+	g_all.cycle ? play_sound(1) :0;
 	return(0);
 }
 

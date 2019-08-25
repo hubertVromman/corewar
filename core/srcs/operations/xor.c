@@ -18,7 +18,6 @@ int		operation_xor(t_champ *champ, t_proces *proces, t_arg *args)
 	int		second_arg;
 
 	champ = NULL;
-
 	if (args[0].type & T_IND || args[0].type & T_DIR)
 		first_arg = args[0].value; // a tester
 	else

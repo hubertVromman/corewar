@@ -28,6 +28,5 @@ int		operation_live(t_champ *champ, t_proces *proces, t_arg *args)
 		}
 	}
 	proces->lives_period++;
-	// ft_printf("un processus dit que le joueur %d(%s) est en vie\n", champ->player_nb, champ->player_name);
 	return (1);
 }

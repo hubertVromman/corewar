@@ -496,6 +496,7 @@ int		main(int ac, char **av)
 {
 	init_all(ac, av);
 	display_start();
+	ft_printf("%d\n", g_all.dump_period);
 	beg_battle();
 	exit_func(0, 0);
 }

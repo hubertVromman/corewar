@@ -117,7 +117,6 @@ int		read_proces()
 		}
 	}
 	read_opcode(l);
-	// if (!g_all.flags[VISU]) print_debug_info();
 	return (0);
 }
 
@@ -138,9 +137,7 @@ void	*th_feu()
 	b = g_all.visu.feu;
 	char *ch = " .:^*xsS#$";
 	int color;
-
 	ft_bzero(g_all.visu.flame_buf, sizeof(t_printable) * FLAME_HEIGHT * width);
-
 	for (int i = 0; i < width / 9; i++)
 		b[rand() % width + width * (height - 1)] = 65;
 	for (int i = 0; i < size; i++)
@@ -164,9 +161,9 @@ void	*th_calcul()
 {
 	int i;
 
+	i = -1;
 	ft_bzero(g_all.visu.next_frame, g_all.visu.screen_size * sizeof(t_printable));
 	ft_memcpy(g_all.visu.next_frame + g_all.visu.offset_flame_y * g_all.visu.nb_cols, g_all.visu.current_frame + g_all.visu.offset_flame_y * g_all.visu.nb_cols, FLAME_HEIGHT * g_all.visu.nb_cols * sizeof(t_printable));
-	i = -1;
 	while (++i < g_all.visu.nb_frames_to_skip && g_all.end)
 	{
 		g_all.cycle++;
@@ -314,6 +311,11 @@ int		beg_battle()
 					}
 				}
 				g_all.check++;
+			}
+			if (g_all.dump_period && g_all.cycle == g_all.dump_period)
+			{
+				dump_memory();
+				exit_func(0, 0);
 			}
 		}
 		// if (g_all.flags[VISU])print_vm_info();
