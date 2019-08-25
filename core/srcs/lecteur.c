@@ -184,6 +184,7 @@ void	*th_calcul()
 			g_all.check++;
 		}
 	}
+	!g_all.end ? display_ray() : 0;
 	pthread_exit(NULL);
 }
 

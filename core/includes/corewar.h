@@ -57,6 +57,7 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP
 # define BLUE "\e[34m"
 # define MAGENTA "\e[35m"
 # define CYAN "\e[36m"
+# define BOLD_WHITE "\033[1m\033[37m"
 
 # define HEADER_HEIGHT 10
 # define MEMORY_HEIGHT 64
@@ -241,6 +242,7 @@ int				init_current_frame();
 */
 int				print_debug_info();
 void			*sound_feu();
+int				display_ray();
 
 /*
 ** util_instr.c
