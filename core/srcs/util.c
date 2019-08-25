@@ -107,8 +107,10 @@ int		dump_memory()
 {
 	int		i;
 	char *buffer;
+	char *s;
 
-	char *s = malloc(MEM_SIZE * 3);
+	if (!(s = malloc(MEM_SIZE * 3)))
+		exit_func(MERROR, 0);
 	i = -1;
 	while (++i < MEM_SIZE)
 	{

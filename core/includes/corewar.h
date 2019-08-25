@@ -196,6 +196,7 @@ typedef struct	s_a
 	int			ctd;
 	t_champ		champ[4];
 	int			nb_errors;
+	int			n_option;
 	int			id_proces;
 	int			nb_proces_tot;
 	int			max_proces;

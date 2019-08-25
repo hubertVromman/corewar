@@ -27,6 +27,7 @@ int		parse_arg(int ac, char **av)
 			{
 				if (i + 1 == ac)
 					exit_func(-1, 1);
+				g_all.n_option = 1;
 				g_all.next_champ_nb = ft_atoi(av[++i]);
 			}
 			else if (!ft_strcmp(av[i] + 1, "dump"))
@@ -147,7 +148,7 @@ int		get_line(int *buffer, int x1, int y1)
 	y2 = g_all.end_screen.cy;
 	for (int i = 0; i < g_all.end_screen.cy; i++)
 		buffer[i] = ft_max(x1, x2);
-	sign = 1;
+	sign = 1; // a quoi sert la variable ca ne change jamais nan ?
 
 	if (y1 > y2)
 		ft_swap(&y1, &y2);
@@ -395,7 +396,6 @@ int		init_end_screen()
 	g_all.end_screen.rbmy = g_all.visu.nb_lines * 3 / 4 - SIZE_ANIM_Y;
 	g_all.end_screen.rbbx = g_all.visu.nb_cols;
 	g_all.end_screen.rbby = g_all.visu.nb_lines * 3 / 4 + SIZE_ANIM_Y;
-
 	g_all.end_screen.brrx = g_all.visu.nb_cols * 3 / 4 + SIZE_ANIM_X;
 	g_all.end_screen.brry = g_all.visu.nb_lines;
 	g_all.end_screen.brmx = g_all.visu.nb_cols * 3 / 4 - SIZE_ANIM_X;
@@ -412,7 +412,6 @@ int		init_end_screen()
 	g_all.end_screen.lumy = g_all.visu.nb_lines / 4 + SIZE_ANIM_Y;
 	g_all.end_screen.luux = 0;
 	g_all.end_screen.luuy = g_all.visu.nb_lines / 4 - SIZE_ANIM_Y;
-
 	g_all.end_screen.cx = g_all.visu.nb_cols / 2;
 	g_all.end_screen.cy = g_all.visu.nb_lines / 2;
 	if (!(g_all.end_screen.first_column = malloc(sizeof(int) * g_all.visu.nb_lines / 2)))
@@ -490,7 +489,8 @@ int		init_all(int ac, char **av)
 		init_visu();
 	while (++i < g_all.nb_champ)
 	{
-		g_all.champ[i].player_nb = 0 - g_all.champ[i].player_nb; // a changer
+		if (!g_all.n_option)
+			g_all.champ[i].player_nb = 0 - g_all.champ[i].player_nb;
 		ft_memcpy(g_all.arena + (g_all.pos_depart * i),
 			g_all.champ[i].exec_file, g_all.champ[i].exec_size);
 		create_proces(g_all.pos_depart * i, NULL, &(g_all.champ[i])); //gestion d'erreur
