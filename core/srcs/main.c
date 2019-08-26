@@ -6,9 +6,36 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:28:49 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/20 17:27:16 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/26 22:58:52 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/*
+** TO DO or !Not to do
+** - Bug affichage  -->soso
+** - afficher indicateur pour "Pause"
+** - Mettre tout dans le buffer "print info"
+** - Fonction AFF
+** - Gerer la double impression au debut
+** - imprimer live et aff ensemble
+** - Norme
+** - Why else dans le lecteur ?
+** - Dans create proces lecture des OP de la Queu
+** - faire des define pour le son
+** - verifier tout les free
+** - recheque l'asm
+** - Verifier tout les printf pour affichage sans visu
+** - flag i pour les lives et aff
+** - Verifier qu'on kill les thread
+** - tout les 16 par des defines Nb_Operation
+** - tester dernier en vie
+** - Nb du champion reste comme il est mais passe en neg dans le registre
+** - faire un prnt char pour afficher
+** - sound flame on of quand il faut
+** - proteger les printfs qui mettent dans le buffer
+** - Pas de visu si screen est trop operation_st
+** 				00/22
+*/
 
 #include "corewar.h"
 
