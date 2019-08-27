@@ -210,6 +210,6 @@ int		print_vm_info()
 		}
 		g_all.max_proces = g_all.nb_proces_tot;
 	}
-	print_frame_diff();
+	// print_frame_diff();
 	return (0);
 }

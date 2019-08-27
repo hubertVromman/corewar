@@ -24,25 +24,26 @@
 ** - Verifier tout les printf pour affichage sans visu
 ** - flag i pour les lives et aff
 ** - Verifier qu'on kill les thread
-** - faire un print char pour afficher
 ** - Pas de visu si screen est trop petit
 ** 	 Gagnant qui bouge dans l'ecran (avec une couleur random ?)
-** - error_func pour player nb a chequer
-** 				6.5/23 (0.5 point par fini, 0.5 point par teste)
+** - Remplacer printf dans visu par insta_print_char
+** 				9/23 (0.5 point par fini, 0.5 point par teste)
 **
 ** PIPELINE
 ** - Nb du champion reste comme il est mais passe en neg dans le registre --> a tester
 ** - afficher indicateur pour "Pause" --> utiliser print char a la place de printf PUIS OK
 ** - Mettre tout dans le buffer "print info"   --> occuper
-** - verifier tous les free --> hub
 **
 ** DEJA FAIT
 ** - tester dernier en vie  --> ok
 ** - sound flame on of quand il faut  -> ok
 ** - tout les 16 par des defines Nb_Operation --> ok
-** - Bug affichage  --> OK
+** - Bug affichage  --> ok
 ** - faire des define pour le son   --> ok
 ** - proteger les printfs qui mettent dans le buffer  --> ok
+** - verifier tous les free --> ok
+** - faire un print char pour afficher --> ok
+** - error_func pour player nb a chequer --> ok
 */
 
 int		parse_arg(int ac, char **av)
@@ -60,7 +61,7 @@ int		parse_arg(int ac, char **av)
 			{
 				if (i + 1 == ac)
 					exit_func(-1, 1);
-				if ((g_all.next_champ_nb = ft_atoi(av[++i])) < 0)
+				if ((g_all.next_champ_nb = ft_atoi(av[++i])) <= 0)
 				{
 					error_func(NULL, INVALID_NB);
 					g_all.next_champ_nb = 0;
@@ -499,6 +500,7 @@ int		init_visu()
 		g_all.visu.current_frame[l].to_print = ' ';
 		g_all.visu.current_frame_flame[l].to_print = ' ';
 	}
+	g_all.visu.previous_pos = -1;
 	signal(SIGINT, exit_ctrl_c);
 	pthread_create(&(g_all.visu.thread_reader), NULL, reader_func, NULL);
 	init_end_screen();

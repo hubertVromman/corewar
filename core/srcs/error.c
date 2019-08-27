@@ -16,6 +16,8 @@ int		error_func(t_champ *champ, int error_code)
 {
 	if (champ)
 		ft_printf("<b bwhite>%s: <bred>error:<b bwhite> %>", champ->file_name, 2);
+	else
+		ft_printf("<b bwhite>Parsing: <bred>error:<b bwhite> %>", 2);
 	if (error_code == NOT_COR_FILE)
 		ft_printf("not a .cor file\n%>", 2);
 	else if (error_code == OPEN_FAIL)
@@ -25,7 +27,7 @@ int		error_func(t_champ *champ, int error_code)
 	else if (error_code == READ_ERROR)
 		ft_printf("read error\n%>", 2);
 	else if (error_code == INVALID_NB)
-		ft_printf("invalid number : can't have negative player number\n%>", 2);
+		ft_printf("invalid number : %d: player number must be positive\n%>", g_all.next_champ_nb, 2);
 	else
 		ft_printf("undifined error\n%>", 2);
 	ft_printf("</>%>", 2);

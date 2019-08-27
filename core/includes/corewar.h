@@ -185,6 +185,9 @@ typedef struct	s_visu
 	int			offset_memory_y;
 	int			offset_flame_y;
 	char		*feu;
+	int			previous_pos;
+	int			previous_fg;
+	int			previous_bg;
 	t_printable	*flame_buf;
 	t_printable	*current_frame;
 	t_printable	*current_frame_flame;
@@ -241,7 +244,7 @@ int				exit_func(int exit_code, int dp_usage);
 */
 int				get_cycle_left(int opcode);
 int				create_proces(int pc, t_proces *parent, t_champ *champ);
-int				detele_proces(t_champ *champ, int id_proces);
+int				delete_proces(t_champ *champ, int id_proces);
 int				dump_memory();
 int				dump_memory_colored();
 int				init_current_frame();
@@ -274,10 +277,10 @@ int				get_champ(char *file_name);
 int				beg_battle();
 int	 			read_proces();
 int				reset_proc();
-int				read_arena_op(int pc);
-int				print_char(t_printable printable, int pos);
 int				print_frame_diff();
-
+int				read_arena_op(int pc);
+int				insta_print_char(char c, int f_color, int b_color, int pos);
+int				print_char(t_printable printable, int pos);
 
 /*
 ** operations

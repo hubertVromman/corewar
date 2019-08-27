@@ -17,12 +17,7 @@ int		free_all(void)
 	free(g_all.visu.flame_buf);
 	free(g_all.visu.current_frame);
 	free(g_all.visu.next_frame);
-	// free(g_all.end_screen.first_column);
-	// free(g_all.end_screen.second_column);
-	free(g_all.visu.flame_buf);
-	free(g_all.visu.current_frame);
 	free(g_all.visu.current_frame_flame);
-	free(g_all.visu.next_frame);
 	free(g_all.visu.feu);
 	return (0);
 }

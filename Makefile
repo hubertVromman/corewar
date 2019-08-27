@@ -74,12 +74,12 @@ fclean: clean
 
 debug_asm: $(ASM_OBJ) $(OBJ)
 	@make -C $(LIB)
-	@$(CC) $(CFLAGS) -o $@ $^ -L$(LIB) -lft $(SANITIZE)
+	@$(CC) -o $@ $^ -L$(LIB) -lft $(SANITIZE)
 	@echo "$@ compiled$(NC)"
 
 debug_corewar: $(OP_OBJ) $(COR_OBJ) $(OBJ)
 	@make -C $(LIB)
-	@$(CC) $(CFLAGS) -o $@ $^ -L$(LIB) -lft $(SANITIZE)
+	@$(CC) -o $@ $^ -L$(LIB) -lft $(SANITIZE) $(O3)
 	@echo "$@ compiled$(NC)"
 
 re: fclean all

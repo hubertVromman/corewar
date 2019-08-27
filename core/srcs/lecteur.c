@@ -24,30 +24,36 @@ int		read_arena_op(int pc)
 
 int		reset_proc()
 {
-	int i;
-	int total_lives_period;
-	int k;
+	int		i;
+	int		total_lives_period;
+	int		k;
+	int		deleted;
 
 	i = -1;
 	total_lives_period = 0;
 	while (++i < g_all.nb_champ)
 	{
+		deleted = 0;
 		k = -1;
 		while (++k < g_all.champ[i].nb_proces)
 		{
 			if (!g_all.champ[i].proces[k].lives_period)
 			{
-				detele_proces(&g_all.champ[i], k);
-				k--;
+				delete_proces(&(g_all.champ[i]), k);
+				deleted++;
 			}
 			else
 			{
 				total_lives_period += g_all.champ[i].proces[k].lives_period;
 				g_all.champ[i].proces[k].lives_period = 0;
+				ft_memcpy(&(g_all.champ[i].proces[k - deleted]), &(g_all.champ[i].proces[k]), sizeof(t_proces));
 			}
 		}
 		g_all.champ[i].lives_period = 0;
+		g_all.champ[i].nb_proces -= deleted;
+		g_all.nb_proces_tot -= deleted;
 	}
+
 	return (total_lives_period);
 }
 
@@ -189,30 +195,43 @@ void	*th_calcul()
 	pthread_exit(NULL);
 }
 
+int		insta_print_char(char c, int f_color, int b_color, int pos)
+{
+	pos = pos % g_all.visu.screen_size;
+	if (g_all.visu.previous_pos + 1 != pos)
+	{
+		jump_to(pos % g_all.visu.nb_cols, pos / g_all.visu.nb_cols);
+		g_all.visu.previous_pos = pos;
+	}
+	else
+		g_all.visu.previous_pos++;
+		if (g_all.visu.previous_fg != f_color)
+	{
+		ft_printf(RGB_PRINT, (f_color >> 16) & 0xff, (f_color >> 8) & 0xff, (f_color >> 0) & 0xff);
+		g_all.visu.previous_fg = f_color;
+	}
+	if (g_all.visu.previous_bg != b_color)
+	{
+		ft_printf(RGB_PRINT_BG, (b_color >> 16) & 0xff, (b_color >> 8) & 0xff, (b_color >> 0) & 0xff);
+		g_all.visu.previous_bg = b_color;
+	}
+	ft_printf("%c", c);
+	return (0);
+}
+
+int		insta_print_string(char *s, int f_color, int b_color, int pos)
+{
+	int		i;
+
+	i = -1;
+	while (s[++i])
+		insta_print_char(s[i], f_color, b_color, pos++);
+	return (0);
+}
+
 int		print_char(t_printable printable, int pos)
 {
-	// static int previous_bg = 0;
-	// static int previous_fg = 0;
-	// static int previous_pos = -1;
-
-	// if (previous_pos + 1 != pos)
-	// {
-		jump_to(pos % g_all.visu.nb_cols, pos / g_all.visu.nb_cols);
-	// 	previous_pos = pos;
-	// }
-	// else
-	// 	previous_pos++;
-	// if (previous_bg != printable.back_color)
-	// {
-		ft_printf(RGB_PRINT_BG, (printable.back_color >> 16) & 0xff, (printable.back_color >> 8) & 0xff, (printable.back_color >> 0) & 0xff);
-	// 	previous_bg = printable.back_color;
-	// }
-	// if (previous_fg != printable.fore_color)
-	// {
-		ft_printf(RGB_PRINT, (printable.fore_color >> 16) & 0xff, (printable.fore_color >> 8) & 0xff, (printable.fore_color >> 0) & 0xff);
-	// 	previous_fg = printable.fore_color;
-	// }
-	ft_printf("%c", printable.to_print);
+	insta_print_char(printable.to_print, printable.fore_color, printable.back_color, pos);
 	return (0);
 }
 
@@ -301,25 +320,7 @@ int		do_visu_stuff()
 	pthread_join(g_all.visu.thread_calcul, NULL);
 	pthread_join(g_all.visu.thread_flamme, NULL);
 	if (has_frame)
-	{
 		print_frame_diff();
-		// for (int l = 0; l < g_all.visu.screen_size; l++)
-		// {
-		// 	if (g_all.visu.next_frame[l].to_print && ft_memcmp(g_all.visu.next_frame + l, g_all.visu.current_frame + l, sizeof(t_printable)))
-		// 	{
-		// 		ft_memcpy(g_all.visu.current_frame + l, g_all.visu.next_frame + l, sizeof(t_printable));
-		// 	}
-		// }
-		// if (g_all.visu.flame)
-		// 	for (int l = 0; l < FLAME_HEIGHT * g_all.visu.nb_cols; l++)
-		// 	{
-		// 		if (g_all.visu.flame_buf[l].to_print)
-		// 			ft_memcpy(g_all.visu.next_frame + g_all.visu.offset_flame_y * g_all.visu.nb_cols + l, g_all.visu.flame_buf + l, sizeof(t_printable));
-		// 		if (!(g_all.visu.next_frame[g_all.visu.offset_flame_y * g_all.visu.nb_cols + l].to_print))
-		// 			g_all.visu.next_frame[g_all.visu.offset_flame_y * g_all.visu.nb_cols + l].to_print = ' ';
-		// 	}
-		// copy_and_print_buffer(g_all.visu.current_frame_flame, g_all.visu.next_frame, g_all.visu.screen_size);
-	}
 	if (g_all.visu.flame)
 	{
 		if (!g_all.visu.thread_sound)
@@ -361,7 +362,6 @@ int		beg_battle()
 				exit_func(0, 0);
 			}
 		}
-
 	}
 	if (!g_all.flags[VISU])ft_printf("Contestant %d, \"%s\", has won !\n", g_all.champ[g_all.player_last_live].player_nb, g_all.champ[g_all.player_last_live].player_name);
 	else {ft_printf("fin\n");while(1);}

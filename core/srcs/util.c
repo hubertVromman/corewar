@@ -52,7 +52,7 @@ int		play_sound(int i)
 	return (0);
 }
 
-int		detele_proces(t_champ *champ, int id_proces)
+int		delete_proces(t_champ *champ, int id_proces)
 {
 	int		pos;
 	char	*buf;
@@ -66,10 +66,6 @@ int		detele_proces(t_champ *champ, int id_proces)
 		write_to_buffer(g_all.visu.next_frame + pos + 1, buf[1], g_all.color[champ->proces[id_proces].pc], 0);
 		free(buf);
 	}
-	ft_memcpy(&(champ->proces[id_proces]), &(champ->proces[id_proces + 1]), sizeof(t_proces) * (champ->nb_proces - 1 - id_proces));
-	champ->nb_proces--;
-	g_all.nb_proces_tot--;
-	// sort_proces(champ);
 	// play_sound(S_DEATH);
 	return (0);
 }
