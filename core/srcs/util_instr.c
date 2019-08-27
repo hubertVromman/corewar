@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/16 15:51:38 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/15 06:32:29 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/27 05:16:01 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ int		increment_pc(t_proces *proces, int nb_byte)
 	if (g_all.flags[VISU])
 	{
 		pos = jump_to_buf(proces->pc);
-		ft_printf(CHAR_HEX_PRINT "%#>", g_all.arena[proces->pc], &buf);
+		if (ft_printf(CHAR_HEX_PRINT "%#>", g_all.arena[proces->pc], &buf) == -1)
+			exit_func(MERROR, 0);
 		write_to_buffer(g_all.visu.next_frame + pos, buf[0], g_all.color[proces->pc], 0);
 		write_to_buffer(g_all.visu.next_frame + pos + 1, buf[1], g_all.color[proces->pc], 0);
 	}
@@ -50,7 +51,8 @@ int		write_byte(t_proces *proces, int address, char to_write)
 	if (g_all.flags[VISU])
 	{
 		pos = jump_to_buf(address);
-		ft_printf(CHAR_HEX_PRINT "%#>", g_all.arena[address], &buf);
+		if (ft_printf(CHAR_HEX_PRINT "%#>", g_all.arena[address], &buf) == -1)
+			exit_func(MERROR, 0);
 		write_to_buffer(g_all.visu.next_frame + pos, buf[0], proces->color_rgb, 0);
 		write_to_buffer(g_all.visu.next_frame + pos + 1, buf[1], proces->color_rgb, 0);
 		g_all.color[address] = proces->color_rgb;

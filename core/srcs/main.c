@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:28:49 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/26 23:17:17 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/27 05:38:39 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,35 @@
 
 /*
 ** TO DO or !Not to do
-** - Bug affichage  --> soso
-** - afficher indicateur pour "Pause" --> soso
-** - Mettre tout dans le buffer "print info"
 ** - Fonction AFF
 ** - Gerer la double impression au debut
 ** - imprimer live et aff ensemble
 ** - Norme
 ** - Why else dans le lecteur ?
 ** - Dans create proces lecture des OP de la Queu
-** - faire des define pour le son
-** - verifier tous les free --> hub
 ** - recheck l'asm
 ** - Verifier tout les printf pour affichage sans visu
 ** - flag i pour les lives et aff
 ** - Verifier qu'on kill les thread
-** - tout les 16 par des defines Nb_Operation --> ok
 ** - tester dernier en vie
 ** - Nb du champion reste comme il est mais passe en neg dans le registre --> a tester
 ** - faire un print char pour afficher
-** - sound flame on of quand il faut
-** - proteger les printfs qui mettent dans le buffer
-** - Pas de visu si screen est trop operation_st
+** - Pas de visu si screen est trop petit
 ** 	 Gagnant qui bouge dans l'ecran (avec une couleur random ?)
-** 				1.5/23 (0.5 point par fini, 0.5 point par teste)
+** - error_func pour player nb a cherquer
+** 				5.5/23 (0.5 point par fini, 0.5 point par teste)
+**
+** PIPELINE
+** - afficher indicateur pour "Pause" --> utiliser print char a la place de printf PUIS OK
+** - Mettre tout dans le buffer "print info"   --> occuper
+** - verifier tous les free --> hub
+**
+** DEJA FAIT
+** - sound flame on of quand il faut  -> ok
+** - tout les 16 par des defines Nb_Operation --> ok
+** - Bug affichage  --> OK
+** - faire des define pour le son   --> ok
+** - proteger les printfs qui mettent dans le buffer  --> ok
 */
 
 int		parse_arg(int ac, char **av)
@@ -540,9 +545,11 @@ void		*sound_feu()
 
 int		main(int ac, char **av)
 {
+	// av = 0;
+	// ac = 0;
+	// ft_printf("-> %d\n", system("pkill afplay"));
 	init_all(ac, av);
 	display_start();
-	ft_printf("%d\n", g_all.dump_period);
 	beg_battle();
 	exit_func(0, 0);
 }
