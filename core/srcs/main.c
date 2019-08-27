@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:28:49 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/27 22:34:52 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/28 00:33:40 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,14 @@
 ** - Pas de visu si screen est trop petit
 ** 	 Gagnant qui bouge dans l'ecran (avec une couleur random ?)
 ** - Remplacer printf dans visu par insta_print_char
-** 				9/23 (0.5 point par fini, 0.5 point par teste)
+** 				10/23 (0.5 point par fini, 0.5 point par teste)
 **
 ** PIPELINE
 ** - Nb du champion reste comme il est mais passe en neg dans le registre --> a tester
 ** - afficher indicateur pour "Pause" --> utiliser print char a la place de printf PUIS OK
-** - Mettre tout dans le buffer "print info"   --> occuper
 **
 ** DEJA FAIT
+** - Mettre tout dans le buffer "print info"   --> ok
 ** - tester dernier en vie  --> ok
 ** - sound flame on of quand il faut  -> ok
 ** - tout les 16 par des defines Nb_Operation --> ok

@@ -6,7 +6,7 @@
 /*   By: sofchami <sofchami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 02:28:56 by sofchami          #+#    #+#             */
-/*   Updated: 2019/08/27 22:14:31 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/28 00:32:05 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int		print_proces_info(int i)
 		{
 			opcode = g_all.champ[n].proces[k].opcode;
 			// jump_to(X, i + k + l);
-			if (ft_printf("  player_nb %2d  |  pc %4d  |  opcode " CHAR_HEX_PRINT "  |  Name OP %5s  |  cycle_left %4d%#>", g_all.champ[n].player_nb, g_all.champ[n].proces[k].pc, opcode, opcode > 0 && opcode <= NB_OPERATIONS ? g_op_tab[opcode - 1].name : "null", g_all.champ[n].proces[k].cycle_left, &tmp) == -1)
+			if (ft_printf("  player_nb %5d  |  pc %4d  |  opcode " CHAR_HEX_PRINT "  |  Name OP %5s  |  cycle_left %4d%#>", g_all.champ[n].player_nb, g_all.champ[n].proces[k].pc, opcode, opcode > 0 && opcode <= NB_OPERATIONS ? g_op_tab[opcode - 1].name : "null", g_all.champ[n].proces[k].cycle_left, &tmp) == -1)
 				exit_func(MERROR, 0);
 			add_string_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * (i + l + k)) + (X), tmp, 0xffffff, 0);
 			free(tmp);
@@ -121,20 +121,42 @@ int		print_proces_info(int i)
 int		print_player_info(int i)
 {
 	int k;
+	char *tmp;
 
 	k = -1;
+	tmp = NULL;
 	while (++k < g_all.nb_champ)
 	{
-		i++;
-		jump_to(k < 2 ? X + 25 : X + 75,k < 2 ? i : i - 10);
-		ft_printf(RESET_COLOR ": %4d", g_all.champ[k].last_live);
-		i++;
-		jump_to(k < 2 ? X + 25 : X + 75,k < 2 ? i : i - 10);
-		ft_printf(RESET_COLOR ": %4d", g_all.champ[k].lives_period);
-		i++;
-		jump_to(k < 2 ? X + 25 : X + 75,k < 2 ? i : i - 10);
-		ft_printf(RESET_COLOR ": %4d", g_all.champ[k].nb_proces);
-		i+=2;
+		if (k < 2)
+		{
+			if (ft_printf(": %4d%#>", g_all.champ[k].last_live, &tmp) == -1)
+			exit_func(MERROR, 0);
+			add_string_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * (HEADER_HEIGHT + 8 + (k % 2 ? 5 : 0))) + (X + 35), tmp, 0xffffff, 0);
+			free(tmp);
+			if (ft_printf(": %4d%#>", g_all.champ[k].lives_period, &tmp) == -1)
+			exit_func(MERROR, 0);
+			add_string_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * (HEADER_HEIGHT + 9 + (k % 2 ? 5 : 0))) + (X + 35), tmp, 0xffffff, 0);
+			free(tmp);
+			if (ft_printf(": %4d%#>", g_all.champ[k].nb_proces, &tmp) == -1)
+			exit_func(MERROR, 0);
+			add_string_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * (HEADER_HEIGHT + 10 + (k % 2 ? 5 : 0))) + (X + 35), tmp, 0xffffff, 0);
+			free(tmp);
+		}
+		else
+		{
+			if (ft_printf(": %4d%#>", g_all.champ[k].last_live, &tmp) == -1)
+			exit_func(MERROR, 0);
+			add_string_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * (HEADER_HEIGHT + 8 + (k % 2 ? 5 : 0))) + (X + 85), tmp, 0xffffff, 0);
+			free(tmp);
+			if (ft_printf(": %4d%#>", g_all.champ[k].lives_period, &tmp) == -1)
+			exit_func(MERROR, 0);
+			add_string_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * (HEADER_HEIGHT + 9 + (k % 2 ? 5 : 0))) + (X + 85), tmp, 0xffffff, 0);
+			free(tmp);
+			if (ft_printf(": %4d%#>", g_all.champ[k].nb_proces, &tmp) == -1)
+			exit_func(MERROR, 0);
+			add_string_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * (HEADER_HEIGHT + 10 + (k % 2 ? 5 : 0))) + (X + 85), tmp, 0xffffff, 0);
+			free(tmp);
+		}
 	}
 	i++;
 	return (i);
@@ -200,12 +222,12 @@ int		print_vm_info()
 		tmp = g_all.nb_proces_tot + i;
 		while (tmp <= g_all.max_proces + i && tmp > SCREEN_HEIGHT)
 		{
-			// if (ft_printf("%1$/95c%#>", ' ', &tmp1) == -1)
-				// exit_func(MERROR, 0);
-			// add_string_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * (tmp)) + (X), tmp1, 0xffffff, 0);
-			// free(tmp1);
-			jump_to(X, tmp);
-			ft_printf("%1$/95c", ' ');
+			if (ft_printf("%1$/95c%#>", ' ', &tmp1) == -1)
+				exit_func(MERROR, 0);
+			add_string_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * (tmp)) + (X), tmp1, 0xffffff, 0);
+			free(tmp1);
+			// jump_to(X, tmp);
+			// ft_printf("%1$/95c", ' ');
 			tmp++;
 		}
 		g_all.max_proces = g_all.nb_proces_tot;

@@ -6,7 +6,7 @@
 /*   By: sofchami <sofchami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/18 19:57:39 by sofchami          #+#    #+#             */
-/*   Updated: 2019/08/27 23:02:51 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/27 23:13:26 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -295,10 +295,7 @@ int		do_visu_stuff()
 	}
 	else
 	{
-		if (ft_printf("Pause  %#>", &tmp) == -1)
-			exit_func(MERROR, 0);
-		add_string_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * 5) + 5, tmp, 0xffffff, 0);
-		free(tmp);
+		add_string_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * 5) + 5, "Pause  ", 0xffffff, 0);
 		jump_to(5, 5);
 		ft_printf(RESET_COLOR "Pause  ");
 		system("pkill afplay");
