@@ -55,7 +55,6 @@ int		write_byte(t_proces *proces, int address, char to_write)
 		write_to_buffer(g_all.visu.next_frame + pos + 1, buf[1], proces->color_rgb, 0);
 		g_all.color[address] = proces->color_rgb;
 	}
-	proces = NULL;
 	return (0);
 }
 
@@ -128,7 +127,7 @@ t_arg	*get_arguments(t_proces *proces)
 	tmp_pc = proces->pc;
 	tmp_pc++;
 	opcode = proces->opcode;
-	if (opcode < 1 || opcode > 16)
+	if (opcode < 1 || opcode > NB_OPERATIONS)
 		return (NULL);
 	codage = g_op_tab[opcode - 1].codage ? g_all.arena[calc_pc(tmp_pc++)] : get_codage(opcode);
 	i = -1;

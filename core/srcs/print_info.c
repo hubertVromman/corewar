@@ -12,22 +12,22 @@
 
 #include "corewar.h"
 
-int		print_reg_info(t_proces *proces)
-{
-	jump_to(X - 70, HEADER_HEIGHT);
-	ft_printf("Id proces = %d", proces->id_proces);
-	jump_to(X - 70, HEADER_HEIGHT + 1);
-	ft_printf("reg 0  : %10d | reg 1  : %10d | reg 2  : %10d", proces->reg[0],proces->reg[1], proces->reg[2]);
-	jump_to(X - 70, HEADER_HEIGHT + 2);
-	ft_printf("reg 3  : %10d | reg 4  : %10d | reg 5  : %10d", proces->reg[3],proces->reg[4], proces->reg[5]);
-	jump_to(X - 70, HEADER_HEIGHT + 3);
-	ft_printf("reg 6  : %10d | reg 7  : %10d | reg 8  : %10d", proces->reg[6],proces->reg[7], proces->reg[8]);
-	jump_to(X - 70, HEADER_HEIGHT + 4);
-	ft_printf("reg 9  : %10d | reg 10 : %10d | reg 11 : %10d", proces->reg[9],proces->reg[10], proces->reg[11]);
-	jump_to(X - 70, HEADER_HEIGHT + 5);
-	ft_printf("reg 12 : %10d | reg 13 : %10d | reg 14 : %10d", proces->reg[12],proces->reg[13], proces->reg[14]);
-	return (0);
-}
+// int		print_reg_info(t_proces *proces)
+// {
+// 	jump_to(X - 70, HEADER_HEIGHT);
+// 	ft_printf("Id proces = %d", proces->id_proces);
+// 	jump_to(X - 70, HEADER_HEIGHT + 1);
+// 	ft_printf("reg 0  : %10d | reg 1  : %10d | reg 2  : %10d", proces->reg[0],proces->reg[1], proces->reg[2]);
+// 	jump_to(X - 70, HEADER_HEIGHT + 2);
+// 	ft_printf("reg 3  : %10d | reg 4  : %10d | reg 5  : %10d", proces->reg[3],proces->reg[4], proces->reg[5]);
+// 	jump_to(X - 70, HEADER_HEIGHT + 3);
+// 	ft_printf("reg 6  : %10d | reg 7  : %10d | reg 8  : %10d", proces->reg[6],proces->reg[7], proces->reg[8]);
+// 	jump_to(X - 70, HEADER_HEIGHT + 4);
+// 	ft_printf("reg 9  : %10d | reg 10 : %10d | reg 11 : %10d", proces->reg[9],proces->reg[10], proces->reg[11]);
+// 	jump_to(X - 70, HEADER_HEIGHT + 5);
+// 	ft_printf("reg 12 : %10d | reg 13 : %10d | reg 14 : %10d", proces->reg[12],proces->reg[13], proces->reg[14]);
+// 	return (0);
+// }
 
 // int		print_border_side()
 // {
@@ -103,11 +103,9 @@ int		print_proces_info(int i)
 		k = -1;
 		while (++k < g_all.champ[n].nb_proces && stop < PROCES_HEIGHT)
 		{
-			// if (i + k + l > g_all.visu.nb_lines - 20)
-			// 	return (0);
 			jump_to(X, i + k + l);
 			opcode = g_all.champ[n].proces[k].opcode;
-			ft_printf("  player_nb %2d  |  pc %4d  |  opcode " CHAR_HEX_PRINT "  |  Name OP %5s  |  cycle_left %4d\n", g_all.champ[n].player_nb, g_all.champ[n].proces[k].pc, opcode, opcode > 0 && opcode < 17 ? g_op_tab[opcode - 1].name : "null", g_all.champ[n].proces[k].cycle_left);
+			ft_printf("  player_nb %2d  |  pc %4d  |  opcode " CHAR_HEX_PRINT "  |  Name OP %5s  |  cycle_left %4d\n", g_all.champ[n].player_nb, g_all.champ[n].proces[k].pc, opcode, opcode > 0 && opcode <= NB_OPERATIONS ? g_op_tab[opcode - 1].name : "null", g_all.champ[n].proces[k].cycle_left);
 			stop++;
 		}
 		l += k;
@@ -140,7 +138,6 @@ int		print_player_info(int i)
 int		print_init_info(int i)
 {
 	int lives;
-	// char *buf = NULL;
 
 	lives = 0;
 	while (++i < g_all.nb_champ)

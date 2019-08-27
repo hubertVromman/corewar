@@ -66,7 +66,7 @@ int		create_files(int ac, char **av, t_a *all)
 		all->nb_errors += all->file->nb_error;
 		free_file(all->file);
 		ft_bzero(all->file, sizeof(t_file));
-		if (!all->flags[0])
+		if (!all->flags[MULTIPLE_FILES])
 			break ;
 	}
 	return (0);

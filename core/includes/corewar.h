@@ -20,7 +20,7 @@
 # include <termios.h>
 # include <pthread.h>
 
-enum	e_error_code { NOT_COR_FILE = 1, OPEN_FAIL, TOO_LARGE, READ_ERROR};
+enum	e_error_code { NOT_COR_FILE = 1, OPEN_FAIL, TOO_LARGE, READ_ERROR, INVALID_NB};
 
 enum	e_flag_nb {FORCE_LAUNCH, VISU};
 
@@ -48,7 +48,7 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP
 
 # define COLOR_INCREMENT 0x00010101
 
-# define OP "fv"
+# define OP "fvi"
 
 # define NC "\e[0m"
 # define RED "\e[31m"
@@ -70,7 +70,7 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP
 
 # define X 265
 
-# define NB_OPERATIONS sizeof(g_op_tab) / sizeof(t_op)
+# define NB_OPERATIONS (int)(sizeof(g_op_tab) / sizeof(t_op))
 
 # define SIZE_ANIM_X 20
 # define SIZE_ANIM_Y 8
@@ -153,6 +153,7 @@ struct			s_champ
 	int			exec_size;
 	int			last_live;
 	int			player_nb;
+	int			player_nb_arena;
 	int			color_rgb;
 	t_proces	*proces;
 	char		*file_name;
@@ -196,7 +197,6 @@ typedef struct	s_a
 	int			ctd;
 	t_champ		champ[4];
 	int			nb_errors;
-	int			n_option;
 	int			id_proces;
 	int			nb_proces_tot;
 	int			max_proces;

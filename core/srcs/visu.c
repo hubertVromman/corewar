@@ -18,22 +18,9 @@ int		jump_to(int x, int y)
 	return (0);
 }
 
-// int		jump_to_mem(int pc)
-// {
-// 	int		offset_x;
-// 	int		offset_y;
-
-// 	offset_x = 2;
-// 	offset_y = 10;
-// 	pc = calc_pc(pc);
-// 	jump_to(offset_x + (pc % 64) * 3, offset_y + pc / 64);
-// 	return (0);
-// }
-
 void	exit_ctrl_c(int c)
 {
 	c = 0;
-	ft_printf(RESTORE_SCREEN);
 	exit_func(0, 0);
 }
 
@@ -42,12 +29,10 @@ int		jump_to_buf(int pc)
 	int		offset_x;
 	int		offset_y;
 	int		pos;
-	int		pos_x;
 
 	offset_x = MEMORY_OFFSET_X;
-	offset_y = 10;
+	offset_y = HEADER_HEIGHT;
 	pc = calc_pc(pc);
-	pos_x = pc % 64;
-	pos = (g_all.visu.nb_cols * (offset_y + pc / 64)) + (offset_x + pos_x * 3);
+	pos = (g_all.visu.nb_cols * (offset_y + pc / 64)) + (offset_x + pc % 64 * 3);
 	return (pos);
 }

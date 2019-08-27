@@ -74,7 +74,6 @@ typedef struct	s_file
 	int		line_nb;
 	int		line_off;
 	int		nb_error;
-	int		offset_;
 	int		prog_size;
 	char	*prog_content;
 	int		extend;

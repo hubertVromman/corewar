@@ -14,8 +14,8 @@
 
 /*
 ** TO DO or !Not to do
-** - Bug affichage  -->soso
-** - afficher indicateur pour "Pause"
+** - Bug affichage  --> soso
+** - afficher indicateur pour "Pause" --> soso
 ** - Mettre tout dans le buffer "print info"
 ** - Fonction AFF
 ** - Gerer la double impression au debut
@@ -24,19 +24,20 @@
 ** - Why else dans le lecteur ?
 ** - Dans create proces lecture des OP de la Queu
 ** - faire des define pour le son
-** - verifier tout les free
-** - recheque l'asm
+** - verifier tous les free --> hub
+** - recheck l'asm
 ** - Verifier tout les printf pour affichage sans visu
 ** - flag i pour les lives et aff
 ** - Verifier qu'on kill les thread
-** - tout les 16 par des defines Nb_Operation
+** - tout les 16 par des defines Nb_Operation --> ok
 ** - tester dernier en vie
-** - Nb du champion reste comme il est mais passe en neg dans le registre
-** - faire un prnt char pour afficher
+** - Nb du champion reste comme il est mais passe en neg dans le registre --> a tester
+** - faire un print char pour afficher
 ** - sound flame on of quand il faut
 ** - proteger les printfs qui mettent dans le buffer
 ** - Pas de visu si screen est trop operation_st
-** 				00/22
+** 	 Gagnant qui bouge dans l'ecran (avec une couleur random ?)
+** 				1.5/23 (0.5 point par fini, 0.5 point par teste)
 */
 
 int		parse_arg(int ac, char **av)
@@ -54,8 +55,11 @@ int		parse_arg(int ac, char **av)
 			{
 				if (i + 1 == ac)
 					exit_func(-1, 1);
-				g_all.n_option = 1;
-				g_all.next_champ_nb = ft_atoi(av[++i]);
+				if ((g_all.next_champ_nb = ft_atoi(av[++i])) < 0)
+				{
+					error_func(NULL, INVALID_NB);
+					g_all.next_champ_nb = 0;
+				}
 			}
 			else if (!ft_strcmp(av[i] + 1, "dump"))
 			{
@@ -169,13 +173,10 @@ int		get_line(int *buffer, int x1, int y1)
 	int		x2;
 	int		y2;
 
-	int		sign;
-
 	x2 = g_all.end_screen.cx;
 	y2 = g_all.end_screen.cy;
 	for (int i = 0; i < g_all.end_screen.cy; i++)
 		buffer[i] = ft_max(x1, x2);
-	sign = 1; // a quoi sert la variable ca ne change jamais nan ?
 
 	if (y1 > y2)
 		ft_swap(&y1, &y2);
@@ -187,11 +188,11 @@ int		get_line(int *buffer, int x1, int y1)
 	dy = y2 - y1;
 
 	f = (float) dx / dy;
-	j = sign == -1 ? x2 : x1;
+	j = x1;
 	for (int i = 0; i < dy; i++)
 	{
 		buffer[i] = (int) j;
-		j += f * sign;
+		j += f;
 	}
 	return (0);
 }
@@ -516,8 +517,7 @@ int		init_all(int ac, char **av)
 		init_visu();
 	while (++i < g_all.nb_champ)
 	{
-		if (!g_all.n_option)
-			g_all.champ[i].player_nb = 0 - g_all.champ[i].player_nb;
+		g_all.champ[i].player_nb_arena = -g_all.champ[i].player_nb;
 		ft_memcpy(g_all.arena + (g_all.pos_depart * i),
 			g_all.champ[i].exec_file, g_all.champ[i].exec_size);
 		create_proces(g_all.pos_depart * i, NULL, &(g_all.champ[i])); //gestion d'erreur

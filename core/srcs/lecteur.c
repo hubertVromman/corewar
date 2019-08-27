@@ -17,7 +17,7 @@ int		read_arena_op(int pc)
 	int		opcode;
 
 	opcode = g_all.arena[pc];
-	if (opcode < 1 || opcode > 16)
+	if (opcode < 1 || opcode > NB_OPERATIONS)
 		return (0);
 	return (opcode);
 }
@@ -58,7 +58,7 @@ int		do_actions(int i, int k)
 
 	l = 0;
 	arg = get_arguments(&g_all.champ[i].proces[k]);
-	if (arg && (g_all.champ[i].proces[k].opcode > 0 && g_all.champ[i].proces[k].opcode < 17 ) && g_all.func[g_all.champ[i].proces[k].opcode - 1](&g_all.champ[i], &g_all.champ[i].proces[k], arg) != 0)
+	if (arg && (g_all.champ[i].proces[k].opcode > 0 && g_all.champ[i].proces[k].opcode <= NB_OPERATIONS) && g_all.func[g_all.champ[i].proces[k].opcode - 1](&g_all.champ[i], &g_all.champ[i].proces[k], arg) != 0)
 	{
 		increment_pc(&g_all.champ[i].proces[k], g_all.champ[i].proces[k].opcode == ZJMP_OP ? 0 : arg[0].size + arg[1].size + arg[2].size + arg[3].size + g_op_tab[g_all.champ[i].proces[k].opcode - 1].codage + 1);
 		g_all.queu[l] = &g_all.champ[i].proces[k];
@@ -66,7 +66,7 @@ int		do_actions(int i, int k)
 	}
 	else
 	{
-		if (g_all.champ[i].proces[k].opcode > 1 && g_all.champ[i].proces[k].opcode < 16)
+		if (g_all.champ[i].proces[k].opcode > 1 && g_all.champ[i].proces[k].opcode < NB_OPERATIONS)
 			increment_pc(&g_all.champ[i].proces[k], g_op_tab[g_all.champ[i].proces[k].opcode - 1].nb_params + 2);
 		else
 			increment_pc(&g_all.champ[i].proces[k], 1);

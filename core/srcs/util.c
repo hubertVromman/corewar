@@ -14,7 +14,7 @@
 
 int		get_cycle_left(int opcode)
 {
-	if (opcode < 1 || opcode > 16)
+	if (opcode < 1 || opcode > NB_OPERATIONS)
 	{
 		return (1);
 	}
@@ -43,11 +43,12 @@ int		sort_proces(t_champ *champ)
 
 int		play_sound(int i)
 {
-	system("pkill afplay &");
-	if (i == 1)
-	system("afplay sound/Ta_da.mp3 &");
-	if (i == 2)
-	system("afplay sound/power_off.mp3 &");
+	i = 0;
+	// system("pkill afplay &");
+	// if (i == 1)
+	// system("afplay sound/Ta_da.mp3 &");
+	// if (i == 2)
+	// system("afplay sound/power_off.mp3 &");
 	return (0);
 }
 
@@ -91,9 +92,9 @@ int		create_proces(int pc, t_proces *parent, t_champ *champ)
 		proc->carry = parent->carry;
 	}
 	else
-		proc->reg[0] = champ->player_nb;
+		proc->reg[0] = champ->player_nb_arena;
 	proc->champ = champ;
-	proc->color_rgb = proc->champ->color_rgb + champ->nb_proces * COLOR_INCREMENT * 5;
+	proc->color_rgb = proc->champ->color_rgb + champ->nb_proces * COLOR_INCREMENT;
 	if (champ->nb_proces)
 		increment_pc(proc, 0);
 	champ->nb_proces++;
@@ -114,37 +115,13 @@ int		dump_memory()
 	i = -1;
 	while (++i < MEM_SIZE)
 	{
-		ft_printf(CHAR_HEX_PRINT "%c%#>", g_all.arena[i], (i + 1) % 64 ? ' ' : '\n', &buffer);
+		if (ft_printf(CHAR_HEX_PRINT "%c%#>", g_all.arena[i], (i + 1) % 64 ? ' ' : '\n', &buffer) == -1)
+			exit_func(MERROR, 0);
 		memcpy(s + i * 3, buffer, 3);
+		free(buffer);
 	}
 	write(1, s, MEM_SIZE * 3);
-	return (0);
-}
-
-int		dump_memory_colored()
-{
-	int		i;
-	int		p;
-	int		l;
-
-	i = -1;
-	p = 0;
-	l = HEADER_HEIGHT;
-	ft_printf("<b>");
-	jump_to(2, HEADER_HEIGHT);
-	while (++i < MEM_SIZE)
-	{
-		if (i >= g_all.champ[p].proces->pc && i < (g_all.champ[p].proces->pc + g_all.champ[p].exec_size))
-			ft_printf(RGB_PRINT "%.2hhx", (g_all.champ[p].color_rgb >> 16) & 0xff, (g_all.champ[p].color_rgb >> 8) & 0xff, (g_all.champ[p].color_rgb >> 0) & 0xff, g_all.arena[i]);
-		else
-			ft_printf(RGB_PRINT "%.2hhx", 0x80, 0x80, 0x80, g_all.arena[i]);
-		if (!((i + 1) % 64) && ++l)
-			jump_to(2, l);
-		else
-			ft_printf(" ");
-		if (p < (g_all.nb_champ - 1) && i + 1 == g_all.champ[p + 1].proces->pc)
-			p++;
-	}
+	free(s);
 	return (0);
 }
 
@@ -176,7 +153,7 @@ int		fill_current_frame()
 
 	for(int i = 0; i < g_all.nb_champ; i++)
 	{
-		ft_printf("PLAYER %s : %#>", ft_itoa(g_all.champ[i].player_nb), &tmp);
+		ft_printf("PLAYER %d : %#>", g_all.champ[i].player_nb, &tmp);
 		add_string_to_buffer(g_all.visu.current_frame + ((HEADER_HEIGHT + 7 + (i < 2 ? (i * 5) : (i - 2) * 5)) * g_all.visu.nb_cols + (i < 2 ? X : (X + 50))), tmp, 0x00ffffff, 0);
 		free(tmp);
 		ft_printf("%s %#>", g_all.champ[i].player_name, &tmp);
@@ -234,7 +211,6 @@ int		init_current_frame()
 		int tmp = g_all.visu.current_frame[pos].fore_color;
 		g_all.visu.current_frame[pos].fore_color = g_all.visu.current_frame[pos].back_color;
 		g_all.visu.current_frame[pos].back_color = tmp;
-
 		pos++;
 		tmp = g_all.visu.current_frame[pos].fore_color;
 		g_all.visu.current_frame[pos].fore_color = g_all.visu.current_frame[pos].back_color;

@@ -25,5 +25,10 @@ int		change_endianness(int little)
 
 char	*get_ext(char *str)
 {
-	return (str + ft_last_indexof(str, '.') + 1);
+	int		offset;
+
+	offset = ft_last_indexof(str, '.');
+	if (offset == -1 && ft_strlen(str) == 1)
+		return (str + 1);
+	return (str + offset + 1);
 }

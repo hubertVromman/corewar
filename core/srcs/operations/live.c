@@ -20,7 +20,7 @@ int		operation_live(t_champ *champ, t_proces *proces, t_arg *args)
 	champ = NULL;
 	while (++i < g_all.nb_champ)
 	{
-		if (g_all.champ[i].player_nb == args[0].value)
+		if (g_all.champ[i].player_nb_arena == args[0].value)
 		{
 			g_all.champ[i].lives_period++;
 			g_all.champ[i].last_live = g_all.cycle;
