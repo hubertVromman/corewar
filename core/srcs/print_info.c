@@ -6,7 +6,7 @@
 /*   By: sofchami <sofchami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 02:28:56 by sofchami          #+#    #+#             */
-/*   Updated: 2019/08/27 05:31:55 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/27 22:14:31 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,14 +204,12 @@ int		print_vm_info()
 				// exit_func(MERROR, 0);
 			// add_string_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * (tmp)) + (X), tmp1, 0xffffff, 0);
 			// free(tmp1);
-
-
 			jump_to(X, tmp);
 			ft_printf("%1$/95c", ' ');
 			tmp++;
 		}
 		g_all.max_proces = g_all.nb_proces_tot;
 	}
-	// print_frame_diff();
+	print_frame_diff();
 	return (0);
 }

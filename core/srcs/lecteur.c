@@ -6,7 +6,7 @@
 /*   By: sofchami <sofchami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/18 19:57:39 by sofchami          #+#    #+#             */
-/*   Updated: 2019/08/27 05:13:55 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/27 23:02:51 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,6 +184,7 @@ void	*th_calcul()
 			g_all.check++;
 		}
 	}
+	print_vm_info();
 	!g_all.end ? display_ray() : 0;
 	pthread_exit(NULL);
 }
@@ -301,23 +302,23 @@ int		do_visu_stuff()
 	pthread_join(g_all.visu.thread_flamme, NULL);
 	if (has_frame)
 	{
-		// print_frame_diff();
-		for (int l = 0; l < g_all.visu.screen_size; l++)
-		{
-			if (g_all.visu.next_frame[l].to_print && ft_memcmp(g_all.visu.next_frame + l, g_all.visu.current_frame + l, sizeof(t_printable)))
-			{
-				ft_memcpy(g_all.visu.current_frame + l, g_all.visu.next_frame + l, sizeof(t_printable));
-			}
-		}
-		if (g_all.visu.flame)
-			for (int l = 0; l < FLAME_HEIGHT * g_all.visu.nb_cols; l++)
-			{
-				if (g_all.visu.flame_buf[l].to_print)
-					ft_memcpy(g_all.visu.next_frame + g_all.visu.offset_flame_y * g_all.visu.nb_cols + l, g_all.visu.flame_buf + l, sizeof(t_printable));
-				if (!(g_all.visu.next_frame[g_all.visu.offset_flame_y * g_all.visu.nb_cols + l].to_print))
-					g_all.visu.next_frame[g_all.visu.offset_flame_y * g_all.visu.nb_cols + l].to_print = ' ';
-			}
-		copy_and_print_buffer(g_all.visu.current_frame_flame, g_all.visu.next_frame, g_all.visu.screen_size);
+		print_frame_diff();
+		// for (int l = 0; l < g_all.visu.screen_size; l++)
+		// {
+		// 	if (g_all.visu.next_frame[l].to_print && ft_memcmp(g_all.visu.next_frame + l, g_all.visu.current_frame + l, sizeof(t_printable)))
+		// 	{
+		// 		ft_memcpy(g_all.visu.current_frame + l, g_all.visu.next_frame + l, sizeof(t_printable));
+		// 	}
+		// }
+		// if (g_all.visu.flame)
+		// 	for (int l = 0; l < FLAME_HEIGHT * g_all.visu.nb_cols; l++)
+		// 	{
+		// 		if (g_all.visu.flame_buf[l].to_print)
+		// 			ft_memcpy(g_all.visu.next_frame + g_all.visu.offset_flame_y * g_all.visu.nb_cols + l, g_all.visu.flame_buf + l, sizeof(t_printable));
+		// 		if (!(g_all.visu.next_frame[g_all.visu.offset_flame_y * g_all.visu.nb_cols + l].to_print))
+		// 			g_all.visu.next_frame[g_all.visu.offset_flame_y * g_all.visu.nb_cols + l].to_print = ' ';
+		// 	}
+		// copy_and_print_buffer(g_all.visu.current_frame_flame, g_all.visu.next_frame, g_all.visu.screen_size);
 	}
 	if (g_all.visu.flame)
 	{
@@ -360,7 +361,7 @@ int		beg_battle()
 				exit_func(0, 0);
 			}
 		}
-		if (g_all.flags[VISU])print_vm_info();
+
 	}
 	if (!g_all.flags[VISU])ft_printf("Contestant %d, \"%s\", has won !\n", g_all.champ[g_all.player_last_live].player_nb, g_all.champ[g_all.player_last_live].player_name);
 	else {ft_printf("fin\n");while(1);}
