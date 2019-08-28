@@ -26,7 +26,9 @@ OBJ = $(addprefix $(SRCS), $(FILES))
 COR_DIR = core/
 COR_FILE = corewar.h
 COR_H = $(addprefix $(COR_DIR), $(addprefix $(HEAD), $(COR_FILE)))
-COR_FILES = main.o error.o exit.o util.o util_instr.o champ_instance.o lecteur.o visu.o print_info.o util_visu.o
+COR_FILES = main.o error.o exit.o util.o arguments.o champ_instance.o lecteur.o \
+visu.o print_info.o util_visu.o thread.o init.o init_visu.o ray.o proces.o init_frame.o \
+IO_arena.o print_visu.o
 COR_OBJ = $(addprefix $(COR_DIR), $(addprefix $(SRCS), $(COR_FILES)))
 
 OP_DIR = operations/
@@ -79,7 +81,7 @@ debug_asm: $(ASM_OBJ) $(OBJ)
 
 debug_corewar: $(OP_OBJ) $(COR_OBJ) $(OBJ)
 	@make -C $(LIB)
-	@$(CC) -o $@ $^ -L$(LIB) -lft $(SANITIZE) $(O3)
+	@$(CC) -o $@ $^ -L$(LIB) -lft $(SANITIZE)
 	@echo "$@ compiled$(NC)"
 
 re: fclean all

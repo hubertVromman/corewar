@@ -44,47 +44,6 @@
 // 	return (0);
 // }
 
-int		print_border()
-{
-	int i;
-
-	i = -1;
-	while (++i < SCREEN_HEIGHT) // vertical lines
-	{
-		write_to_buffer(g_all.visu.current_frame + g_all.visu.nb_cols * (i + 1) - 1, ' ', 0, BORDER_COLOR);
-		write_to_buffer(g_all.visu.current_frame + g_all.visu.nb_cols * (i + 1) - 2, ' ', 0, BORDER_COLOR);
-		if (i >= HEADER_HEIGHT - 2)
-		{
-			write_to_buffer(g_all.visu.current_frame + g_all.visu.nb_cols * (i + 1) - 102, ' ', 0, BORDER_COLOR);
-			write_to_buffer(g_all.visu.current_frame + g_all.visu.nb_cols * (i + 1) - 103, ' ', 0, BORDER_COLOR);
-		}
-		write_to_buffer(g_all.visu.current_frame + g_all.visu.nb_cols * i, ' ', 0, BORDER_COLOR);
-		write_to_buffer(g_all.visu.current_frame + g_all.visu.nb_cols * i + 1, ' ', 0, BORDER_COLOR);
-
-	}
-	i = -1;
-	while (++i < g_all.visu.nb_cols) // horizontal lines
-	{
-		write_to_buffer(g_all.visu.current_frame + 0 * g_all.visu.nb_cols + i, ' ', 0, BORDER_COLOR);
-		write_to_buffer(g_all.visu.current_frame + 8 * g_all.visu.nb_cols + i, ' ', 0, BORDER_COLOR);
-		write_to_buffer(g_all.visu.current_frame + SCREEN_HEIGHT * g_all.visu.nb_cols + i, ' ', 0, BORDER_COLOR);
-	}
-	return (0);
-}
-
-int		print_header()
-{
-	int		offset_x;
-
-	offset_x = g_all.visu.nb_cols / 2 - 21;
-	add_string_to_buffer(g_all.visu.current_frame + offset_x + g_all.visu.nb_cols * 1, "   _____                                  ", 0x999999, 0);
-	add_string_to_buffer(g_all.visu.current_frame + offset_x + g_all.visu.nb_cols * 2, "  / ____|                                 ", 0x999999, 0);
-	add_string_to_buffer(g_all.visu.current_frame + offset_x + g_all.visu.nb_cols * 3, " | |     ___  _ __ _____      ____ _ _ __ ", 0x999999, 0);
-	add_string_to_buffer(g_all.visu.current_frame + offset_x + g_all.visu.nb_cols * 4, " | |    / _ \\| '__/ _ \\ \\ /\\ / / _` | '__|", 0x999999, 0);
-	add_string_to_buffer(g_all.visu.current_frame + offset_x + g_all.visu.nb_cols * 5, " | |___| (_) | | |  __/\\ V  V / (_| | |   ", 0x999999, 0);
-	add_string_to_buffer(g_all.visu.current_frame + offset_x + g_all.visu.nb_cols * 6, "  \\_____\\___/|_|  \\___| \\_/\\_/ \\__,_|_|   ", 0x999999, 0);
-	return (0);
-}
 
 int		print_proces_info(int i)
 {
@@ -176,19 +135,19 @@ int		print_init_info(int i)
 	if (ft_printf(": %4d%#>", g_all.cycle, &tmp) == -1)
 		exit_func(MERROR, 0);
 	add_string_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * (HEADER_HEIGHT + 1)) + (X + 20), tmp, 0xffffff, 0);
-	free(tmp);
+	ft_strdel(&tmp);
 	if (ft_printf(": %4d%#>", g_all.nb_proces_tot, &tmp) == -1)
 		exit_func(MERROR, 0);
 	add_string_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * (HEADER_HEIGHT + 3)) + (X + 20), tmp, 0xffffff, 0);
-	free(tmp);
+	ft_strdel(&tmp);
 	if (ft_printf(": %4d%#>", lives, &tmp) == -1)
 		exit_func(MERROR, 0);
 	add_string_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * (HEADER_HEIGHT + 4)) + (X + 20), tmp, 0xffffff, 0);
-	free(tmp);
+	ft_strdel(&tmp);
 	if (ft_printf(": %4d%#>", g_all.cycle_to_die, &tmp) == -1)
 		exit_func(MERROR, 0);
 	add_string_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * (HEADER_HEIGHT + 5)) + (X + 20), tmp, 0xffffff, 0);
-	free(tmp);
+	ft_strdel(&tmp);
 	while (++i < 6)
 	{
 		// jump_to(X + 20, i + HEADER_HEIGHT);

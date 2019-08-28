@@ -77,7 +77,7 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP
 
 # define X 265
 
-# define NB_OPERATIONS (int)(sizeof(g_op_tab) / sizeof(t_op))
+# define NB_OPERATIONS (int)(sizeof(g_op_tab) / sizeof(t_op) - 1)
 
 # define SIZE_ANIM_X 20
 # define SIZE_ANIM_Y 8
@@ -243,18 +243,22 @@ int				exit_func(int exit_code, int dp_usage);
 ** util.c
 */
 int				get_cycle_left(int opcode);
+int				dump_memory();
+int				init_current_frame();
+int				play_sound(int i);
+
+/*
+** proces.c
+*/
 int				create_proces(int pc, t_proces *parent, t_champ *champ);
 int				delete_proces(t_champ *champ, int id_proces);
-int				dump_memory();
-int				dump_memory_colored();
-int				init_current_frame();
+
 
 /*
 ** main.c
 */
-int				print_debug_info();
-void			*sound_feu();
 int				display_ray();
+int				parse_arg(int ac, char **av);
 
 /*
 ** util_instr.c
@@ -328,5 +332,28 @@ int				print_reg_info(t_proces *proces);
 int				write_to_buffer(t_printable *strct, char c, int f_color, int b_color);
 int				add_string_to_buffer(t_printable *strct, char *str, int f_color, int b_color);
 int				add_name_to_buffer(t_printable *strct, char *str, int f_color, int b_color);
+
+/*
+** init.c
+*/
+
+int				init_all(int ac, char **av);
+
+/*
+** thread.c
+*/
+
+void			*th_feu();
+void			*th_calcul();
+void			*reader_func(void *rien);
+void			*sound_feu();
+
+
+/*
+** init_visu.c
+*/
+
+
+int				init_visu();
 
 #endif
