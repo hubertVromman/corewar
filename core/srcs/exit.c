@@ -26,6 +26,7 @@ int		usage(void)
 {
 	ft_printf("usage: corewar [-%s] [-dump dump_period] [[-n player_nb] file.cor] ...\n%>", OP, 2);
 	ft_printf("    -v    : Start game in nCurses, disable -dump option\n%>", 2);
+	ft_printf("            Screen size must be minimum %dx%d\n%>", SCREEN_WIDTH, SCREEN_HEIGHT, 2);
 	ft_printf("    -n    : Set the next player's number"
 	" (default next available)\n%>", 2);
 	ft_printf("    -dump : Dump memory in hexadecimal every dump_period\n%>", 2);
@@ -35,7 +36,7 @@ int		usage(void)
 
 int		exit_func(int exit_code, int dp_usage)
 {
-	if (g_all.flags[VISU])
+	if (!dp_usage && g_all.flags[VISU])
 	{
 		ft_printf(RESTORE_SCREEN);
 		ft_printf(RESET_COLOR);

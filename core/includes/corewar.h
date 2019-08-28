@@ -76,6 +76,7 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP
 # define S_FLAME 3
 
 # define SCREEN_HEIGHT (MEMORY_HEIGHT + HEADER_HEIGHT + 1)
+# define SCREEN_WIDTH (MEMORY_OFFSET_X + 64 * 3 + 3 + INFO_WIDTH)
 
 # define X 265
 

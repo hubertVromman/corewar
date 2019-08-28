@@ -16,20 +16,21 @@
 ** TO DO or !Not to do
 ** - Norme
 ** - Why else dans le lecteur ?
-** - Dans create proces lecture des OP de la Queu
+** - Dans create proces lecture des OP de la Queu et zjmp ?
 ** - recheck l'asm
 ** - Verifier tout les printf pour affichage sans visu
 ** - Verifier qu'on kill les thread
-** - Pas de visu si screen est trop petit
 ** 	 Gagnant qui bouge dans l'ecran (avec une couleur random ?)
 ** - Remplacer printf dans visu par insta_print_char
 ** - Gerer son
-** 				14/25
+** - Information alignees a droite
+** 				15/26
 **
 ** PIPELINE
 ** - afficher indicateur pour "Pause" --> utiliser print char a la place de printf PUIS OK
 **
 ** DEJA FAIT
+** - Pas de visu si screen est trop petit --> ok
 ** - Nb du champion reste comme il est mais passe en neg dans le registre --> ok
 ** - Gerer la double impression au debut --> ok
 ** - Fonction AFF --> ok
@@ -101,6 +102,8 @@ int		display_start()
 
 	if (g_all.flags[VISU])
 	{
+		if (g_all.visu.nb_cols < SCREEN_WIDTH || g_all.visu.nb_lines < SCREEN_HEIGHT - 1)
+			exit_func(-1, 1);
 		ft_printf(HIDE_CURSOR SAVE_SCREEN "\e[H");
 		init_current_frame();
 	}
