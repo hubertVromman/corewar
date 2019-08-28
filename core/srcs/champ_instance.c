@@ -70,8 +70,12 @@ int				get_champ(char *file_name)
 	if (ret < 0 && !(g_all.flags[FORCE_LAUNCH]))
 		exit_func(-1, 0);
 	i = g_all.next_champ_nb ? g_all.next_champ_nb - 1 : 0;
+	if (i >= 1000)
+		i = 0;
 	while (++i && (j = -1))
 	{
+		if (i >= 1000)
+			i = 1;
 		while (++j < g_all.nb_champ)
 		{
 			if (i == g_all.champ[j].player_nb)

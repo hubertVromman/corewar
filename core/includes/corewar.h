@@ -39,14 +39,15 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP
 
 # define MERROR -2
 
-# define P1_COLOR 0x00008080
-# define P2_COLOR 0x00800000
-# define P3_COLOR 0x00EB34DB//0x00800000
-# define P4_COLOR 0x00000080
-# define BORDER_COLOR 0x00A8A8A8
-# define VM_COLOR 0x787878
-
+# define P1_COLOR 0x008080
+# define P2_COLOR 0x800000
+# define P3_COLOR 0xEB34DB
+# define P4_COLOR 0x000080
 # define COLOR_INCREMENT 0x00010101
+
+# define BORDER_COLOR 0xA8A8A8
+# define VM_COLOR 0x787878
+# define WHITE 0xffffff
 
 # define OP "fvi"
 
@@ -63,10 +64,11 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP
 # define MEMORY_HEIGHT 64
 # define MEMORY_OFFSET_X 4
 # define FLAME_HEIGHT 18
-# define MAX_NAME_LENGHT 30
+# define MAX_NAME_LENGHT 36
 # define PROCES_HEIGHT (MEMORY_HEIGHT - 21) // a changer
 
 # define INFO_WIDTH 102
+# define EFFECTIVE_INFO_WIDTH (INFO_WIDTH - 8)
 
 /*
 ** Sound
@@ -76,9 +78,9 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP
 # define S_FLAME 3
 
 # define SCREEN_HEIGHT (MEMORY_HEIGHT + HEADER_HEIGHT + 1)
-# define SCREEN_WIDTH (MEMORY_OFFSET_X + 64 * 3 + 3 + INFO_WIDTH)
+# define SCREEN_WIDTH (MEMORY_OFFSET_X + 64 * 3 + 2 + INFO_WIDTH)
 
-# define X 265
+# define X 265 // a supprimer
 
 # define NB_OPERATIONS (int)(sizeof(g_op_tab) / sizeof(t_op) - 1)
 

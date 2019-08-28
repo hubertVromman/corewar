@@ -23,11 +23,11 @@
 ** 	 Gagnant qui bouge dans l'ecran (avec une couleur random ?)
 ** - Remplacer printf dans visu par insta_print_char
 ** - Gerer son
-** - Information alignees a droite
 ** 				15/26
 **
 ** PIPELINE
 ** - afficher indicateur pour "Pause" --> utiliser print char a la place de printf PUIS OK
+** - Information alignees a droite --> ok mais changer dans print info
 **
 ** DEJA FAIT
 ** - Pas de visu si screen est trop petit --> ok

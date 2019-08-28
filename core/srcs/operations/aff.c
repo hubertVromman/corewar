@@ -15,18 +15,22 @@
 int		operation_aff(t_champ *champ, t_proces *proces, t_arg *args)
 {
 	char	to_print;
+	int		offset_x;
+	int		offset_y;
 
 	to_print = proces->reg[args[0].value];
 	champ = NULL;
 	if (g_all.flags[VISU])
 	{
+		offset_x = g_all.visu.nb_cols - INFO_WIDTH + 3;
+		offset_y = HEADER_HEIGHT + 6;
 		if (to_print < 32 || to_print >= 127)
 			to_print = ' ';
 		if (g_all.visu.size_aff == INFO_WIDTH - 13)
 		{
 			ft_memcpy(g_all.visu.aff_string, g_all.visu.aff_string + 1, g_all.visu.size_aff - 1);
 			g_all.visu.aff_string[g_all.visu.size_aff - 1] = to_print;
-			add_string_to_buffer(g_all.visu.next_frame + (HEADER_HEIGHT + 6) * g_all.visu.nb_cols + X + 5, g_all.visu.aff_string, 0xffffff, 0);
+			add_string_to_buffer(g_all.visu.next_frame + offset_y * g_all.visu.nb_cols + offset_x + 6, g_all.visu.aff_string, 0xffffff, 0);
 		}
 		else
 		{
@@ -34,10 +38,10 @@ int		operation_aff(t_champ *champ, t_proces *proces, t_arg *args)
 				exit_func(MERROR, 0);
 			g_all.visu.aff_string[g_all.visu.size_aff] = to_print;
 			if (g_all.visu.size_aff)
-				write_to_buffer(g_all.visu.next_frame + (HEADER_HEIGHT + 6) * g_all.visu.nb_cols + X + 4 + g_all.visu.size_aff, g_all.visu.aff_string[g_all.visu.size_aff - 1], 0x00ffffff, 0);
+				write_to_buffer(g_all.visu.next_frame + offset_y * g_all.visu.nb_cols + offset_x + 5 + g_all.visu.size_aff, g_all.visu.aff_string[g_all.visu.size_aff - 1], 0x00ffffff, 0);
 			g_all.visu.size_aff++;
 		}
-		write_to_buffer(g_all.visu.next_frame + (HEADER_HEIGHT + 6) * g_all.visu.nb_cols + X + 4 + g_all.visu.size_aff, to_print, proces->color_rgb, 0);
+		write_to_buffer(g_all.visu.next_frame + offset_y * g_all.visu.nb_cols + offset_x + 5 + g_all.visu.size_aff, to_print, proces->color_rgb, 0);
 	}
 	else if (g_all.flags[INFORMATION])
 		ft_printf("Aff: %c\n", to_print);
