@@ -52,8 +52,8 @@ int		delete_proces(t_champ *champ, int id_proces)
 		buf = NULL;
 		pos = jump_to_buf(champ->proces[id_proces].pc);
 		ft_printf(CHAR_HEX_PRINT "%#>", g_all.arena[champ->proces[id_proces].pc], &buf);
-		write_to_buffer(g_all.visu.next_frame + pos, buf[0], g_all.color[champ->proces[id_proces].pc], 0);
-		write_to_buffer(g_all.visu.next_frame + pos + 1, buf[1], g_all.color[champ->proces[id_proces].pc], 0);
+		write_to_buf(g_all.visu.next_frame + pos, buf[0], g_all.color[champ->proces[id_proces].pc], 0);
+		write_to_buf(g_all.visu.next_frame + pos + 1, buf[1], g_all.color[champ->proces[id_proces].pc], 0);
 		free(buf);
 	}
 	// play_sound(S_DEATH);

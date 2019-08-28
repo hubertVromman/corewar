@@ -12,7 +12,7 @@
 
 #include "corewar.h"
 
-int		write_to_buffer(t_printable *strct, char c, int f_color, int b_color)
+int		write_to_buf(t_printable *strct, char c, int f_color, int b_color)
 {
 	strct->to_print = c;
 	strct->fore_color = f_color & 0x00ffffff;
@@ -20,7 +20,7 @@ int		write_to_buffer(t_printable *strct, char c, int f_color, int b_color)
 	return (0);
 }
 
-int		add_string_to_buffer(t_printable *strct, char *str, int f_color, int b_color)
+int		add_str_to_buffer(t_printable *strct, char *str, int f_color, int b_color)
 {
 	int		i;
 
@@ -29,7 +29,7 @@ int		add_string_to_buffer(t_printable *strct, char *str, int f_color, int b_colo
 	{
 		if (str[i] != ' ')
 		{
-			write_to_buffer(strct + i, str[i], f_color, b_color);
+			write_to_buf(strct + i, str[i], f_color, b_color);
 		}
 	}
 	return (0);
@@ -44,7 +44,7 @@ int		add_name_to_buffer(t_printable *strct, char *str, int f_color, int b_color)
 	{
 		if (str[i] != ' ')
 		{
-			write_to_buffer(strct + i, str[i], f_color, b_color);
+			write_to_buf(strct + i, str[i], f_color, b_color);
 		}
 	}
 	return (0);

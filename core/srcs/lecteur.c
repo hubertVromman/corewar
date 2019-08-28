@@ -107,7 +107,7 @@ int		do_visu_stuff()
 	}
 	else
 	{
-		add_string_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * 5) + 5, "Pause  ", 0xffffff, 0);
+		add_str_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * 5) + 5, "Pause  ", 0xffffff, 0);
 		jump_to(5, 5);
 		ft_printf(RESET_COLOR "Pause  ");
 		system("pkill afplay");

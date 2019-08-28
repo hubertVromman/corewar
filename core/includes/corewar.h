@@ -48,6 +48,7 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP
 # define BORDER_COLOR 0xA8A8A8
 # define VM_COLOR 0x787878
 # define WHITE 0xffffff
+# define COREWAR_COLOR 0x999999
 
 # define OP "fvi"
 
@@ -338,8 +339,8 @@ int				print_reg_info(t_proces *proces);
 /*
 ** util_visu.c
 */
-int				write_to_buffer(t_printable *strct, char c, int f_color, int b_color);
-int				add_string_to_buffer(t_printable *strct, char *str, int f_color, int b_color);
+int				write_to_buf(t_printable *strct, char c, int f_color, int b_color);
+int				add_str_to_buffer(t_printable *strct, char *str, int f_color, int b_color);
 int				add_name_to_buffer(t_printable *strct, char *str, int f_color, int b_color);
 
 /*
@@ -362,10 +363,17 @@ void			*sound_feu();
 ** init_visu.c
 */
 
-
 int				init_visu();
 
+/*
+** filler.c
+*/
 
+int				fill_border();
+int				fill_header();
+int				fill_memory();
+int				fill_player_info();
+int				fill_process_info();
 
 int		update_cps();
 #endif

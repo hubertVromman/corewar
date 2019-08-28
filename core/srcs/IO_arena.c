@@ -22,8 +22,8 @@ int		increment_pc(t_proces *proces, int nb_byte)
 		pos = jump_to_buf(proces->pc);
 		if (ft_printf(CHAR_HEX_PRINT "%#>", g_all.arena[proces->pc], &buf) == -1)
 			exit_func(MERROR, 0);
-		write_to_buffer(g_all.visu.next_frame + pos, buf[0], g_all.color[proces->pc], 0);
-		write_to_buffer(g_all.visu.next_frame + pos + 1, buf[1], g_all.color[proces->pc], 0);
+		write_to_buf(g_all.visu.next_frame + pos, buf[0], g_all.color[proces->pc], 0);
+		write_to_buf(g_all.visu.next_frame + pos + 1, buf[1], g_all.color[proces->pc], 0);
 		free(buf);
 	}
 	proces->pc = calc_pc(proces->pc + nb_byte);
@@ -31,8 +31,8 @@ int		increment_pc(t_proces *proces, int nb_byte)
 	{
 		pos = jump_to_buf(proces->pc);
 		ft_printf(CHAR_HEX_PRINT "%#>", g_all.arena[proces->pc], &buf);
-		write_to_buffer(g_all.visu.next_frame + pos, buf[0], 0, proces->color_rgb);
-		write_to_buffer(g_all.visu.next_frame + pos + 1, buf[1], 0, proces->color_rgb);
+		write_to_buf(g_all.visu.next_frame + pos, buf[0], 0, proces->color_rgb);
+		write_to_buf(g_all.visu.next_frame + pos + 1, buf[1], 0, proces->color_rgb);
 		free(buf);
 	}
 	return (proces->pc);
@@ -50,8 +50,8 @@ int		write_byte(t_proces *proces, int address, char to_write)
 		pos = jump_to_buf(address);
 		if (ft_printf(CHAR_HEX_PRINT "%#>", g_all.arena[address], &buf) == -1)
 			exit_func(MERROR, 0);
-		write_to_buffer(g_all.visu.next_frame + pos, buf[0], proces->color_rgb, 0);
-		write_to_buffer(g_all.visu.next_frame + pos + 1, buf[1], proces->color_rgb, 0);
+		write_to_buf(g_all.visu.next_frame + pos, buf[0], proces->color_rgb, 0);
+		write_to_buf(g_all.visu.next_frame + pos + 1, buf[1], proces->color_rgb, 0);
 		g_all.color[address] = proces->color_rgb;
 		free(buf);
 	}

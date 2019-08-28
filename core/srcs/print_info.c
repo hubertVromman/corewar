@@ -35,7 +35,7 @@ int		print_proces_info(int i)
 			// jump_to(X, i + k + l);
 			if (ft_printf("  player_nb %5d  |  pc %4d  |  opcode " CHAR_HEX_PRINT "  |  Name OP %5s  |  cycle_left %4d%#>", g_all.champ[n].player_nb, g_all.champ[n].proces[k].pc, opcode, opcode > 0 && opcode <= NB_OPERATIONS ? g_op_tab[opcode - 1].name : "null", g_all.champ[n].proces[k].cycle_left, &tmp) == -1)
 				exit_func(MERROR, 0);
-			add_string_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * (i + l + k)) + (X), tmp, 0xffffff, 0);
+			add_str_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * (i + l + k)) + (X), tmp, 0xffffff, 0);
 			free(tmp);
 			stop++;
 		}
@@ -57,30 +57,30 @@ int		print_player_info(int i)
 		{
 			if (ft_printf(": %4d%#>", g_all.champ[k].last_live, &tmp) == -1)
 			exit_func(MERROR, 0);
-			add_string_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * (HEADER_HEIGHT + 8 + (k % 2 ? 5 : 0))) + (X + 35), tmp, 0xffffff, 0);
+			add_str_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * (HEADER_HEIGHT + 8 + (k % 2 ? 5 : 0))) + (X + 35), tmp, 0xffffff, 0);
 			free(tmp);
 			if (ft_printf(": %4d%#>", g_all.champ[k].lives_period, &tmp) == -1)
 			exit_func(MERROR, 0);
-			add_string_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * (HEADER_HEIGHT + 9 + (k % 2 ? 5 : 0))) + (X + 35), tmp, 0xffffff, 0);
+			add_str_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * (HEADER_HEIGHT + 9 + (k % 2 ? 5 : 0))) + (X + 35), tmp, 0xffffff, 0);
 			free(tmp);
 			if (ft_printf(": %4d%#>", g_all.champ[k].nb_proces, &tmp) == -1)
 			exit_func(MERROR, 0);
-			add_string_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * (HEADER_HEIGHT + 10 + (k % 2 ? 5 : 0))) + (X + 35), tmp, 0xffffff, 0);
+			add_str_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * (HEADER_HEIGHT + 10 + (k % 2 ? 5 : 0))) + (X + 35), tmp, 0xffffff, 0);
 			free(tmp);
 		}
 		else
 		{
 			if (ft_printf(": %4d%#>", g_all.champ[k].last_live, &tmp) == -1)
 			exit_func(MERROR, 0);
-			add_string_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * (HEADER_HEIGHT + 8 + (k % 2 ? 5 : 0))) + (X + 85), tmp, 0xffffff, 0);
+			add_str_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * (HEADER_HEIGHT + 8 + (k % 2 ? 5 : 0))) + (X + 85), tmp, 0xffffff, 0);
 			free(tmp);
 			if (ft_printf(": %4d%#>", g_all.champ[k].lives_period, &tmp) == -1)
 			exit_func(MERROR, 0);
-			add_string_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * (HEADER_HEIGHT + 9 + (k % 2 ? 5 : 0))) + (X + 85), tmp, 0xffffff, 0);
+			add_str_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * (HEADER_HEIGHT + 9 + (k % 2 ? 5 : 0))) + (X + 85), tmp, 0xffffff, 0);
 			free(tmp);
 			if (ft_printf(": %4d%#>", g_all.champ[k].nb_proces, &tmp) == -1)
 			exit_func(MERROR, 0);
-			add_string_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * (HEADER_HEIGHT + 10 + (k % 2 ? 5 : 0))) + (X + 85), tmp, 0xffffff, 0);
+			add_str_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * (HEADER_HEIGHT + 10 + (k % 2 ? 5 : 0))) + (X + 85), tmp, 0xffffff, 0);
 			free(tmp);
 		}
 	}
@@ -101,19 +101,19 @@ int		print_init_info(int i)
 	i = 0;
 	if (ft_printf(": %4d%#>", g_all.cycle, &tmp) == -1)
 		exit_func(MERROR, 0);
-	add_string_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * (HEADER_HEIGHT + 1)) + (X + 20), tmp, 0xffffff, 0);
+	add_str_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * (HEADER_HEIGHT + 1)) + (X + 20), tmp, 0xffffff, 0);
 	ft_strdel(&tmp);
 	if (ft_printf(": %4d%#>", g_all.nb_proces_tot, &tmp) == -1)
 		exit_func(MERROR, 0);
-	add_string_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * (HEADER_HEIGHT + 3)) + (X + 20), tmp, 0xffffff, 0);
+	add_str_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * (HEADER_HEIGHT + 3)) + (X + 20), tmp, 0xffffff, 0);
 	ft_strdel(&tmp);
 	if (ft_printf(": %4d%#>", lives, &tmp) == -1)
 		exit_func(MERROR, 0);
-	add_string_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * (HEADER_HEIGHT + 4)) + (X + 20), tmp, 0xffffff, 0);
+	add_str_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * (HEADER_HEIGHT + 4)) + (X + 20), tmp, 0xffffff, 0);
 	ft_strdel(&tmp);
 	if (ft_printf(": %4d%#>", g_all.cycle_to_die, &tmp) == -1)
 		exit_func(MERROR, 0);
-	add_string_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * (HEADER_HEIGHT + 5)) + (X + 20), tmp, 0xffffff, 0);
+	add_str_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * (HEADER_HEIGHT + 5)) + (X + 20), tmp, 0xffffff, 0);
 	ft_strdel(&tmp);
 	while (++i < 6)
 	{
@@ -150,7 +150,7 @@ int		print_vm_info()
 		{
 			if (ft_printf("%1$/95c%#>", ' ', &tmp1) == -1)
 				exit_func(MERROR, 0);
-			add_string_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * (tmp)) + (X), tmp1, 0xffffff, 0);
+			add_str_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * (tmp)) + (X), tmp1, 0xffffff, 0);
 			free(tmp1);
 			// jump_to(X, tmp);
 			// ft_printf("%1$/95c", ' ');

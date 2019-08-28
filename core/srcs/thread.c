@@ -98,7 +98,7 @@ void	*th_feu()
 		else
 			color = 0;
 		if (color != 0 && b[i] != 0)
-			write_to_buffer(g_all.visu.flame_buf + i, ch[(b[i]>9 ? 9 : b[i])], color, 0);
+			write_to_buf(g_all.visu.flame_buf + i, ch[(b[i]>9 ? 9 : b[i])], color, 0);
 	}
 	pthread_exit(NULL);
 }

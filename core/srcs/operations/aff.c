@@ -30,7 +30,7 @@ int		operation_aff(t_champ *champ, t_proces *proces, t_arg *args)
 		{
 			ft_memcpy(g_all.visu.aff_string, g_all.visu.aff_string + 1, g_all.visu.size_aff - 1);
 			g_all.visu.aff_string[g_all.visu.size_aff - 1] = to_print;
-			add_string_to_buffer(g_all.visu.next_frame + offset_y * g_all.visu.nb_cols + offset_x + 6, g_all.visu.aff_string, 0xffffff, 0);
+			add_str_to_buffer(g_all.visu.next_frame + offset_y * g_all.visu.nb_cols + offset_x + 6, g_all.visu.aff_string, 0xffffff, 0);
 		}
 		else
 		{
@@ -38,10 +38,10 @@ int		operation_aff(t_champ *champ, t_proces *proces, t_arg *args)
 				exit_func(MERROR, 0);
 			g_all.visu.aff_string[g_all.visu.size_aff] = to_print;
 			if (g_all.visu.size_aff)
-				write_to_buffer(g_all.visu.next_frame + offset_y * g_all.visu.nb_cols + offset_x + 5 + g_all.visu.size_aff, g_all.visu.aff_string[g_all.visu.size_aff - 1], 0x00ffffff, 0);
+				write_to_buf(g_all.visu.next_frame + offset_y * g_all.visu.nb_cols + offset_x + 5 + g_all.visu.size_aff, g_all.visu.aff_string[g_all.visu.size_aff - 1], 0x00ffffff, 0);
 			g_all.visu.size_aff++;
 		}
-		write_to_buffer(g_all.visu.next_frame + offset_y * g_all.visu.nb_cols + offset_x + 5 + g_all.visu.size_aff, to_print, proces->color_rgb, 0);
+		write_to_buf(g_all.visu.next_frame + offset_y * g_all.visu.nb_cols + offset_x + 5 + g_all.visu.size_aff, to_print, proces->color_rgb, 0);
 	}
 	else if (g_all.flags[INFORMATION])
 		ft_printf("Aff: %c\n", to_print);
