@@ -145,7 +145,7 @@ int		beg_battle()
 	while (g_all.end)
 	{
 		if (g_all.flags[VISU])
-				do_visu_stuff();
+			do_visu_stuff();
 		else
 		{
 			g_all.cycle++;

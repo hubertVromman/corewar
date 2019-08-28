@@ -12,39 +12,6 @@
 
 #include "corewar.h"
 
-// int		print_reg_info(t_proces *proces)
-// {
-// 	jump_to(X - 70, HEADER_HEIGHT);
-// 	ft_printf("Id proces = %d", proces->id_proces);
-// 	jump_to(X - 70, HEADER_HEIGHT + 1);
-// 	ft_printf("reg 0  : %10d | reg 1  : %10d | reg 2  : %10d", proces->reg[0],proces->reg[1], proces->reg[2]);
-// 	jump_to(X - 70, HEADER_HEIGHT + 2);
-// 	ft_printf("reg 3  : %10d | reg 4  : %10d | reg 5  : %10d", proces->reg[3],proces->reg[4], proces->reg[5]);
-// 	jump_to(X - 70, HEADER_HEIGHT + 3);
-// 	ft_printf("reg 6  : %10d | reg 7  : %10d | reg 8  : %10d", proces->reg[6],proces->reg[7], proces->reg[8]);
-// 	jump_to(X - 70, HEADER_HEIGHT + 4);
-// 	ft_printf("reg 9  : %10d | reg 10 : %10d | reg 11 : %10d", proces->reg[9],proces->reg[10], proces->reg[11]);
-// 	jump_to(X - 70, HEADER_HEIGHT + 5);
-// 	ft_printf("reg 12 : %10d | reg 13 : %10d | reg 14 : %10d", proces->reg[12],proces->reg[13], proces->reg[14]);
-// 	return (0);
-// }
-
-// int		print_border_side()
-// {
-// 	int i;
-
-// 	i = -1;
-// 	while (++i < g_all.visu.nb_lines - 8)
-// 	{
-// 		jump_to(g_all.visu.nb_cols - 1, i);
-// 		ft_printf(RGB_PRINT_BG "%c", (BORDER_COLOR >> 16) & 0xff, (BORDER_COLOR >> 8) & 0xff,(BORDER_COLOR >> 0) & 0xff, ' ');
-// 		jump_to(0, i);
-// 		ft_printf(RGB_PRINT_BG "%c", (BORDER_COLOR >> 16) & 0xff, (BORDER_COLOR >> 8) & 0xff,(BORDER_COLOR >> 0) & 0xff, ' ');
-// 	}
-// 	return (0);
-// }
-
-
 int		print_proces_info(int i)
 {
 	int k;

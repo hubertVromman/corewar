@@ -14,26 +14,26 @@
 
 /*
 ** TO DO or !Not to do
-** - Fonction AFF
-** - Gerer la double impression au debut
-** - imprimer live et aff ensemble
 ** - Norme
 ** - Why else dans le lecteur ?
 ** - Dans create proces lecture des OP de la Queu
 ** - recheck l'asm
 ** - Verifier tout les printf pour affichage sans visu
-** - flag i pour les lives et aff
 ** - Verifier qu'on kill les thread
 ** - Pas de visu si screen est trop petit
 ** 	 Gagnant qui bouge dans l'ecran (avec une couleur random ?)
 ** - Remplacer printf dans visu par insta_print_char
-** 				10/23 (0.5 point par fini, 0.5 point par teste)
+** - Gerer son
+** 				14/25
 **
 ** PIPELINE
-** - Nb du champion reste comme il est mais passe en neg dans le registre --> a tester
 ** - afficher indicateur pour "Pause" --> utiliser print char a la place de printf PUIS OK
 **
 ** DEJA FAIT
+** - Nb du champion reste comme il est mais passe en neg dans le registre --> ok
+** - Gerer la double impression au debut --> ok
+** - Fonction AFF --> ok
+** - flag i pour les lives et aff --> ok
 ** - Mettre tout dans le buffer "print info"   --> ok
 ** - tester dernier en vie  --> ok
 ** - sound flame on of quand il faut  -> ok

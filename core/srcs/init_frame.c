@@ -85,28 +85,31 @@ int		fill_current_frame()
 		exit_func(MERROR, 0);
 	add_string_to_buffer(g_all.visu.current_frame + ((HEADER_HEIGHT + 5) * g_all.visu.nb_cols + X), tmp, 0x00ffffff, 0);
 	free(tmp);
-
+	if (ft_printf("Aff: %#>", &tmp) == -1)
+		exit_func(MERROR, 0);
+	add_string_to_buffer(g_all.visu.current_frame + ((HEADER_HEIGHT + 6) * g_all.visu.nb_cols + X), tmp, 0x00ffffff, 0);
+	free(tmp);
 	for(int i = 0; i < g_all.nb_champ; i++)
 	{
 		if (ft_printf("PLAYER %d : %#>", g_all.champ[i].player_nb, &tmp) == -1)
 			exit_func(MERROR, 0);
-		add_string_to_buffer(g_all.visu.current_frame + ((HEADER_HEIGHT + 7 + (i < 2 ? (i * 5) : (i - 2) * 5)) * g_all.visu.nb_cols + (i < 2 ? X : (X + 50))), tmp, 0x00ffffff, 0);
+		add_string_to_buffer(g_all.visu.current_frame + ((HEADER_HEIGHT + 8 + (i < 2 ? (i * 5) : (i - 2) * 5)) * g_all.visu.nb_cols + (i < 2 ? X : (X + 50))), tmp, 0x00ffffff, 0);
 		free(tmp);
 		if (ft_printf("%s %#>", g_all.champ[i].player_name, &tmp) == -1)
 			exit_func(MERROR, 0);
-		add_name_to_buffer(g_all.visu.current_frame + ((HEADER_HEIGHT + 7 + (i < 2 ? (i * 5) : (i - 2) * 5)) * g_all.visu.nb_cols + (i < 2 ? X + 12 : X + 62)), tmp, g_all.champ[i].color_rgb, 0);
+		add_name_to_buffer(g_all.visu.current_frame + ((HEADER_HEIGHT + 8 + (i < 2 ? (i * 5) : (i - 2) * 5)) * g_all.visu.nb_cols + (i < 2 ? X + 12 : X + 62)), tmp, g_all.champ[i].color_rgb, 0);
 		free(tmp);
 		if (ft_printf("Last lives %#>", &tmp) == -1)
 			exit_func(MERROR, 0);
-		add_string_to_buffer(g_all.visu.current_frame + ((HEADER_HEIGHT + 8 + (i < 2 ? (i * 5) : (i - 2) * 5)) * g_all.visu.nb_cols + (i < 2 ? X + 5 : X + 55)), tmp, 0x00ffffff, 0);
+		add_string_to_buffer(g_all.visu.current_frame + ((HEADER_HEIGHT + 9 + (i < 2 ? (i * 5) : (i - 2) * 5)) * g_all.visu.nb_cols + (i < 2 ? X + 5 : X + 55)), tmp, 0x00ffffff, 0);
 		free(tmp);
 		if (ft_printf("Lives period %#>", &tmp) == -1)
 			exit_func(MERROR, 0);
-		add_string_to_buffer(g_all.visu.current_frame + ((HEADER_HEIGHT + 9 + (i < 2 ? (i * 5) : (i - 2) * 5)) * g_all.visu.nb_cols + (i < 2 ? X + 5 : X + 55)), tmp, 0x00ffffff, 0);
+		add_string_to_buffer(g_all.visu.current_frame + ((HEADER_HEIGHT + 10 + (i < 2 ? (i * 5) : (i - 2) * 5)) * g_all.visu.nb_cols + (i < 2 ? X + 5 : X + 55)), tmp, 0x00ffffff, 0);
 		free(tmp);
 		if (ft_printf("Nbr of proces %#>", &tmp) == -1)
 			exit_func(MERROR, 0);
-		add_string_to_buffer(g_all.visu.current_frame + ((HEADER_HEIGHT + 10 + (i < 2 ? (i * 5) : (i - 2) * 5)) * g_all.visu.nb_cols + (i < 2 ? X + 5 : X + 55)), tmp, 0x00ffffff, 0);
+		add_string_to_buffer(g_all.visu.current_frame + ((HEADER_HEIGHT + 11 + (i < 2 ? (i * 5) : (i - 2) * 5)) * g_all.visu.nb_cols + (i < 2 ? X + 5 : X + 55)), tmp, 0x00ffffff, 0);
 		free(tmp);
 	}
 
@@ -157,7 +160,7 @@ int		init_current_frame()
 		g_all.visu.current_frame[pos].fore_color = g_all.visu.current_frame[pos].back_color;
 		g_all.visu.current_frame[pos].back_color = tmp;
 	}
-	ft_memcpy(g_all.visu.current_frame_flame, g_all.visu.current_frame, g_all.visu.screen_size);
+	ft_memcpy(g_all.visu.current_frame_flame, g_all.visu.current_frame, g_all.visu.screen_size * sizeof(t_printable));
 	for (int j = 0 ; j < g_all.visu.screen_size; j++)
 	{
 		if (g_all.visu.current_frame[j].to_print)

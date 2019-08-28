@@ -89,7 +89,7 @@ int		init_visu()
 		exit_func(MERROR, 0);
 	if (!(g_all.visu.current_frame = ft_memalloc(sizeof(t_printable) * g_all.visu.screen_size)))
 		exit_func(MERROR, 0);
-	if (!(g_all.visu.current_frame_flame = ft_memalloc(sizeof(t_printable) * g_all.visu.screen_size)))
+	if (!(g_all.visu.current_frame_flame = malloc(sizeof(t_printable) * g_all.visu.screen_size)))
 		exit_func(MERROR, 0);
 	if (!(g_all.visu.next_frame = malloc(sizeof(t_printable) * g_all.visu.screen_size)))
 		exit_func(MERROR, 0);
@@ -98,7 +98,6 @@ int		init_visu()
 	for (int l = 0; l < g_all.visu.screen_size; l++)
 	{
 		g_all.visu.current_frame[l].to_print = ' ';
-		g_all.visu.current_frame_flame[l].to_print = ' ';
 	}
 	g_all.visu.previous_pos = -1;
 	signal(SIGINT, exit_ctrl_c);

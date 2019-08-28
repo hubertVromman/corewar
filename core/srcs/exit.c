@@ -29,7 +29,7 @@ int		usage(void)
 	ft_printf("    -n    : Set the next player's number"
 	" (default next available)\n%>", 2);
 	ft_printf("    -dump : Dump memory in hexadecimal every dump_period\n%>", 2);
-	ft_printf("    -i    : Display live and aff informations\n%>", 2);
+	ft_printf("    -i    : Display live and aff informations when not in visu\n%>", 2);
 	return (0);
 }
 

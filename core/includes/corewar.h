@@ -22,7 +22,7 @@
 
 enum	e_error_code { NOT_COR_FILE = 1, OPEN_FAIL, TOO_LARGE, READ_ERROR, INVALID_NB};
 
-enum	e_flag_nb {FORCE_LAUNCH, VISU};
+enum	e_flag_nb {FORCE_LAUNCH, VISU, INFORMATION};
 
 enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP, ZJMP_OP, LDI_OP, STI_OP, FORK_OP, LLD_OP, LLDI_OP, LFORK_OP, AFF_OP };
 
@@ -65,6 +65,8 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP
 # define FLAME_HEIGHT 18
 # define MAX_NAME_LENGHT 30
 # define PROCES_HEIGHT (MEMORY_HEIGHT - 21) // a changer
+
+# define INFO_WIDTH 102
 
 /*
 ** Sound
@@ -188,6 +190,8 @@ typedef struct	s_visu
 	int			previous_pos;
 	int			previous_fg;
 	int			previous_bg;
+	int			size_aff;
+	char		*aff_string;
 	t_printable	*flame_buf;
 	t_printable	*current_frame;
 	t_printable	*current_frame_flame;
@@ -227,6 +231,8 @@ typedef struct	s_a
 }				t_a;
 
 t_a				g_all;
+
+int fd;
 
 /*
 ** error.c
@@ -356,4 +362,7 @@ void			*sound_feu();
 
 int				init_visu();
 
+
+
+int		update_cps();
 #endif
