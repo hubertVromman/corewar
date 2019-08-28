@@ -97,7 +97,7 @@ int		print_init_info(int i)
 	lives = 0;
 	while (++i < g_all.nb_champ)
 		lives += g_all.champ[i].lives_period;
-	ft_printf(RESET_COLOR);
+	// ft_printf(RESET_COLOR);
 	i = 0;
 	if (ft_printf(": %4d%#>", g_all.cycle, &tmp) == -1)
 		exit_func(MERROR, 0);

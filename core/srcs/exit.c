@@ -36,6 +36,13 @@ int		usage(void)
 
 int		exit_func(int exit_code, int dp_usage)
 {
+	if (g_all.flags[VISU])
+	{
+		pthread_cancel(g_all.visu.thread_calcul);
+		pthread_cancel(g_all.visu.thread_flamme);
+		pthread_cancel(g_all.visu.thread_reader);
+		pthread_cancel(g_all.visu.thread_sound);
+	}
 	if (!dp_usage && g_all.flags[VISU])
 	{
 		ft_printf(RESTORE_SCREEN);

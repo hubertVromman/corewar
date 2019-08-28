@@ -18,18 +18,18 @@
 ** - Why else dans le lecteur ?
 ** - Dans create proces lecture des OP de la Queu et zjmp ?
 ** - recheck l'asm
-** - Verifier tout les printf pour affichage sans visu
-** - Verifier qu'on kill les thread
 ** 	 Gagnant qui bouge dans l'ecran (avec une couleur random ?)
-** - Remplacer printf dans visu par insta_print_char
 ** - Gerer son
-** 				15/26
+** 				16/26
 **
 ** PIPELINE
 ** - afficher indicateur pour "Pause" --> utiliser print char a la place de printf PUIS OK
-** - Information alignees a droite --> ok mais changer dans print info
+** - Information alignees a droite --> ok mais changer dans print info et printinfo au demarrage
+** - Verifier qu'on kill les thread --> ok jusqu'au prochain double free / heap use after free / etc
+** - Remplacer printf dans visu par insta_print_char --> ok sauf lecteur.c et ray.c
 **
 ** DEJA FAIT
+** - Verifier tout les printf pour affichage sans visu --> ok
 ** - Pas de visu si screen est trop petit --> ok
 ** - Nb du champion reste comme il est mais passe en neg dans le registre --> ok
 ** - Gerer la double impression au debut --> ok
@@ -104,7 +104,7 @@ int		display_start()
 	{
 		if (g_all.visu.nb_cols < SCREEN_WIDTH || g_all.visu.nb_lines < SCREEN_HEIGHT - 1)
 			exit_func(-1, 1);
-		ft_printf(HIDE_CURSOR SAVE_SCREEN "\e[H");
+		ft_printf(HIDE_CURSOR SAVE_SCREEN HOME_CURSOR);
 		init_current_frame();
 	}
 	else

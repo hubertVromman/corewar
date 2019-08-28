@@ -36,6 +36,7 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP
 # define RGB_PRINT_BG "\e[48;2;%.3d;%.3d;%.3dm"
 # define SAVE_SCREEN "\e[?1049h"
 # define RESTORE_SCREEN "\e[?1049l"
+# define HOME_CURSOR "\e[H"
 
 # define MERROR -2
 

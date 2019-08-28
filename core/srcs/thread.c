@@ -14,6 +14,7 @@
 
 void		*sound_feu()
 {
+	pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
 	while (1)
 	{
 		system("afplay sound/feu.mp3 &");
@@ -29,6 +30,7 @@ void	*reader_func(void *rien)
 	struct termios	org_opts;
 	rien = NULL;
 
+	pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
 	res = tcgetattr(0, &org_opts);
 	org_opts.c_lflag = ISIG & ~(ICANON);
 	tcsetattr(0, TCSANOW, &org_opts);
@@ -80,6 +82,7 @@ void	*th_feu()
 	int size = width * height;
 	char *b;
 
+	pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
 	b = g_all.visu.feu;
 	char *ch = " .:^*xsS#$";
 	int color;
@@ -107,6 +110,7 @@ void	*th_calcul()
 {
 	int i;
 
+	pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
 	i = -1;
 	ft_bzero(g_all.visu.next_frame, g_all.visu.screen_size * sizeof(t_printable));
 	ft_memcpy(g_all.visu.next_frame + g_all.visu.offset_flame_y * g_all.visu.nb_cols, g_all.visu.current_frame + g_all.visu.offset_flame_y * g_all.visu.nb_cols, FLAME_HEIGHT * g_all.visu.nb_cols * sizeof(t_printable));
