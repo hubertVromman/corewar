@@ -100,13 +100,12 @@ int		fill_player_info(void)
 	while (++i < g_all.nb_champ)
 	{
 		st_point = g_all.visu.current_frame + (HEADER_HEIGHT + i % 2 * 5)
-		* g_all.visu.nb_cols + g_all.visu.nb_cols - INFO_WIDTH + 3 + i / 2 * 51;
-		if (ft_printf("PLAYER %3d : %c%s%#>", g_all.champ[i].player_nb, 0,
-			g_all.champ[i].player_name, &tmp) == -1)
+		* g_all.visu.nb_cols + g_all.visu.nb_cols - INFO_WIDTH + 3 + i / 2 * 48;
+		if (ft_printf("PLAYER %3d :%#>", g_all.champ[i].player_nb, &tmp) == -1)
 			exit_func(MERROR, 0);
 		add_str_to_buffer(st_point + 8 * g_all.visu.nb_cols, tmp, WHITE, 0);
 		add_name_to_buffer(st_point + 8 * g_all.visu.nb_cols + 13,
-			tmp + 14, g_all.champ[i].color_rgb, 0);
+			g_all.champ[i].player_name, g_all.champ[i].color_rgb, 0);
 		free(tmp);
 		add_str_to_buffer(st_point + 9 * g_all.visu.nb_cols + 5,
 			"Last live", WHITE, 0);

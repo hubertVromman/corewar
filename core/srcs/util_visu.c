@@ -40,7 +40,7 @@ int		add_name_to_buffer(t_printable *strct, char *str, int f_color, int b_color)
 	int		i;
 
 	i = -1;
-	while (str[++i] && i < MAX_NAME_LENGHT)
+	while (str[++i] && i < MAX_NAME_LENGTH)
 	{
 		if (str[i] != ' ')
 		{
