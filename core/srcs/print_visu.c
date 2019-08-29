@@ -42,6 +42,8 @@ int		print_frame_diff()
 			if (!(g_all.visu.next_frame[g_all.visu.offset_flame_y * g_all.visu.nb_cols + l].to_print))
 				g_all.visu.next_frame[g_all.visu.offset_flame_y * g_all.visu.nb_cols + l].to_print = ' ';
 		}
+	else if (!g_all.end)
+		ft_memcpy(g_all.visu.next_frame, g_all.visu.flame_buf, sizeof(t_printable) * g_all.visu.screen_size);
 	copy_and_print_buffer(g_all.visu.current_frame_flame, g_all.visu.next_frame, g_all.visu.screen_size);
 	return (0);
 }

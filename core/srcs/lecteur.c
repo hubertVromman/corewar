@@ -92,7 +92,12 @@ int		do_visu_stuff()
 	i = 0;
 	has_frame = 0;
 	tmp = NULL;
-	if (!g_all.visu.pause)
+	if (!g_all.end)
+	{
+		has_frame = 1;
+		pthread_create(&g_all.visu.thread_calcul, NULL, th_calcul, NULL);
+	}
+	else if (!g_all.visu.pause)
 	{
 		if (g_all.has_been_paused)
 		{
@@ -142,7 +147,7 @@ int		beg_battle()
 {
 	g_all.visu.nb_frames_to_skip = 10;
 	g_all.end = 1;
-	while (g_all.end)
+	while (1)
 	{
 		if (g_all.flags[VISU])
 			do_visu_stuff();
@@ -170,9 +175,11 @@ int		beg_battle()
 				dump_memory();
 				exit_func(0, 0);
 			}
+			if (!g_all.end)
+				break;
 		}
 	}
-	if (!g_all.flags[VISU])ft_printf("Contestant %d, \"%s\", has won !\n", g_all.champ[g_all.player_last_live].player_nb, g_all.champ[g_all.player_last_live].player_name);
-	else {ft_printf("fin\n");while(1);}
+	if (!g_all.flags[VISU]) // pas utile parce que le visu est en boucle infinie
+		ft_printf("Contestant %d, \"%s\", has won !\n", g_all.champ[g_all.player_last_live].player_nb, g_all.champ[g_all.player_last_live].player_name);
 	return (0);
 }

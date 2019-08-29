@@ -18,17 +18,17 @@
 ** - Why else dans le lecteur ?
 ** - Dans create proces lecture des OP de la Queu et zjmp ?
 ** - recheck l'asm
-** 	 Gagnant qui bouge dans l'ecran (avec une couleur random ?)
 ** - Gerer son
-** 				16/26
+** 				18/26
 **
 ** PIPELINE
 ** - afficher indicateur pour "Pause" --> utiliser print char a la place de printf PUIS OK
 ** - Information alignees a droite --> ok mais changer dans print info et printinfo au demarrage
 ** - Verifier qu'on kill les thread --> ok jusqu'au prochain double free / heap use after free / etc
-** - Remplacer printf dans visu par insta_print_char --> ok sauf lecteur.c et ray.c
 **
 ** DEJA FAIT
+** - Remplacer printf dans visu par insta_print_char --> ok
+** 	 Gagnant qui bouge dans l'ecran (avec une couleur random ?) --> ok un peu bcp random
 ** - Verifier tout les printf pour affichage sans visu --> ok
 ** - Pas de visu si screen est trop petit --> ok
 ** - Nb du champion reste comme il est mais passe en neg dans le registre --> ok

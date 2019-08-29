@@ -48,10 +48,7 @@ static int		init_end_screen()
 	g_all.end_screen.luuy = g_all.visu.nb_lines / 4 - SIZE_ANIM_Y;
 	g_all.end_screen.cx = g_all.visu.nb_cols / 2;
 	g_all.end_screen.cy = g_all.visu.nb_lines / 2;
-	if (!(g_all.end_screen.first_column = malloc(sizeof(int) * g_all.visu.nb_lines / 2)))
-		exit_func(MERROR, 0);
-	if (!(g_all.end_screen.second_column = malloc(sizeof(int) * g_all.visu.nb_lines / 2)))
-		exit_func(MERROR, 0);
+	create_lines();
 	return (0);
 }
 

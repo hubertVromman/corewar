@@ -111,6 +111,12 @@ void	*th_calcul()
 	int i;
 
 	pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
+	if (!g_all.end)
+	{
+		display_ray();
+		g_all.cycle++;
+		return (0);
+	}
 	i = -1;
 	ft_bzero(g_all.visu.next_frame, g_all.visu.screen_size * sizeof(t_printable));
 	ft_memcpy(g_all.visu.next_frame + g_all.visu.offset_flame_y * g_all.visu.nb_cols, g_all.visu.current_frame + g_all.visu.offset_flame_y * g_all.visu.nb_cols, FLAME_HEIGHT * g_all.visu.nb_cols * sizeof(t_printable));
@@ -135,6 +141,5 @@ void	*th_calcul()
 		}
 	}
 	print_vm_info();
-	!g_all.end ? display_ray() : 0;
 	pthread_exit(NULL);
 }

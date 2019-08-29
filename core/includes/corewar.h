@@ -125,8 +125,7 @@ typedef struct	s_endscreen
 	int		luuy;
 	int		cx;
 	int		cy;
-	int		*first_column;
-	int		*second_column;
+	int		*ray_lines[16];
 }				t_endscreen;
 
 typedef struct	s_printable
@@ -268,7 +267,6 @@ int				delete_proces(t_champ *champ, int id_proces);
 /*
 ** main.c
 */
-int				display_ray();
 int				parse_arg(int ac, char **av);
 
 /*
@@ -363,18 +361,22 @@ void			*sound_feu();
 /*
 ** init_visu.c
 */
-
 int				init_visu();
 
 /*
 ** filler.c
 */
-
 int				fill_border();
 int				fill_header();
 int				fill_memory();
 int				fill_player_info();
 int				fill_process_info();
+
+/*
+** ray.c
+*/
+int				display_ray();
+int				create_lines();
 
 int		update_cps();
 #endif

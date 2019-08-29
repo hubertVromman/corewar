@@ -14,6 +14,11 @@
 
 int		free_all(void)
 {
+	int		i;
+
+	i = -1;
+	while (++i < 16)
+		free(lines[i]);
 	free(g_all.visu.flame_buf);
 	free(g_all.visu.current_frame);
 	free(g_all.visu.next_frame);
