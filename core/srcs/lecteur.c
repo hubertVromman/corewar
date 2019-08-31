@@ -6,7 +6,7 @@
 /*   By: sofchami <sofchami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/18 19:57:39 by sofchami          #+#    #+#             */
-/*   Updated: 2019/08/31 03:05:18 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/31 10:24:10 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,11 @@ int		do_actions(int i, int k)
 		{
 			increment_pc(&g_all.champ[i].proces[k], g_op_tab[g_all.champ[i].proces[k].opcode - 1].nb_params + 2);
 			add_to_que(g_all.champ[i].proces + k, i);
-			// g_all.champ[i].proces[k].opcode = read_arena_op(g_all.champ[i].proces[k].pc);
-			// g_all.champ[i].proces[k].cycle_left = get_cycle_left(g_all.champ[i].proces[k].opcode);
 		}
 		else
 		{
 			increment_pc(&g_all.champ[i].proces[k], 1);
 			add_to_que(g_all.champ[i].proces + k, i);
-			// g_all.champ[i].proces[k].opcode = read_arena_op(g_all.champ[i].proces[k].pc);
-			// g_all.champ[i].proces[k].cycle_left = get_cycle_left(g_all.champ[i].proces[k].opcode);
 		}
 	}
 	return (0);
@@ -197,7 +193,10 @@ int		beg_battle()
 				exit_func(0, 0);
 			}
 			if (!g_all.end)
+			{
+				ft_printf("Contestant %d, %s, has won !", g_all.champ[g_all.player_last_live].index_player + 1, g_all.champ[g_all.player_last_live].player_name);
 				break;
+			}
 		}
 	}
 	return (0);

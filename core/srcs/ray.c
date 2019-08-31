@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hvromman <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 01:28:59 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/28 01:29:01 by hvromman         ###   ########.fr       */
+/*   Updated: 2019/08/31 07:38:57 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int		get_line(int *buffer, int x1, int y1)
 	return (0);
 }
 
-int		create_lines()
+int		create_lines(void)
 {
 	int		i;
 	int		**lines;
@@ -107,7 +107,7 @@ int		create_lines()
 	return (0);
 }
 
-int		display_winner()
+int		display_winner(void)
 {
 	int		len_player;
 	int		pos_x;
@@ -141,7 +141,7 @@ int		print_ray(int *first_column, int *second_column, int w, int i)
 	return (0);
 }
 
-int		display_ray()
+int		display_ray(void)
 {
 	ft_memcpy(g_all.visu.flame_buf, g_all.visu.current_frame, sizeof(t_printable) * g_all.visu.screen_size);
 	for (int i = 0; i < 8; i++)

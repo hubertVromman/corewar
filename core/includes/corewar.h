@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:31:13 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/30 08:37:35 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/31 07:37:49 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,6 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP
 # define INFO_WIDTH 102
 # define EFFECTIVE_INFO_WIDTH (INFO_WIDTH - 8)
 
-/*
-** Sound
-*/
 # define S_LIVE 1
 # define S_DEATH 2
 # define S_FLAME 3
@@ -82,7 +79,7 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP
 # define SCREEN_HEIGHT (MEMORY_HEIGHT + HEADER_HEIGHT + 1)
 # define SCREEN_WIDTH (MEMORY_OFFSET_X + 64 * 3 + 2 + INFO_WIDTH)
 
-# define X 265 // a supprimer
+# define COL_INFO 265
 
 # define NB_OPERATIONS (int)(sizeof(g_op_tab) / sizeof(t_op) - 1)
 
@@ -162,6 +159,7 @@ struct			s_champ
 {
 	int			nb_proces;
 	int			lives_period;
+	int			index_player;
 	int			nb_errors;
 	int			exec_size;
 	int			last_live;
@@ -227,6 +225,7 @@ typedef struct	s_a
 	int			next_champ_nb;
 	int			*id_queu;
 	int			*player_queu;
+	char		*buf;
 	int			player_last_live;
 	int			(*func[NB_OPERATIONS]) (t_champ *champ, t_proces *proces, t_arg *args);
 	char		flags[sizeof(OP)];
@@ -342,8 +341,8 @@ int				print_frame_diff();
 ** print_info.c
 */
 int				print_proces_info(int i);
-int				print_player_info();
-int				print_init_info(int i);
+int				print_player_info(int k);
+int				print_init_info(int i, int lives);
 int				print_vm_info();
 
 /*
@@ -356,7 +355,7 @@ int				write_to_buf(t_printable *strct, char c, int f_color, int b_color);
 /*
 ** init.c
 */
-int				init_all(int ac, char **av);
+int				init_all(int ac, char **av, int i);
 
 /*
 ** thread.c

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hvromman <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 01:12:55 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/28 01:12:57 by hvromman         ###   ########.fr       */
+/*   Updated: 2019/08/31 03:57:53 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
 
-static int		init_func_pointer()
+static int		init_func_pointer(void)
 {
 	g_all.func[0] = &operation_live;
 	g_all.func[1] = &operation_ld;
@@ -33,7 +33,7 @@ static int		init_func_pointer()
 	return (0);
 }
 
-static int		sort_champs()
+static int		sort_champs(void)
 {
 	int		i;
 	t_champ	tmp;
@@ -52,11 +52,8 @@ static int		sort_champs()
 	return (0);
 }
 
-int		init_all(int ac, char **av)
+int				init_all(int ac, char **av, int i)
 {
-	int i;
-
-	i = -1;
 	ft_bzero(&g_all, sizeof(g_all));
 	g_all.header_size = 16 + PROG_NAME_LENGTH + COMMENT_LENGTH;
 	g_all.cycle_to_die = CYCLE_TO_DIE;
@@ -70,11 +67,14 @@ int		init_all(int ac, char **av)
 	while (++i < g_all.nb_champ)
 	{
 		g_all.champ[i].player_nb_arena = -g_all.champ[i].player_nb;
+		g_all.champ[i].index_player = i;
 		ft_memcpy(g_all.arena + (g_all.pos_depart * i),
 			g_all.champ[i].exec_file, g_all.champ[i].exec_size);
-		create_proces(g_all.pos_depart * i, NULL, &(g_all.champ[i])); //gestion d'erreur
-		g_all.champ[i].proces[0].opcode = g_all.arena[g_all.champ[i].proces->pc];
-		g_all.champ[i].proces[0].cycle_left = get_cycle_left(g_all.champ[i].proces->opcode);
+		create_proces(g_all.pos_depart * i, NULL, &(g_all.champ[i]));
+		g_all.champ[i].proces[0].opcode =
+			g_all.arena[g_all.champ[i].proces->pc];
+		g_all.champ[i].proces[0].cycle_left =
+			get_cycle_left(g_all.champ[i].proces->opcode);
 	}
 	init_func_pointer();
 	return (0);

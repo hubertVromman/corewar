@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/17 16:16:25 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/30 08:59:43 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/31 10:12:54 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,28 +58,41 @@ int		play_sound(int i)
 	return (0);
 }
 
-int		dump_memory()
+int		dump_memory(void)
 {
 	int		i;
-	char *buffer;
-	char *s;
+	char	*buffer;
+	char	*s;
 
-	if (!(s = malloc(MEM_SIZE * 3)))
+	if (!(s = malloc((MEM_SIZE * 3) + 576)))
 		exit_func(MERROR, 0);
 	i = -1;
 	while (++i < MEM_SIZE)
 	{
+		if (!i || !(i % 64))
+		{
+			if (!i)
+			{
+				if ((ft_printf("0x%.4x : %#>", i, &buffer) == -1))
+					exit_func(MERROR, 0);
+			}
+			else
+				if ((ft_printf("0x%.4x : %#>", i, &buffer) == -1))
+					exit_func(MERROR, 0);
+			ft_memcpy((s + (i / 64) * 9 + i * 3), buffer, 9);
+			free(buffer);
+		}
 		if (ft_printf(CHAR_HEX_PRINT "%c%#>", g_all.arena[i], (i + 1) % 64 ? ' ' : '\n', &buffer) == -1)
 			exit_func(MERROR, 0);
-		memcpy(s + i * 3, buffer, 3);
+		ft_memcpy(s + (i / 64) * 9 + 9 + i * 3, buffer, 3);
 		free(buffer);
 	}
-	write(1, s, MEM_SIZE * 3);
+	write(1, s, (MEM_SIZE * 3) + 576);
 	free(s);
 	return (0);
 }
 
-int		update_cps()
+int		update_cps(void)
 {
 	// jump_to(X + 20, 2 + HEADER_HEIGHT);
 	// ft_printf(": %4d", g_all.visu.max_cps);

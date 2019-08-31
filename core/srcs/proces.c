@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 01:33:01 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/30 04:11:36 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/31 07:35:44 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@ int		create_proces(int pc, t_proces *parent, t_champ *champ)
 {
 	t_proces *proc;
 
-	if (!(champ->proces = realloc(champ->proces, sizeof(t_proces) * (champ->nb_proces + 1))))
-		return (-1);
+	if (!(champ->proces = realloc(champ->proces, sizeof(t_proces) *
+		(champ->nb_proces + 1))))
+		exit_func(MERROR, 0);
 	proc = &(champ->proces[champ->nb_proces]);
 	ft_bzero(proc, sizeof(t_proces));
 	proc->pc = pc;
@@ -28,13 +29,10 @@ int		create_proces(int pc, t_proces *parent, t_champ *champ)
 	{
 		ft_memcpy(proc->reg, parent->reg, REG_NUMBER * 4);
 		proc->carry = parent->carry;
-		// add_to_que(proc);
+		add_to_que(proc, champ->index_player);
 	}
 	else
-	{
-
 		proc->reg[0] = champ->player_nb_arena;
-	}
 	proc->champ = champ;
 	proc->color_rgb = proc->champ->color_rgb + champ->nb_proces * COLOR_INCREMENT;
 	if (champ->nb_proces)
@@ -42,29 +40,29 @@ int		create_proces(int pc, t_proces *parent, t_champ *champ)
 	champ->nb_proces++;
 	g_all.nb_proces_tot++;
 	g_all.id_proces++;
-	g_all.cycle ? play_sound(S_LIVE) :0;
+	if (g_all.flags[VISU])
+		g_all.cycle ? play_sound(S_LIVE) :0;
 	return(0);
 }
 
 int		delete_proces(t_champ *champ, int id_proces)
 {
 	int		pos;
-	char	*buf;
 
 	if (g_all.flags[VISU])
 	{
-		buf = NULL;
 		pos = jump_to_buf(champ->proces[id_proces].pc);
-		ft_printf(CHAR_HEX_PRINT "%#>", g_all.arena[champ->proces[id_proces].pc], &buf);
-		write_to_buf(g_all.visu.next_frame + pos, buf[0], g_all.color[champ->proces[id_proces].pc], 0);
-		write_to_buf(g_all.visu.next_frame + pos + 1, buf[1], g_all.color[champ->proces[id_proces].pc], 0);
-		free(buf);
+		ft_printf(CHAR_HEX_PRINT "%#>", g_all.arena[champ->proces[id_proces].pc], &g_all.buf);
+		write_to_buf(g_all.visu.next_frame + pos, g_all.buf[0], g_all.color[champ->proces[id_proces].pc], 0);
+		write_to_buf(g_all.visu.next_frame + pos + 1, g_all.buf[1], g_all.color[champ->proces[id_proces].pc], 0);
+		free(g_all.buf);
 	}
-	// play_sound(S_DEATH);
+	if (g_all.flags[VISU])
+		play_sound(S_DEATH);
 	return (0);
 }
 
-int		reset_proc()
+int		reset_proc(void)
 {
 	int		i;
 	int		total_lives_period;
@@ -95,6 +93,5 @@ int		reset_proc()
 		g_all.champ[i].nb_proces -= deleted;
 		g_all.nb_proces_tot -= deleted;
 	}
-
 	return (total_lives_period);
 }

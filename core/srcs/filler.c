@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/29 00:08:03 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/30 08:19:12 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/31 04:19:00 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ int		fill_header(void)
 		" | |___| (_) | | |  __/\\ V  V / (_| | |   ", COREWAR_COLOR, 0);
 	add_str_to_buffer(st_point + 6 * g_all.visu.nb_cols,
 		"  \\_____\\___/|_|  \\___| \\_/\\_/ \\__,_|_|   ", COREWAR_COLOR, 0);
+	add_str_to_buffer(st_point + 6 * g_all.visu.nb_cols +
+		g_all.visu.nb_cols / 2 - 5, "By Hvromman, Sofchami", WHITE, 0);
 	return (0);
 }
 
