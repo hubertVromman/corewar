@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/17 16:16:25 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/27 05:18:42 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/30 08:59:43 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,22 @@ int		read_arena_op(int pc)
 
 int		play_sound(int i)
 {
-	i = 0;
-	// system("pkill afplay &");
-	// if (i == 1)
-	// system("afplay sound/Ta_da.mp3 &");
-	// if (i == 2)
-	// system("afplay sound/power_off.mp3 &");
+	if (!g_all.sound)
+	{
+		if (i == 1)
+			system("afplay sound/Ta_da.mp3 &");
+		if (i == 2)
+			system("afplay sound/power_off.mp3 &");
+		time(&g_all.sound);
+	}
+	else if (time(NULL) - g_all.sound > 3)
+	{
+		if (i == 1)
+			system("afplay sound/Ta_da.mp3 &");
+		if (i == 2)
+			system("afplay sound/power_off.mp3 &");
+		time(&g_all.sound);
+	}
 	return (0);
 }
 

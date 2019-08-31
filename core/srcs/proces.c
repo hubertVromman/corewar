@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   proces.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hvromman <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 01:33:01 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/28 01:33:03 by hvromman         ###   ########.fr       */
+/*   Updated: 2019/08/30 04:11:36 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,13 @@ int		create_proces(int pc, t_proces *parent, t_champ *champ)
 	{
 		ft_memcpy(proc->reg, parent->reg, REG_NUMBER * 4);
 		proc->carry = parent->carry;
+		// add_to_que(proc);
 	}
 	else
+	{
+
 		proc->reg[0] = champ->player_nb_arena;
+	}
 	proc->champ = champ;
 	proc->color_rgb = proc->champ->color_rgb + champ->nb_proces * COLOR_INCREMENT;
 	if (champ->nb_proces)

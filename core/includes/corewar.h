@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:31:13 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/27 04:27:51 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/30 08:37:35 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,9 +211,11 @@ typedef struct	s_a
 	size_t		header_size;
 	int			nb_champ;
 	int			cycle_to_die;
+	int			cycle;
 	int			pos_depart;
-	int			ctd;
 	t_champ		champ[4];
+	int			ctd;
+	int			len_queu;
 	int			nb_errors;
 	int			id_proces;
 	int			nb_proces_tot;
@@ -221,17 +223,18 @@ typedef struct	s_a
 	int			has_been_paused;
 	int			check;
 	int			end;
-	int			cycle;
 	int			dump_period;
 	int			next_champ_nb;
+	int			*id_queu;
+	int			*player_queu;
 	int			player_last_live;
 	int			(*func[NB_OPERATIONS]) (t_champ *champ, t_proces *proces, t_arg *args);
 	char		flags[sizeof(OP)];
-	t_proces	*queu[100];
-	t_visu		visu;
-	t_endscreen	end_screen;
 	char		arena[MEM_SIZE];
 	int			color[MEM_SIZE];
+	time_t		sound;
+	t_visu		visu;
+	t_endscreen	end_screen;
 }				t_a;
 
 t_a				g_all;
@@ -246,38 +249,46 @@ int				error_func(t_champ *champ, int error_code);
 /*
 ** exit.c
 */
-int				usage(void);
 int				exit_func(int exit_code, int dp_usage);
+int				free_all(void);
+int				usage(void);
 
 /*
 ** util.c
 */
-int				get_cycle_left(int opcode);
+int				calc_pc(int pc);
 int				dump_memory();
-int				init_current_frame();
+int				get_cycle_left(int opcode);
 int				play_sound(int i);
+int				read_arena_op(int pc);
+int				update_cps();
 
 /*
 ** proces.c
 */
 int				create_proces(int pc, t_proces *parent, t_champ *champ);
 int				delete_proces(t_champ *champ, int id_proces);
+int				reset_proc();
 
 
 /*
 ** main.c
 */
+int				display_start();
 int				parse_arg(int ac, char **av);
 
 /*
-** util_instr.c
+** arguments.c
 */
 t_arg			*get_arguments(t_proces *proces);
-int				calc_pc(int pc);
+
+/*
+** IO_arena.c
+*/
 int				increment_pc(t_proces *proces, int nb_byte);
+int				read_byte(int pc, int size);
 int				write_byte(t_proces *proces, int address, char to_write);
 int				write_int(t_proces *proces, int address, int to_write);
-int				read_byte(int pc, int size);
 
 /*
 ** champ_instance.c
@@ -287,13 +298,10 @@ int				get_champ(char *file_name);
 /*
 ** lecteur.c
 */
+int 			add_to_que(t_proces *proces, int player);
 int				beg_battle();
 int	 			read_proces();
-int				reset_proc();
-int				print_frame_diff();
 int				read_arena_op(int pc);
-int				insta_print_char(char c, int f_color, int b_color, int pos);
-int				print_char(t_printable printable, int pos);
 
 /*
 ** operations
@@ -320,43 +328,44 @@ int				operation_zjmp(t_champ *champ, t_proces *proces, t_arg *args);
 */
 void			exit_ctrl_c(int c);
 int				jump_to(int x, int y);
-int				jump_to_mem(int pc);
 int				jump_to_buf(int pc);
+
+/*
+** print_visu.c
+*/
+int				copy_and_print_buffer(t_printable *dst, t_printable *src, int size);
+int				insta_print_char(char c, int f_color, int b_color, int pos);
+int				print_char(t_printable printable, int pos);
+int				print_frame_diff();
 
 /*
 ** print_info.c
 */
-int				print_header();
 int				print_proces_info(int i);
-int				print_player_info(int i);
+int				print_player_info();
 int				print_init_info(int i);
 int				print_vm_info();
-int				print_border();
-int				print_border_side();
-int				print_reg_info(t_proces *proces);
 
 /*
 ** util_visu.c
 */
-int				write_to_buf(t_printable *strct, char c, int f_color, int b_color);
 int				add_str_to_buffer(t_printable *strct, char *str, int f_color, int b_color);
 int				add_name_to_buffer(t_printable *strct, char *str, int f_color, int b_color);
+int				write_to_buf(t_printable *strct, char c, int f_color, int b_color);
 
 /*
 ** init.c
 */
-
 int				init_all(int ac, char **av);
 
 /*
 ** thread.c
 */
 
-void			*th_feu();
-void			*th_calcul();
 void			*reader_func(void *rien);
 void			*sound_feu();
-
+void			*th_feu();
+void			*th_calcul();
 
 /*
 ** init_visu.c
@@ -375,8 +384,16 @@ int				fill_process_info();
 /*
 ** ray.c
 */
-int				display_ray();
 int				create_lines();
+int				display_ray();
 
-int		update_cps();
+/*
+** init_frame.c
+*/
+
+int				fill_current_frame(void);
+int				invert_fore_and_back(t_printable *printable);
+int				init_current_frame(void);
+
+
 #endif

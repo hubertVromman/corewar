@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   filler.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hvromman <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/29 00:08:03 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/29 00:08:05 by hvromman         ###   ########.fr       */
+/*   Updated: 2019/08/30 08:19:12 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,11 +108,11 @@ int		fill_player_info(void)
 			g_all.champ[i].player_name, g_all.champ[i].color_rgb, 0);
 		free(tmp);
 		add_str_to_buffer(st_point + 9 * g_all.visu.nb_cols + 5,
-			"Last live", WHITE, 0);
+			"Last live                    :", WHITE, 0);
 		add_str_to_buffer(st_point + 10 * g_all.visu.nb_cols + 5,
-			"Lives period", WHITE, 0);
+			"Lives period                 :", WHITE, 0);
 		add_str_to_buffer(st_point + 11 * g_all.visu.nb_cols + 5,
-			"Nbr of process", WHITE, 0);
+			"Nbr of process               :", WHITE, 0);
 	}
 	return (0);
 }

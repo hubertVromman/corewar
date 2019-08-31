@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:28:49 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/28 00:33:40 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/31 03:06:21 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,19 @@
 
 /*
 ** TO DO or !Not to do
-** - Norme
-** - Why else dans le lecteur ?
 ** - Dans create proces lecture des OP de la Queu et zjmp ?
 ** - recheck l'asm
-** - Gerer son
-** 				18/26
+** 				20/26
 **
 ** PIPELINE
+** - Norme
+** - Gerer son
 ** - afficher indicateur pour "Pause" --> utiliser print char a la place de printf PUIS OK
 ** - Information alignees a droite --> ok mais changer dans print info et printinfo au demarrage
 ** - Verifier qu'on kill les thread --> ok jusqu'au prochain double free / heap use after free / etc
 **
 ** DEJA FAIT
+** - Why else dans le lecteur ? --> ok
 ** - Remplacer printf dans visu par insta_print_char --> ok
 ** 	 Gagnant qui bouge dans l'ecran (avec une couleur random ?) --> ok un peu bcp random
 ** - Verifier tout les printf pour affichage sans visu --> ok

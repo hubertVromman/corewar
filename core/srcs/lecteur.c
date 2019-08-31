@@ -6,44 +6,69 @@
 /*   By: sofchami <sofchami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/18 19:57:39 by sofchami          #+#    #+#             */
-/*   Updated: 2019/08/27 23:13:26 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/08/31 03:05:18 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
 
+int 	add_to_que(t_proces *proces, int player)
+{
+	g_all.id_queu[g_all.len_queu] = proces->id_proces;
+	g_all.player_queu[g_all.len_queu] = player;
+	g_all.len_queu++;
+	return (0);
+}
+
 int		do_actions(int i, int k)
 {
-	int l;
 	t_arg *arg;
 
-	l = 0;
 	arg = get_arguments(&g_all.champ[i].proces[k]);
 	if (arg && (g_all.champ[i].proces[k].opcode > 0 && g_all.champ[i].proces[k].opcode < 17 ) && g_all.func[g_all.champ[i].proces[k].opcode - 1](&g_all.champ[i], &g_all.champ[i].proces[k], arg) != 0)
 	{
 		increment_pc(&g_all.champ[i].proces[k], g_all.champ[i].proces[k].opcode == ZJMP_OP ? 0 : arg[0].size + arg[1].size + arg[2].size + arg[3].size + g_op_tab[g_all.champ[i].proces[k].opcode - 1].codage + 1);
-		g_all.queu[l] = &g_all.champ[i].proces[k];
-		l++;
+		add_to_que(g_all.champ[i].proces + k, i);
 	}
 	else
 	{
 		if (g_all.champ[i].proces[k].opcode > 1 && g_all.champ[i].proces[k].opcode < 16)
+		{
 			increment_pc(&g_all.champ[i].proces[k], g_op_tab[g_all.champ[i].proces[k].opcode - 1].nb_params + 2);
+			add_to_que(g_all.champ[i].proces + k, i);
+			// g_all.champ[i].proces[k].opcode = read_arena_op(g_all.champ[i].proces[k].pc);
+			// g_all.champ[i].proces[k].cycle_left = get_cycle_left(g_all.champ[i].proces[k].opcode);
+		}
 		else
+		{
 			increment_pc(&g_all.champ[i].proces[k], 1);
+			add_to_que(g_all.champ[i].proces + k, i);
+			// g_all.champ[i].proces[k].opcode = read_arena_op(g_all.champ[i].proces[k].pc);
+			// g_all.champ[i].proces[k].cycle_left = get_cycle_left(g_all.champ[i].proces[k].opcode);
+		}
 	}
-	return (l);
+	return (0);
 }
 
-int		read_opcode(int l)
+int		read_opcode()
 {
 	int i;
+	int player;
 
 	i = -1;
-	while (++i < l)
+	player = g_all.player_queu[g_all.len_queu - 1];
+	if (g_all.len_queu)
 	{
-		g_all.queu[i]->opcode = read_arena_op(g_all.queu[i]->pc);
-		g_all.queu[i]->cycle_left = get_cycle_left(g_all.queu[i]->opcode);
+		while (++i < g_all.champ[player].nb_proces)
+		{
+			if (g_all.champ[player].proces[i].id_proces == g_all.id_queu[g_all.len_queu - 1])
+			{
+				g_all.champ[player].proces[i].opcode = read_arena_op(g_all.champ[player].proces[i].pc);
+				g_all.champ[player].proces[i].cycle_left = get_cycle_left(g_all.champ[player].proces[i].opcode);
+				g_all.len_queu--;
+				return (g_all.len_queu ? read_opcode() : 0);
+			}
+		}
 	}
 	return (0);
 }
@@ -52,11 +77,10 @@ int		read_proces()
 {
 	int i;
 	int k;
-	int		l;
 
-	ft_bzero(&g_all.queu, sizeof(g_all.queu));
+	g_all.id_queu = ft_memalloc(sizeof(int) * g_all.nb_proces_tot * 2);
+	g_all.player_queu = ft_memalloc(sizeof(int) * g_all.nb_proces_tot * 2);
 	i = g_all.nb_champ;
-	l = 0;
 	while (i--)
 	{
 		k = g_all.champ[i].nb_proces;
@@ -67,21 +91,18 @@ int		read_proces()
 				g_all.champ[i].proces[k].cycle_left--;
 				if (!g_all.champ[i].proces[k].cycle_left)
 				{
-					l = do_actions(i, k);
+					do_actions(i, k);
 				}
-			}
-			else // utilité de ce else ? normalement il devrait pas rentrer dedans...
-			{
-				g_all.champ[i].proces[k].opcode = read_arena_op(g_all.champ[i].proces[k].pc);
-				g_all.champ[i].proces[k].cycle_left = get_cycle_left(g_all.champ[i].proces[k].opcode);
 			}
 		}
 	}
-	read_opcode(l);
+	read_opcode();
+	free(g_all.id_queu);
+	free(g_all.player_queu);
 	return (0);
 }
 
-int		do_visu_stuff()
+static int		do_visu_stuff()
 {
 	int			i;
 	int			sleep_time;
@@ -179,7 +200,5 @@ int		beg_battle()
 				break;
 		}
 	}
-	if (!g_all.flags[VISU]) // pas utile parce que le visu est en boucle infinie
-		ft_printf("Contestant %d, \"%s\", has won !\n", g_all.champ[g_all.player_last_live].player_nb, g_all.champ[g_all.player_last_live].player_name);
 	return (0);
 }
