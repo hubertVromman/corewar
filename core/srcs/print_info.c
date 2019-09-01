@@ -6,7 +6,7 @@
 /*   By: sofchami <sofchami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 02:28:56 by sofchami          #+#    #+#             */
-/*   Updated: 2019/08/31 09:37:58 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/09/01 07:04:30 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int		print_proces_info2(int n, int k,int l, int i)
 	int opcode;
 	char *str;
 
-	str = "  player_nb %5d  |  pc %4d  |  opcode " CHAR_HEX_PRINT "  |  Name OP %5s  |  cycle_left %4d%#>";
+	str = "  player_nb %5d  |  pc %.4d  |  opcode " CHAR_HEX_PRINT "  |  Name OP %5s  |  cycle_left %.4d%#>";
 	stop = 0;
 	opcode = g_all.champ[n].proces[k].opcode;
 	if (ft_printf(str, g_all.champ[n].player_nb, g_all.champ[n].proces[k].pc,
@@ -27,7 +27,7 @@ int		print_proces_info2(int n, int k,int l, int i)
 		&g_all.buf) == -1)
 		exit_func(MERROR, 0);
 	add_str_to_buffer(g_all.visu.next_frame +
-		(g_all.visu.nb_cols * (i + l + k)) + (COL_INFO), g_all.buf, WHITE, 0);
+		(g_all.visu.nb_cols * (i + l + k)) + (COL_INFO), g_all.buf, g_all.champ[n].proces[k].color_rgb, 0);
 	free(g_all.buf);
 	stop++;
 	return (stop);

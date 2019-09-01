@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 01:17:23 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/31 04:06:12 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/09/01 09:37:10 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	*reader_func(void *rien)
 	struct termios	org_opts;
 	rien = NULL;
 
-	pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
+	// pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
 	res = tcgetattr(0, &org_opts);
 	org_opts.c_lflag = ISIG & ~(ICANON);
 	tcsetattr(0, TCSANOW, &org_opts);

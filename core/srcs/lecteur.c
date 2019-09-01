@@ -6,7 +6,7 @@
 /*   By: sofchami <sofchami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/18 19:57:39 by sofchami          #+#    #+#             */
-/*   Updated: 2019/08/31 10:24:10 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/09/01 10:03:53 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,30 @@ int		do_actions(int i, int k)
 	arg = get_arguments(&g_all.champ[i].proces[k]);
 	if (arg && (g_all.champ[i].proces[k].opcode > 0 && g_all.champ[i].proces[k].opcode < 17 ) && g_all.func[g_all.champ[i].proces[k].opcode - 1](&g_all.champ[i], &g_all.champ[i].proces[k], arg) != 0)
 	{
+		// if (g_all.cycle > 3500 && i == 0 && g_all.cycle < 4500)
+		// 	ft_printf("1) %d  | %d -> %s    pc = %d\n", g_all.cycle, g_all.champ[i].proces[k].id_proces, g_op_tab[g_all.champ[i].proces[k].opcode - 1].name, g_all.champ[i].proces[k].pc);
 		increment_pc(&g_all.champ[i].proces[k], g_all.champ[i].proces[k].opcode == ZJMP_OP ? 0 : arg[0].size + arg[1].size + arg[2].size + arg[3].size + g_op_tab[g_all.champ[i].proces[k].opcode - 1].codage + 1);
 		add_to_que(g_all.champ[i].proces + k, i);
 	}
 	else
 	{
-		if (g_all.champ[i].proces[k].opcode > 1 && g_all.champ[i].proces[k].opcode < 16)
+		if (g_all.champ[i].proces[k].opcode > 0 && g_all.champ[i].proces[k].opcode < 17) // soucis dans se if !!!!!
 		{
+			/*
+			**---> Gagnant 4x contre Gagnant
+			**-- cycle 3605   id 36 saut de 2;
+			**-- cycle 3674   id 6 saut de 2;
+			**---> Gagnant contre jumper et bizgork
+			**-- saut de 2 et de 4 whuuut :P
+			*/
 			increment_pc(&g_all.champ[i].proces[k], g_op_tab[g_all.champ[i].proces[k].opcode - 1].nb_params + 2);
+			// increment_pc(&g_all.champ[i].proces[k], 2);
 			add_to_que(g_all.champ[i].proces + k, i);
 		}
 		else
 		{
+			// if (g_all.cycle > 3500 && i == 1 && g_all.cycle < 4500)
+				// ft_printf("3) %d  | %d -> %s    pc = %d\n", g_all.cycle, g_all.champ[i].proces[k].id_proces, "-NVA-", g_all.champ[i].proces[k].pc);
 			increment_pc(&g_all.champ[i].proces[k], 1);
 			add_to_que(g_all.champ[i].proces + k, i);
 		}
