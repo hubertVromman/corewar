@@ -6,7 +6,7 @@
 /*   By: sofchami <sofchami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/18 19:57:39 by sofchami          #+#    #+#             */
-/*   Updated: 2019/09/01 10:03:53 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/09/02 19:08:11 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int		do_actions(int i, int k)
 		{
 			// if (g_all.cycle > 3500 && i == 1 && g_all.cycle < 4500)
 				// ft_printf("3) %d  | %d -> %s    pc = %d\n", g_all.cycle, g_all.champ[i].proces[k].id_proces, "-NVA-", g_all.champ[i].proces[k].pc);
-			increment_pc(&g_all.champ[i].proces[k], 1);
+			increment_pc(&g_all.champ[i].proces[k], g_all.arglen + 1);
 			add_to_que(g_all.champ[i].proces + k, i);
 		}
 	}
