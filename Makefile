@@ -42,7 +42,6 @@ ASM_FILES = main.o error.o exit.o io.o util.o util2.o header.o body.o label.o wr
 ASM_OBJ = $(addprefix $(ASM_DIR), $(addprefix $(SRCS), $(ASM_FILES)))
 
 SANITIZE = -fsanitize=address
-O3 = -O3
 
 RED=\033[0;91m
 GREEN=\033[0;92m

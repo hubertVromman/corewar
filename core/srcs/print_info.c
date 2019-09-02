@@ -62,18 +62,18 @@ int		print_player_info(int k)
 	while (++k < g_all.nb_champ)
 	{
 		lines = HEADER_HEIGHT + 9 + (k % 2 ? 5 : 0);
-		col = COL_INFO + (k < 2 ? 36 : 84);
-		if (ft_printf("%6d%#>", g_all.champ[k].last_live, &g_all.buf) == -1)
+		col = g_all.visu.nb_cols - INFO_WIDTH + 3 + (k < 2 ? 36 : 84);
+		if (ft_printf("%*d%#>", NUMBER_WIDTH, g_all.champ[k].last_live, &g_all.buf) == -1)
 			exit_func(MERROR, 0);
 		add_str_to_buffer(g_all.visu.next_frame +
 			(g_all.visu.nb_cols * lines + col), g_all.buf, WHITE, 0);
 		free(g_all.buf);
-		if (ft_printf("%6d%#>", g_all.champ[k].lives_period, &g_all.buf) == -1)
+		if (ft_printf("%*d%#>", NUMBER_WIDTH, g_all.champ[k].lives_period, &g_all.buf) == -1)
 			exit_func(MERROR, 0);
 		add_str_to_buffer(g_all.visu.next_frame +
 			(g_all.visu.nb_cols * (lines + 1) + col), g_all.buf, WHITE, 0);
 		free(g_all.buf);
-		if (ft_printf("%6d%#>", g_all.champ[k].nb_proces, &g_all.buf) == -1)
+		if (ft_printf("%*d%#>", NUMBER_WIDTH, g_all.champ[k].nb_proces, &g_all.buf) == -1)
 			exit_func(MERROR, 0);
 		add_str_to_buffer(g_all.visu.next_frame +
 			(g_all.visu.nb_cols * (lines + 2) + col), g_all.buf, WHITE, 0);
@@ -84,27 +84,26 @@ int		print_player_info(int k)
 
 int		print_init_info(int i, int lives)
 {
+	t_printable		*st_point;
+
+	st_point = g_all.visu.next_frame + (g_all.visu.nb_cols * (HEADER_HEIGHT + 2)) - INFO_WIDTH + 25;
 	while (++i < g_all.nb_champ)
 		lives += g_all.champ[i].lives_period;
-	if (ft_printf("%6d%#>", g_all.cycle, &g_all.buf) == -1)
+	if (ft_printf("%*d%#>", NUMBER_WIDTH, g_all.cycle, &g_all.buf) == -1)
 		exit_func(MERROR, 0);
-	add_str_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols *
-		(HEADER_HEIGHT + 1)) + (COL_INFO + 20), g_all.buf, WHITE, 0);
+	add_str_to_buffer(st_point, g_all.buf, WHITE, 0);
 	ft_strdel(&g_all.buf);
-	if (ft_printf("%6d%#>", g_all.nb_proces_tot, &g_all.buf) == -1)
+	if (ft_printf("%*d%#>", NUMBER_WIDTH, g_all.nb_proces_tot, &g_all.buf) == -1)
 		exit_func(MERROR, 0);
-	add_str_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols *
-		(HEADER_HEIGHT + 3)) + (COL_INFO + 20), g_all.buf, WHITE, 0);
+	add_str_to_buffer(st_point + g_all.visu.nb_cols * 2, g_all.buf, WHITE, 0);
 	ft_strdel(&g_all.buf);
-	if (ft_printf("%6d%#>", lives, &g_all.buf) == -1)
+	if (ft_printf("%*d%#>", NUMBER_WIDTH, lives, &g_all.buf) == -1)
 		exit_func(MERROR, 0);
-	add_str_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols *
-		(HEADER_HEIGHT + 4)) + (COL_INFO + 20), g_all.buf, WHITE, 0);
+	add_str_to_buffer(st_point + g_all.visu.nb_cols * 3, g_all.buf, WHITE, 0);
 	ft_strdel(&g_all.buf);
-	if (ft_printf("%6d%#>", g_all.cycle_to_die, &g_all.buf) == -1)
+	if (ft_printf("%*d%#>", NUMBER_WIDTH, g_all.cycle_to_die, &g_all.buf) == -1)
 		exit_func(MERROR, 0);
-	add_str_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols *
-		(HEADER_HEIGHT + 5)) + (COL_INFO + 20), g_all.buf, WHITE, 0);
+	add_str_to_buffer(st_point + g_all.visu.nb_cols * 4, g_all.buf, WHITE, 0);
 	ft_strdel(&g_all.buf);
 	print_player_info(-1);
 	return (0);

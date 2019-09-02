@@ -20,13 +20,13 @@
 **
 ** PIPELINE
 ** - Norme
-** - Gerer son ?
-** - afficher indicateur pour "Pause" --> utiliser print char a la place de printf PUIS OK
-** - Verifier qu'on kill les thread --> ok jusqu'au prochain double free / heap use after free / etc
+** - afficher indicateur pour "Pause" --> ok changer de place ? et impression cycle 0
+** - Verifier qu'on kill les thread --> ok jusqu'au prochain double free / heap use after free / etc et ctrc-c qui marche pas tout le temps quand pause
+** - Information alignees a droite --> ok but no et rendre fonctions lisibles
 **
 ** DEJA FAIT
-** - Information alignees a droite --> ok
 ** - Dans create proces lecture des OP de la Queu et zjmp --> ok (toutes les operations effectué vont lire l'op a la fin du cycle)
+** - Gerer son --> ok
 ** - Why else dans le lecteur ? --> ok
 ** - Remplacer printf dans visu par insta_print_char --> ok
 ** 	 Gagnant qui bouge dans l'ecran (avec une couleur random ?) --> ok un peu bcp random

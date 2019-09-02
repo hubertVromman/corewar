@@ -79,7 +79,8 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP
 # define SCREEN_HEIGHT (MEMORY_HEIGHT + HEADER_HEIGHT + 1)
 # define SCREEN_WIDTH (MEMORY_OFFSET_X + 64 * 3 + 2 + INFO_WIDTH)
 
-# define COL_INFO 265
+# define COL_INFO 265 // a SUPPRIMER
+# define NUMBER_WIDTH 6
 
 # define NB_OPERATIONS (int)(sizeof(g_op_tab) / sizeof(t_op) - 1)
 
@@ -218,7 +219,6 @@ typedef struct	s_a
 	int			id_proces;
 	int			nb_proces_tot;
 	int			max_proces;
-	int			has_been_paused;
 	int			check;
 	int			end;
 	int			dump_period;
@@ -335,6 +335,7 @@ int				jump_to_buf(int pc);
 int				copy_and_print_buffer(t_printable *dst, t_printable *src, int size);
 int				insta_print_char(char c, int f_color, int b_color, int pos);
 int				print_char(t_printable printable, int pos);
+int				insta_print_string(char *s, int f_color, int b_color, int pos);
 int				print_frame_diff();
 
 /*

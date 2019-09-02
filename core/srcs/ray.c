@@ -117,7 +117,7 @@ int		display_winner(void)
 	len_player = ft_strlen(g_all.champ[g_all.player_last_live].player_name);
 	pos_x = rand() % (g_all.visu.nb_cols - len_player);
 	pos_y = rand() % (g_all.visu.nb_lines - 1);
-	color = rand() % 0xffffff;
+	color = rand() % WHITE;
 	add_str_to_buffer(g_all.visu.flame_buf + pos_y * g_all.visu.nb_cols + pos_x + (len_player - 8) / 2, "WINNER :", color, 0);
 	add_str_to_buffer(g_all.visu.flame_buf + (pos_y + 1) * g_all.visu.nb_cols + pos_x, g_all.champ[g_all.player_last_live].player_name, color, 0);
 	return (0);
@@ -129,7 +129,7 @@ int		print_ray(int *first_column, int *second_column, int w, int i)
 	int		color;
 
 	w = 0;
-	color = rand() % 0xffffff;
+	color = rand() % WHITE;
 	for (int j = 0; j < g_all.end_screen.cy; j++)
 	{
 		pos = first_column[j] + (j + (i >= 3 && i <= 6 ? g_all.end_screen.cy : 0)) * g_all.visu.nb_cols;

@@ -39,15 +39,7 @@ int		read_arena_op(int pc)
 
 int		play_sound(int i)
 {
-	if (!g_all.sound)
-	{
-		if (i == 1)
-			system("afplay sound/Ta_da.mp3 &");
-		if (i == 2)
-			system("afplay sound/power_off.mp3 &");
-		time(&g_all.sound);
-	}
-	else if (time(NULL) - g_all.sound > 3)
+	if (time(NULL) - g_all.sound > 3)
 	{
 		if (i == 1)
 			system("afplay sound/Ta_da.mp3 &");
@@ -71,14 +63,8 @@ int		dump_memory(void)
 	{
 		if (!i || !(i % 64))
 		{
-			if (!i)
-			{
-				if ((ft_printf("0x%.4x : %#>", i, &buffer) == -1))
-					exit_func(MERROR, 0);
-			}
-			else
-				if ((ft_printf("0x%.4x : %#>", i, &buffer) == -1))
-					exit_func(MERROR, 0);
+			if ((ft_printf("%.4p : %#>", i, &buffer) == -1))
+				exit_func(MERROR, 0);
 			ft_memcpy((s + (i / 64) * 9 + i * 3), buffer, 9);
 			free(buffer);
 		}
@@ -94,7 +80,12 @@ int		dump_memory(void)
 
 int		update_cps(void)
 {
-	// jump_to(X + 20, 2 + HEADER_HEIGHT);
-	// ft_printf(": %4d", g_all.visu.max_cps);
+	char	*tmp;
+
+	if (ft_printf("%*d%#>", NUMBER_WIDTH, g_all.visu.max_cps, &tmp) == -1)
+		exit_func(MERROR, 0);
+	add_str_to_buffer(g_all.visu.next_frame + (3 + HEADER_HEIGHT) * g_all.visu.nb_cols - INFO_WIDTH + 25, tmp, WHITE, 0);
+	insta_print_string(tmp, WHITE, 0, (3 + HEADER_HEIGHT) * g_all.visu.nb_cols - INFO_WIDTH + 25);
+	free(tmp);
 	return (0);
 }

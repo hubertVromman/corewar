@@ -112,56 +112,26 @@ int		read_proces()
 
 static int		do_visu_stuff()
 {
-	int			i;
-	int			sleep_time;
-	static int	current_cps = 0;
 	int			has_frame;
-	char		*tmp;
 
-	i = 0;
-	has_frame = 0;
-	tmp = NULL;
+	has_frame = 1;
+	update_cps();
 	if (!g_all.end)
-	{
-		has_frame = 1;
 		pthread_create(&g_all.visu.thread_calcul, NULL, th_calcul, NULL);
-	}
 	else if (!g_all.visu.pause)
 	{
-		if (g_all.has_been_paused)
-		{
-			jump_to(5, 5);
-			ft_printf(RESET_COLOR "Running");
-			g_all.has_been_paused = 0;
-		}
-		has_frame = 1;
 		pthread_create(&g_all.visu.thread_calcul, NULL, th_calcul, NULL);
 		if (g_all.visu.flame)
 			pthread_create(&g_all.visu.thread_flamme, NULL, th_feu, NULL);
 	}
+	else if (!g_all.cycle)
+		print_vm_info();
 	else
-	{
-		add_str_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * 5) + 5, "Pause  ", 0xffffff, 0);
-		jump_to(5, 5);
-		ft_printf(RESET_COLOR "Pause  ");
-		system("pkill afplay");
-		g_all.has_been_paused = 1;
-	}
-	sleep_time = 1000 / g_all.visu.max_cps;
-	while (i < sleep_time)
-	{
-		i += 10;
-		if (current_cps != g_all.visu.max_cps)
-		{
-			update_cps();
-			current_cps = g_all.visu.max_cps;
-			sleep_time = 1000 / g_all.visu.max_cps;
-			i = 0;
-		}
-		usleep(10 * 1000);
-	}
+		has_frame = 0;
+	usleep(1000 * 1000 / g_all.visu.max_cps);
 	pthread_join(g_all.visu.thread_calcul, NULL);
 	pthread_join(g_all.visu.thread_flamme, NULL);
+	update_cps();
 	if (has_frame)
 		print_frame_diff();
 	if (g_all.visu.flame)

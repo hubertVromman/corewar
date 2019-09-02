@@ -29,6 +29,7 @@ void	*reader_func(void *rien)
 	int				res;
 	struct termios	org_opts;
 	rien = NULL;
+	char	*s;
 
 	// pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
 	res = tcgetattr(0, &org_opts);
@@ -37,7 +38,18 @@ void	*reader_func(void *rien)
 	while (read(0, buf, 1))
 	{
 		if (buf[0] == ' ')
+		{
 			g_all.visu.pause = !g_all.visu.pause;
+			if (g_all.visu.pause)
+			{
+				s = "Pause  ";
+				system("pkill afplay");
+			}
+			else
+				s = "Running";
+			add_str_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * 5) + 5, s, WHITE, 0);
+			insta_print_string(s, WHITE, 0, (g_all.visu.nb_cols * 5) + 5);
+		}
 		else if (buf[0] == 'q')
 			g_all.visu.max_cps -= 10;
 		else if (buf[0] == 'w')
@@ -47,7 +59,10 @@ void	*reader_func(void *rien)
 		else if (buf[0] == 'r')
 			g_all.visu.max_cps += 10;
 		else if (buf[0] == 'f')
+		{
 			g_all.visu.flame = !g_all.visu.flame;
+			system("pkill afplay");
+		}
 		else if (buf[0] == '\e')
 		{
 			read(0, buf, 1);
