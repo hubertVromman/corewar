@@ -22,24 +22,24 @@ int		create_proces(int pc, t_proces *parent, t_champ *champ)
 	proc = &(champ->proces[champ->nb_proces]);
 	ft_bzero(proc, sizeof(t_proces));
 	proc->pc = pc;
-	proc->opcode = read_arena_op(proc->pc);
-	proc->cycle_left = get_cycle_left(proc->opcode);
-	proc->id_proces = g_all.id_proces;
+	proc->id_proces = g_all.id_proces++;
 	if (parent)
 	{
-		ft_memcpy(proc->reg, parent->reg, REG_NUMBER * 4);
+		ft_memcpy(proc->reg, parent->reg, REG_NUMBER * sizeof(int));
 		proc->carry = parent->carry;
-		// add_to_que(proc, champ->index_player);
+		add_to_que(proc, champ->index_player);
 	}
 	else
+	{
+		proc->opcode = read_arena_op(proc->pc);
+		proc->cycle_left = get_cycle_left(proc->opcode);
 		proc->reg[0] = champ->player_nb_arena;
-	proc->champ = champ;
-	proc->color_rgb = proc->champ->color_rgb + champ->nb_proces * COLOR_INCREMENT;
+	}
+	proc->color_rgb = champ->color_rgb + champ->nb_proces * COLOR_INCREMENT;
 	if (champ->nb_proces)
 		increment_pc(proc, 0);
 	champ->nb_proces++;
 	g_all.nb_proces_tot++;
-	g_all.id_proces++;
 	// if (g_all.flags[VISU])
 	// 	g_all.cycle ? play_sound(S_LIVE) :0;
 	return(0);

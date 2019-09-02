@@ -27,7 +27,7 @@ int		fill_border(void)
 		write_to_buf(buf + wd * (i + 1) - 2, ' ', 0, BORDER_COLOR);
 		(i >= HEADER_HEIGHT - 2)
 	&& (write_to_buf(buf + wd * (i + 1) - INFO_WIDTH, ' ', 0, BORDER_COLOR)
-	|| write_to_buf(buf + wd * (i + 1) - INFO_WIDTH - 1, ' ', 0, BORDER_COLOR));
+	|| write_to_buf(buf + wd * (i + 1) - INFO_WIDTH + 1, ' ', 0, BORDER_COLOR));
 		write_to_buf(buf + wd * i, ' ', 0, BORDER_COLOR);
 		write_to_buf(buf + wd * i + 1, ' ', 0, BORDER_COLOR);
 	}
@@ -102,7 +102,7 @@ int		fill_player_info(void)
 	while (++i < g_all.nb_champ)
 	{
 		st_point = g_all.visu.current_frame + (HEADER_HEIGHT + i % 2 * 5)
-		* g_all.visu.nb_cols + g_all.visu.nb_cols - INFO_WIDTH + 3 + i / 2 * 48;
+		* g_all.visu.nb_cols + g_all.visu.nb_cols - INFO_WIDTH + 4 + i / 2 * 49;
 		if (ft_printf("PLAYER %3d :%#>", g_all.champ[i].player_nb, &tmp) == -1)
 			exit_func(MERROR, 0);
 		add_str_to_buffer(st_point + 8 * g_all.visu.nb_cols, tmp, WHITE, 0);
@@ -127,7 +127,7 @@ int		fill_process_info(void)
 
 	width = g_all.visu.nb_cols;
 	st_point = g_all.visu.current_frame + HEADER_HEIGHT * width
-		+ width - INFO_WIDTH + 3;
+		+ width - INFO_WIDTH + 4;
 	tmp = NULL;
 	if (ft_printf("%1$/43c Info %1$/43c %#>", '-', &tmp) == -1)
 		exit_func(MERROR, 0);

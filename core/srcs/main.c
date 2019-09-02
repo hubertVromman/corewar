@@ -16,20 +16,20 @@
 ** TO DO or !Not to do
 ** - recheck l'asm
 ** - toujours un soucis avec Gagnant.cor
-** 				22/26
+** 	 Gagnant qui bouge dans l'ecran (avec une couleur random ?) --> pas ok du tout
+** 				21/26
 **
 ** PIPELINE
 ** - Norme
-** - afficher indicateur pour "Pause" --> ok changer de place ? et impression cycle 0
+** - afficher indicateur pour "Pause" --> ok changer de place ?
 ** - Verifier qu'on kill les thread --> ok jusqu'au prochain double free / heap use after free / etc et ctrc-c qui marche pas tout le temps quand pause
-** - Information alignees a droite --> ok but no et rendre fonctions lisibles
 **
 ** DEJA FAIT
+** - Information alignees a droite --> ok
 ** - Dans create proces lecture des OP de la Queu et zjmp --> ok (toutes les operations effectué vont lire l'op a la fin du cycle)
 ** - Gerer son --> ok
 ** - Why else dans le lecteur ? --> ok
 ** - Remplacer printf dans visu par insta_print_char --> ok
-** 	 Gagnant qui bouge dans l'ecran (avec une couleur random ?) --> ok un peu bcp random
 ** - Verifier tout les printf pour affichage sans visu --> ok
 ** - Pas de visu si screen est trop petit --> ok
 ** - Nb du champion reste comme il est mais passe en neg dans le registre --> ok

@@ -84,8 +84,8 @@ int		update_cps(void)
 
 	if (ft_printf("%*d%#>", NUMBER_WIDTH, g_all.visu.max_cps, &tmp) == -1)
 		exit_func(MERROR, 0);
-	add_str_to_buffer(g_all.visu.next_frame + (3 + HEADER_HEIGHT) * g_all.visu.nb_cols - INFO_WIDTH + 25, tmp, WHITE, 0);
-	insta_print_string(tmp, WHITE, 0, (3 + HEADER_HEIGHT) * g_all.visu.nb_cols - INFO_WIDTH + 25);
+	add_str_to_buffer(g_all.visu.next_frame + (3 + HEADER_HEIGHT) * g_all.visu.nb_cols - INFO_WIDTH + 26, tmp, WHITE, 0);
+	insta_print_string(tmp, WHITE, 0, (3 + HEADER_HEIGHT) * g_all.visu.nb_cols - INFO_WIDTH + 26);
 	free(tmp);
 	return (0);
 }

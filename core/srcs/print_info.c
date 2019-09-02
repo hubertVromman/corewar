@@ -12,41 +12,42 @@
 
 #include "corewar.h"
 
-int		print_proces_info2(int player_nb, int proc, int l, int i)
+static int		print_proces_info2(int player_nb, int proc, int proc_tot)
 {
-	int opcode;
-	char *str;
+	int		opcode;
+	char	*str;
+	int		offset_y;
 
-	str = "  proces_id %3d  |  pc %.4d  |  opcode " CHAR_HEX_PRINT "  |  Name OP %5s  |  cycle_left %.4d%#>";
-	opcode = g_all.champ[n].proces[proc].opcode;
+	offset_y = HEADER_HEIGHT + 21;
+	str = "->  proces_id %6d  |  pc %4d  |  opcode " CHAR_HEX_PRINT "  |  Name OP %5s  |  cycle_left %4d%#>";
+	opcode = g_all.champ[player_nb].proces[proc].opcode;
 	if (ft_printf(str, g_all.champ[player_nb].proces[proc].id_proces,
 		g_all.champ[player_nb].proces[proc].pc, opcode, opcode > 0 &&
 		opcode <= NB_OPERATIONS ? g_op_tab[opcode - 1].name : "null",
 		g_all.champ[player_nb].proces[proc].cycle_left, &g_all.buf) == -1)
 		exit_func(MERROR, 0);
 	add_str_to_buffer(g_all.visu.next_frame +
-		(g_all.visu.nb_cols * (i + l + k)) + (COL_INFO), g_all.buf, g_all.champ[player_nb].proces[proc].color_rgb, 0);
+		(g_all.visu.nb_cols * (offset_y + proc_tot + proc)) - INFO_WIDTH + 4, g_all.buf, g_all.champ[player_nb].color_rgb, 0);
 	free(g_all.buf);
-	return (1);
+	return (0);
 }
 
-int		print_proces_info(int i)
+static int		print_proces_info(void)
 {
-	int k;
-	int n;
-	int l;
-	int stop;
+	int		k;
+	int		n;
+	int		proc_tot;
 
 	n = -1;
-	l = 0;
-	stop = 0;
-	while (++n < g_all.nb_champ && stop < PROCES_HEIGHT && (k = -1))
+	proc_tot = 0;
+	while (++n < g_all.nb_champ && proc_tot <= PROCES_HEIGHT)
 	{
-		while (++k < g_all.champ[n].nb_proces && stop < PROCES_HEIGHT)
+		k = -1;
+		while (++k < g_all.champ[n].nb_proces && proc_tot + k <= PROCES_HEIGHT)
 		{
-			stop += print_proces_info2(n, k, l, i);
+			print_proces_info2(n, k, proc_tot);
 		}
-		l += k;
+		proc_tot += k;
 	}
 	return (0);
 }
@@ -58,7 +59,7 @@ int		print_player_info(int k)
 	while (++k < g_all.nb_champ)
 	{
 		lines = HEADER_HEIGHT + 9 + (k % 2 ? 5 : 0);
-		col = g_all.visu.nb_cols - INFO_WIDTH + 3 + (k < 2 ? 36 : 84);
+		col = g_all.visu.nb_cols - INFO_WIDTH + 4 + (k < 2 ? 36 : 85);
 		if (ft_printf("%*d%#>", NUMBER_WIDTH, g_all.champ[k].last_live, &g_all.buf) == -1)
 			exit_func(MERROR, 0);
 		add_str_to_buffer(g_all.visu.next_frame +
@@ -82,7 +83,7 @@ int		print_init_info(int i, int lives)
 {
 	t_printable		*st_point;
 
-	st_point = g_all.visu.next_frame + (g_all.visu.nb_cols * (HEADER_HEIGHT + 2)) - INFO_WIDTH + 25;
+	st_point = g_all.visu.next_frame + (g_all.visu.nb_cols * (HEADER_HEIGHT + 2)) - INFO_WIDTH + 26;
 	while (++i < g_all.nb_champ)
 		lives += g_all.champ[i].lives_period;
 	if (ft_printf("%*d%#>", NUMBER_WIDTH, g_all.cycle, &g_all.buf) == -1)
@@ -110,21 +111,19 @@ int		print_vm_info()
 	int i;
 
 	print_init_info(-1, 0);
-	print_proces_info(30);
+	print_proces_info();
 	if (g_all.max_proces <= g_all.nb_proces_tot)
 		g_all.max_proces = g_all.nb_proces_tot;
 	else
 	{
-		i = g_all.nb_proces_tot + 19;
-		while (i <= g_all.max_proces + 19 && i < SCREEN_HEIGHT)
+		i = g_all.nb_proces_tot + HEADER_HEIGHT + 21;
+		while (i <= g_all.max_proces + HEADER_HEIGHT + 21 && i < SCREEN_HEIGHT)
 		{
 			if (ft_printf("%1$/95c%#>", ' ', &g_all.buf) == -1)
 				exit_func(MERROR, 0);
-			add_str_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols *
-				(i)) + (COL_INFO), g_all.buf, WHITE, 0);
+			add_str_to_buffer(g_all.visu.next_frame + g_all.visu.nb_cols * i -
+				INFO_WIDTH + 4, g_all.buf, WHITE, 0);
 			free(g_all.buf);
-			jump_to(COL_INFO, i);
-			ft_printf("%1$/95c", ' ');
 			i++;
 		}
 		g_all.max_proces = g_all.nb_proces_tot;

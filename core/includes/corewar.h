@@ -69,7 +69,7 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP
 # define MAX_NAME_LENGTH 34
 # define PROCES_HEIGHT (MEMORY_HEIGHT - 21) // a changer
 
-# define INFO_WIDTH 102
+# define INFO_WIDTH 104
 # define EFFECTIVE_INFO_WIDTH (INFO_WIDTH - 8)
 
 # define S_LIVE 1
@@ -79,7 +79,6 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP
 # define SCREEN_HEIGHT (MEMORY_HEIGHT + HEADER_HEIGHT + 1)
 # define SCREEN_WIDTH (MEMORY_OFFSET_X + 64 * 3 + 2 + INFO_WIDTH)
 
-# define COL_INFO 265 // a SUPPRIMER
 # define NUMBER_WIDTH 6
 
 # define NB_OPERATIONS (int)(sizeof(g_op_tab) / sizeof(t_op) - 1)
@@ -153,7 +152,6 @@ typedef struct	s_proces
 	int			lives_period;
 	int			color_rgb;
 	int			reg[REG_NUMBER];
-	t_champ		*champ;
 }				t_proces;
 
 struct			s_champ
@@ -343,7 +341,6 @@ int				print_frame_diff();
 /*
 ** print_info.c
 */
-int				print_proces_info(int i);
 int				print_player_info(int k);
 int				print_init_info(int i, int lives);
 int				print_vm_info();

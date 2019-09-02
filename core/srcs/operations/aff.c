@@ -22,11 +22,11 @@ int		operation_aff(t_champ *champ, t_proces *proces, t_arg *args)
 	champ = NULL;
 	if (g_all.flags[VISU])
 	{
-		offset_x = g_all.visu.nb_cols - INFO_WIDTH + 3;
+		offset_x = g_all.visu.nb_cols - INFO_WIDTH + 4;
 		offset_y = HEADER_HEIGHT + 6;
 		if (to_print < 32 || to_print >= 127)
 			to_print = ' ';
-		if (g_all.visu.size_aff == INFO_WIDTH - 13)
+		if (g_all.visu.size_aff == INFO_WIDTH - 14)
 		{
 			ft_memcpy(g_all.visu.aff_string, g_all.visu.aff_string + 1, g_all.visu.size_aff - 1);
 			g_all.visu.aff_string[g_all.visu.size_aff - 1] = to_print;
