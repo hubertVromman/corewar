@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/29 00:08:03 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/31 04:19:00 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/09/03 19:58:24 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ int		fill_process_info(void)
 	st_point = g_all.visu.current_frame + HEADER_HEIGHT * width
 		+ width - INFO_WIDTH + 4;
 	tmp = NULL;
-	if (ft_printf("%1$/43c Info %1$/43c %#>", '-', &tmp) == -1)
+	if (ft_printf("%s Info %s %#>", "o()xxxx[{::::::::::::::::::::::::::::::::::>", "<::::::::::::::::::::::::::::::::::}]xxxx()o", &tmp) == -1)
 		exit_func(MERROR, 0);
 	add_str_to_buffer(st_point, tmp, WHITE, 0);
 	free(tmp);
@@ -139,7 +139,7 @@ int		fill_process_info(void)
 	add_str_to_buffer(st_point + 4 * width, "Lives period        :", WHITE, 0);
 	add_str_to_buffer(st_point + 5 * width, "Cycle to die        :", WHITE, 0);
 	add_str_to_buffer(st_point + 6 * width, "Aff :", WHITE, 0);
-	if (ft_printf("%1$/40c ALL proces %1$/40c %#>", '-', &tmp) == -1)
+	if (ft_printf("%1$/42c ALL proces %1$/42c %#>", '-', &tmp) == -1)
 		exit_func(MERROR, 0);
 	add_str_to_buffer(st_point + 18 * width, tmp, WHITE, 0);
 	free(tmp);

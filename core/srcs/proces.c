@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 01:33:01 by hvromman          #+#    #+#             */
-/*   Updated: 2019/09/01 04:48:53 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/09/03 19:37:43 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,9 @@ int		create_proces(int pc, t_proces *parent, t_champ *champ)
 	{
 		ft_memcpy(proc->reg, parent->reg, REG_NUMBER * sizeof(int));
 		proc->carry = parent->carry;
+		if (!(g_all.queu = realloc(g_all.queu, sizeof(t_queu) *
+			(g_all.nb_proces_tot + 1))))
+			exit_func(MERROR, 0);
 		add_to_que(proc, champ->index_player);
 	}
 	else

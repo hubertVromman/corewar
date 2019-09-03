@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   IO_arena.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hvromman <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 01:44:25 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/28 01:44:27 by hvromman         ###   ########.fr       */
+/*   Updated: 2019/09/03 19:44:33 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int		increment_pc(t_proces *proces, int nb_byte)
 	int pos;
 	char *buf = NULL;
 
+	// proces->pc = calc_pc(proces->pc + nb_byte);
 	if (g_all.flags[VISU])
 	{
 		pos = jump_to_buf(proces->pc);

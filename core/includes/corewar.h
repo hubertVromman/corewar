@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:31:13 by hvromman          #+#    #+#             */
-/*   Updated: 2019/09/02 21:07:18 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/09/03 18:30:09 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP
 
 # define SIZE_ANIM_X 20
 # define SIZE_ANIM_Y 8
+# define DECO_1 "°º¤ø,¸,ø¤°º¤ø,¸¸,ø¤º°`°º¤ø,¸"
+# define DECO_2 "¸,ø¤º°`°º¤ø,¸,ø¤°º¤ø,¸¸,ø¤"
 
 typedef struct	s_endscreen
 {
@@ -124,6 +126,12 @@ typedef struct	s_endscreen
 	int		cy;
 	int		*ray_lines[16];
 }				t_endscreen;
+
+typedef struct	s_queu
+{
+	int			id;
+	int			player;
+}				t_queu;
 
 typedef struct	s_printable
 {
@@ -232,6 +240,7 @@ typedef struct	s_a
 	char		arena[MEM_SIZE];
 	int			color[MEM_SIZE];
 	time_t		sound;
+	t_queu		*queu;
 	t_visu		visu;
 	t_endscreen	end_screen;
 }				t_a;

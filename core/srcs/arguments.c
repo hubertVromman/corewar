@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/16 15:51:38 by hvromman          #+#    #+#             */
-/*   Updated: 2019/09/02 21:21:28 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/09/03 19:39:09 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,27 +61,30 @@ t_arg	*get_arguments(t_proces *proces)
 		return (NULL);
 	codage = g_op_tab[opcode - 1].codage ? g_all.arena[calc_pc(tmp_pc++)] : get_codage(opcode);
 	i = -1;
-	g_all.arglen = g_op_tab[opcode - 1].codage + 1;
+	g_all.arglen = 0;
+	if (opcode)
+		g_all.arglen = g_op_tab[opcode - 1].codage + 1;
 	while (++i < MAX_ARGS_NUMBER)
 	{
 		if ((codage & 1 << (7 - 2 * i)) && (codage & 1 << (6 - 2 * i))) // 11 -> IND
 		{
+			to_return[i].size = 2;
+			g_all.arglen += to_return[i].size;
 			if (i >= g_op_tab[opcode - 1].nb_params || !(g_op_tab[opcode - 1].param[i] & T_IND)) // trop de param ou wrong type
 			{
 				return (NULL);
 			}
-			to_return[i].size = 2;
 			to_return[i].type = T_IND;
 			to_return[i].value = get_ind(&tmp_pc, opcode != LLD_OP && opcode != LLDI_OP, opcode == ST_OP, opcode == STI_OP);
-			// g_all.arglen += to_return[i].size;
 		}
 		else if (codage & 1 << (7 - 2 * i)) // 10 -> DIR
 		{
+			to_return[i].size = 4 - 2 * g_op_tab[opcode - 1].dir_size;
+			g_all.arglen += to_return[i].size;
 			if (i >= g_op_tab[opcode - 1].nb_params || !(g_op_tab[opcode - 1].param[i] & T_DIR))
 			{
 				return (NULL);
 			}
-			to_return[i].size = 4 - 2 * g_op_tab[opcode - 1].dir_size;
 			to_return[i].type = T_DIR;
 			to_return[i].value = 0;
 			j = -1;
@@ -89,22 +92,21 @@ t_arg	*get_arguments(t_proces *proces)
 				to_return[i].value |= (g_all.arena[calc_pc(tmp_pc++)] & 0xff) << (to_return[i].size - j - 1) * 8;
 			if (to_return[i].size == 2)
 				to_return[i].value = (short)to_return[i].value;
-				// g_all.arglen += to_return[i].size;
 		}
 		else if (codage & 1 << (6 - 2 * i)) // 01 -> REG
 		{
+			to_return[i].size = 1;
+			g_all.arglen += to_return[i].size;
 			if (i >= g_op_tab[opcode - 1].nb_params || !(g_op_tab[opcode - 1].param[i] & T_REG))
 			{
 				return (NULL);
 			}
-			to_return[i].size = 1;
 			to_return[i].type = T_REG;
 			to_return[i].value = g_all.arena[calc_pc(tmp_pc++)] - 1;
 			if (to_return[i].value >= REG_NUMBER || to_return[i].value < 0)
 			{
 				return (NULL);
 			}
-			// g_all.arglen += to_return[i].size;
 		}
 		else if (i < g_op_tab[opcode - 1].nb_params) // pas assez d'arguments
 		{
