@@ -82,7 +82,7 @@ int		init_visu()
 	}
 	g_all.visu.pause = 1;
 	g_all.visu.max_cps = 50;
-	if (!(g_all.visu.flame_buf = malloc(sizeof(t_printable) * g_all.visu.nb_cols * FLAME_HEIGHT)))
+	if (!(g_all.visu.flame_buf = malloc(sizeof(t_printable) * g_all.visu.nb_cols * g_all.visu.screen_size)))
 		exit_func(MERROR, 0);
 	if (!(g_all.visu.current_frame = ft_memalloc(sizeof(t_printable) * g_all.visu.screen_size)))
 		exit_func(MERROR, 0);

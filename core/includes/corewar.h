@@ -85,8 +85,8 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP
 
 # define SIZE_ANIM_X 20
 # define SIZE_ANIM_Y 8
-# define DECO_1 "°º¤ø,¸,ø¤°º¤ø,¸¸,ø¤º°`°º¤ø,¸"
-# define DECO_2 "¸,ø¤º°`°º¤ø,¸,ø¤°º¤ø,¸¸,ø¤"
+# define DECO_1 L"°º¤ø,¸¸,ø¤º°`"
+# define DECO_2 L"¸,ø¤º°`°º¤ø,¸,ø¤°º¤ø,¸¸,ø¤"
 
 typedef struct	s_endscreen
 {

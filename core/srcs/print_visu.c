@@ -57,11 +57,11 @@ int		print_frame_diff(void)
 			+ l, g_all.visu.current_frame + l, sizeof(t_printable)))
 			ft_memcpy(g_all.visu.current_frame + l, g_all.visu.next_frame + l,
 				sizeof(t_printable));
-	if (g_all.visu.flame)
-		print_frame_diff_flame();
-	else if (!g_all.end)
+	if (g_all.end && g_all.end != g_all.cycle)
 		ft_memcpy(g_all.visu.next_frame, g_all.visu.flame_buf,
 			sizeof(t_printable) * g_all.visu.screen_size);
+	else if (g_all.visu.flame)
+		print_frame_diff_flame();
 	copy_and_print_buffer(g_all.visu.current_frame_flame, g_all.visu.next_frame,
 		g_all.visu.screen_size);
 	return (0);

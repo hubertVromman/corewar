@@ -103,7 +103,7 @@ static int		do_visu_stuff()
 
 	has_frame = 1;
 	update_cps();
-	if (!g_all.end)
+	if (g_all.end)
 		pthread_create(&g_all.visu.thread_calcul, NULL, th_calcul, NULL);
 	else if (!g_all.visu.pause)
 	{
@@ -132,7 +132,7 @@ static int		do_visu_stuff()
 int		beg_battle()
 {
 	g_all.visu.nb_frames_to_skip = 10;
-	g_all.end = 1;
+	g_all.end = 0;
 	while (1)
 	{
 		if (g_all.flags[VISU])
@@ -145,13 +145,13 @@ int		beg_battle()
 			if (g_all.ctd == g_all.cycle_to_die)
 			{
 				g_all.ctd = 0;
-				if ((g_all.end = reset_proc()) >= NBR_LIVE || g_all.check == MAX_CHECKS)
+				if (reset_proc() >= NBR_LIVE || g_all.check == MAX_CHECKS)
 				{
 					g_all.cycle_to_die -= CYCLE_DELTA;
 					g_all.check = 0;
 					if (g_all.cycle_to_die <= 0 || g_all.nb_proces_tot == 0)
 					{
-						g_all.end = 0;
+						g_all.end = 1;
 					}
 				}
 				g_all.check++;
@@ -161,7 +161,7 @@ int		beg_battle()
 				dump_memory();
 				exit_func(0, 0);
 			}
-			if (!g_all.end)
+			if (g_all.end)
 			{
 				ft_printf("Contestant %d, %s, has won !", g_all.champ[g_all.player_last_live].index_player + 1, g_all.champ[g_all.player_last_live].player_name);
 				break;

@@ -96,5 +96,7 @@ int		reset_proc(void)
 		g_all.champ[i].nb_proces -= deleted;
 		g_all.nb_proces_tot -= deleted;
 	}
+	if (total_lives_period == 0)
+		g_all.end = g_all.cycle;
 	return (total_lives_period);
 }

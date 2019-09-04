@@ -143,7 +143,9 @@ int		print_ray(int *first_column, int *second_column, int w, int i)
 
 int		display_ray(void)
 {
-	ft_memcpy(g_all.visu.flame_buf, g_all.visu.current_frame, sizeof(t_printable) * g_all.visu.screen_size);
+	pthread_cancel(g_all.visu.thread_reader);
+	ft_memcpy(g_all.visu.current_frame_flame, g_all.visu.current_frame, sizeof(t_printable) * g_all.visu.screen_size);
+	ft_bzero(g_all.visu.flame_buf, sizeof(t_printable) * g_all.visu.screen_size);
 	for (int i = 0; i < 8; i++)
 	{
 		print_ray(g_all.end_screen.ray_lines[i * 2], g_all.end_screen.ray_lines[i * 2 + 1], g_all.cycle, i);
