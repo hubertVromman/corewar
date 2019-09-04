@@ -6,7 +6,7 @@
 /*   By: sofchami <sofchami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/18 19:57:39 by sofchami          #+#    #+#             */
-/*   Updated: 2019/09/03 20:21:18 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/09/04 23:18:06 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ int		do_actions(int i, int k)
 	{
 		if (g_all.champ[i].proces[k].opcode > 0 && g_all.champ[i].proces[k].opcode < 17)
 		{
-			// increment_pc(&g_all.champ[i].proces[k], g_op_tab[g_all.champ[i].proces[k].opcode - 1].nb_params + 2);
 			increment_pc(&g_all.champ[i].proces[k], g_all.arglen + 1);
 			add_to_que(g_all.champ[i].proces + k, i);
 		}
@@ -118,7 +117,6 @@ static int		do_visu_stuff()
 	usleep(1000 * 1000 / g_all.visu.max_cps);
 	pthread_join(g_all.visu.thread_calcul, NULL);
 	pthread_join(g_all.visu.thread_flamme, NULL);
-	update_cps();
 	if (has_frame)
 		print_frame_diff();
 	if (g_all.visu.flame)

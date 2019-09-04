@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/14 17:22:58 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/12 20:34:44 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/09/04 18:13:57 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ int		exit_func(int exit_code, int dp_usage)
 	{
 		ft_printf(RESTORE_SCREEN);
 		ft_printf(RESET_COLOR);
-		ft_printf("exit\n");
 		ft_printf(UNHIDE_CURSOR);
 	}
 	if (dp_usage)

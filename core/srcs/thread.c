@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 01:17:23 by hvromman          #+#    #+#             */
-/*   Updated: 2019/09/01 09:37:10 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/09/04 18:30:00 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,8 @@ void	*reader_func(void *rien)
 	int				res;
 	struct termios	org_opts;
 	rien = NULL;
-	char	*s;
 
-	// pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
+	pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
 	res = tcgetattr(0, &org_opts);
 	org_opts.c_lflag = ISIG & ~(ICANON);
 	tcsetattr(0, TCSANOW, &org_opts);
@@ -40,15 +39,7 @@ void	*reader_func(void *rien)
 		if (buf[0] == ' ')
 		{
 			g_all.visu.pause = !g_all.visu.pause;
-			if (g_all.visu.pause)
-			{
-				s = "Pause  ";
-				system("pkill afplay");
-			}
-			else
-				s = "Running";
-			add_str_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * 5) + 5, s, WHITE, 0);
-			insta_print_string(s, WHITE, 0, (g_all.visu.nb_cols * 5) + 5);
+			g_all.pause_changed = 1;
 		}
 		else if (buf[0] == 'q')
 			g_all.visu.max_cps -= 10;

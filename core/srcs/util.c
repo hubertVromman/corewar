@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/17 16:16:25 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/31 10:12:54 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/09/04 23:19:24 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,8 @@ int		dump_memory(void)
 			ft_memcpy((s + (i / 64) * 9 + i * 3), buffer, 9);
 			free(buffer);
 		}
-		if (ft_printf(CHAR_HEX_PRINT "%c%#>", g_all.arena[i], (i + 1) % 64 ? ' ' : '\n', &buffer) == -1)
+		if (ft_printf(CHAR_HEX_PRINT "%c%#>", g_all.arena[i], (i + 1) %
+			64 ? ' ' : '\n', &buffer) == -1)
 			exit_func(MERROR, 0);
 		ft_memcpy(s + (i / 64) * 9 + 9 + i * 3, buffer, 3);
 		free(buffer);
@@ -81,11 +82,25 @@ int		dump_memory(void)
 int		update_cps(void)
 {
 	char	*tmp;
+	char	*s;
 
-	if (ft_printf("%*d%#>", NUMBER_WIDTH, g_all.visu.max_cps, &tmp) == -1)
+	if (g_all.pause_changed)
+	{
+		if (g_all.visu.pause)
+		{
+			s = "Pause  ";
+			system("pkill afplay");
+		}
+		else
+			s = "Running";
+		add_str_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * 6) + 5, s, WHITE, 0);
+		insta_print_string(s, WHITE, 0, (g_all.visu.nb_cols * 6) + 5);
+		g_all.pause_changed = 0;
+	}
+	if (ft_printf("%*d%#>", NUM_WIDTH, g_all.visu.max_cps, &tmp) == -1)
 		exit_func(MERROR, 0);
-	add_str_to_buffer(g_all.visu.next_frame + (3 + HEADER_HEIGHT) * g_all.visu.nb_cols - INFO_WIDTH + 26, tmp, WHITE, 0);
-	insta_print_string(tmp, WHITE, 0, (3 + HEADER_HEIGHT) * g_all.visu.nb_cols - INFO_WIDTH + 26);
+	add_str_to_buffer(g_all.visu.next_frame + (4 + HEADER_HEIGHT) * g_all.visu.nb_cols - INFO_WIDTH + 26, tmp, WHITE, 0);
+	insta_print_string(tmp, WHITE, 0, (4 + HEADER_HEIGHT) * g_all.visu.nb_cols - INFO_WIDTH + 26);
 	free(tmp);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:28:49 by hvromman          #+#    #+#             */
-/*   Updated: 2019/09/03 19:31:04 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/09/04 22:23:27 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 /*
 ** TO DO or !Not to do
+** - illegal hardware instructions
 ** - recheck l'asm
 ** - toujours un soucis avec Gagnant.cor
 ** 	 Gagnant qui bouge dans l'ecran (avec une couleur random ?) --> pas ok du tout
@@ -118,25 +119,6 @@ int		display_start()
 		}
 	}
 	return (0);
-}
-
-char		*ft_strrev(char *str)
-{
-	int		i;
-	int		l;
-	char	t;
-
-	l = 0;
-	while (str[l] != '\0')
-		l++;
-	i = -1;
-	while (++i < --l)
-	{
-		t = str[i];
-		str[i] = str[l];
-		str[l] = t;
-	}
-	return (str);
 }
 
 int		main(int ac, char **av)

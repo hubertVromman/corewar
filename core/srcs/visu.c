@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/24 11:38:07 by hvromman          #+#    #+#             */
-/*   Updated: 2019/08/15 05:33:24 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/09/04 23:19:29 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int		jump_to(int x, int y)
 
 void	exit_ctrl_c(int c)
 {
+	usleep(50 * 1000);
 	c = 0;
 	exit_func(0, 0);
 }

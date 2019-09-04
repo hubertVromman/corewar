@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:31:13 by hvromman          #+#    #+#             */
-/*   Updated: 2019/09/03 18:30:09 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/09/04 23:15:51 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP
 # define SCREEN_HEIGHT (MEMORY_HEIGHT + HEADER_HEIGHT + 1)
 # define SCREEN_WIDTH (MEMORY_OFFSET_X + 64 * 3 + 2 + INFO_WIDTH)
 
-# define NUMBER_WIDTH 6
+# define NUM_WIDTH 6
 
 # define NB_OPERATIONS (int)(sizeof(g_op_tab) / sizeof(t_op) - 1)
 
@@ -233,6 +233,7 @@ typedef struct	s_a
 	int			next_champ_nb;
 	int			*id_queu;
 	int			*player_queu;
+	int			pause_changed;
 	char		*buf;
 	int			player_last_live;
 	int			(*func[NB_OPERATIONS]) (t_champ *champ, t_proces *proces, t_arg *args);

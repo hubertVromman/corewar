@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/29 00:08:03 by hvromman          #+#    #+#             */
-/*   Updated: 2019/09/03 19:58:24 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/09/04 23:17:13 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ int		fill_header(void)
 		"  \\_____\\___/|_|  \\___| \\_/\\_/ \\__,_|_|   ", COREWAR_COLOR, 0);
 	add_str_to_buffer(st_point + 6 * g_all.visu.nb_cols +
 		g_all.visu.nb_cols / 2 - 5, "By Hvromman, Sofchami", WHITE, 0);
+	add_str_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * 6) + 5,
+		"Pause  ", WHITE, 0);
 	return (0);
 }
 
@@ -101,7 +103,7 @@ int		fill_player_info(void)
 	i = -1;
 	while (++i < g_all.nb_champ)
 	{
-		st_point = g_all.visu.current_frame + (HEADER_HEIGHT + i % 2 * 5)
+		st_point = g_all.visu.current_frame + (HEADER_HEIGHT + 1 + i % 2 * 5)
 		* g_all.visu.nb_cols + g_all.visu.nb_cols - INFO_WIDTH + 4 + i / 2 * 49;
 		if (ft_printf("PLAYER %3d :%#>", g_all.champ[i].player_nb, &tmp) == -1)
 			exit_func(MERROR, 0);
@@ -118,30 +120,20 @@ int		fill_player_info(void)
 	}
 	return (0);
 }
-
+#include <stdio.h>
 int		fill_process_info(void)
 {
-	char		*tmp;
 	t_printable	*st_point;
 	int			width;
 
 	width = g_all.visu.nb_cols;
-	st_point = g_all.visu.current_frame + HEADER_HEIGHT * width
+	st_point = g_all.visu.current_frame + (HEADER_HEIGHT + 1) * width
 		+ width - INFO_WIDTH + 4;
-	tmp = NULL;
-	if (ft_printf("%s Info %s %#>", "o()xxxx[{::::::::::::::::::::::::::::::::::>", "<::::::::::::::::::::::::::::::::::}]xxxx()o", &tmp) == -1)
-		exit_func(MERROR, 0);
-	add_str_to_buffer(st_point, tmp, WHITE, 0);
-	free(tmp);
 	add_str_to_buffer(st_point + 1 * width, "Cycles              :", WHITE, 0);
 	add_str_to_buffer(st_point + 2 * width, "Cycles/second limit :", WHITE, 0);
 	add_str_to_buffer(st_point + 3 * width, "Nbr of process      :", WHITE, 0);
 	add_str_to_buffer(st_point + 4 * width, "Lives period        :", WHITE, 0);
 	add_str_to_buffer(st_point + 5 * width, "Cycle to die        :", WHITE, 0);
 	add_str_to_buffer(st_point + 6 * width, "Aff :", WHITE, 0);
-	if (ft_printf("%1$/42c ALL proces %1$/42c %#>", '-', &tmp) == -1)
-		exit_func(MERROR, 0);
-	add_str_to_buffer(st_point + 18 * width, tmp, WHITE, 0);
-	free(tmp);
 	return (0);
 }
