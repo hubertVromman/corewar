@@ -49,8 +49,8 @@ int			create_proces(int pc, t_proces *parent, t_champ *champ)
 		increment_pc(new, 0);
 	champ->nb_proces++;
 	g_all.nb_proces_tot++;
-	// if (g_all.flags[VISU] && g_all.cycle)
-	// 	play_sound(S_LIVE);
+	if (g_all.flags[VISU] && g_all.cycle)
+		play_sound(S_LIVE);
 	return (0);
 }
 
@@ -70,8 +70,8 @@ static int	delete_proces(t_champ *champ, int id_proces)
 			g_all.color[champ->proces[id_proces].pc], 0);
 		free(g_all.buf);
 	}
-	// if (g_all.flags[VISU])
-	// 	play_sound(S_DEATH);
+	if (g_all.flags[VISU])
+		play_sound(S_DEATH);
 	return (0);
 }
 

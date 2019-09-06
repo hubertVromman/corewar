@@ -12,26 +12,8 @@
 
 #include "corewar.h"
 
-static char		get_codage(int opcode)
-{
-	char	codage;
-	int		i;
-
-	codage = 0;
-	i = -1;
-	if (!opcode)
-		return (0);
-	while (++i < g_op_tab[opcode - 1].nb_params)
-	{
-		if (g_op_tab[opcode - 1].param[i] & (T_IND | T_DIR))
-			codage |= 1 << (7 - 2 * i);
-		if (g_op_tab[opcode - 1].param[i] & (T_IND | T_REG))
-			codage |= 1 << (6 - 2 * i);
-	}
-	return (codage);
-}
-
-static int		get_ind(int *pc, int mod, int no_go, int one_byte)
+static int
+	get_ind(int *pc, int mod, int no_go, int one_byte)
 {
 	int		first_char;
 	int		second_char;
@@ -42,14 +24,92 @@ static int		get_ind(int *pc, int mod, int no_go, int one_byte)
 	second_char = g_all.arena[calc_pc((*pc)++)] & 0xff;
 	if (no_go)
 		return ((short)(first_char | second_char));
-	return (read_byte(calc_pc(initial_pc - (one_byte ? 4 : 2) + (mod ? (short)(first_char | second_char) % IDX_MOD : (short)(first_char | second_char))), one_byte ? 1 : 4)); // (one_byte ? 4 : 2) a ete modifier, a verifier
+	return (read_byte(calc_pc(initial_pc - (one_byte ? 4 : 2) +
+		(mod ? (short)(first_char | second_char) % IDX_MOD :
+		(short)(first_char | second_char))), one_byte ? 1 : 4));
 }
 
-t_arg	*get_arguments(t_proces *proces)
+static t_arg
+	*get_single_argument3(int arg_idx, int tmp_pc, int opcode, int codage)
+{
+	static t_arg	to_return;
+
+	to_return.valid = arg_idx >= g_op_tab[opcode - 1].nb_params ? 0 : 1;
+	if (codage & 1 << (6 - 2 * arg_idx))
+	{
+		to_return.size = 1;
+		g_all.arglen += to_return.size;
+		if (!(g_op_tab[opcode - 1].param[arg_idx] & T_REG))
+			to_return.valid = 0;
+		to_return.type = T_REG;
+		to_return.value = g_all.arena[calc_pc(tmp_pc++)] - 1;
+		if (to_return.value >= REG_NUMBER || to_return.value < 0)
+			to_return.valid = 0;
+	}
+	else if (arg_idx < g_op_tab[opcode - 1].nb_params)
+		to_return.valid = 0;
+	else
+	{
+		to_return.type = 0;
+		to_return.size = 0;
+		to_return.value = 0;
+	}
+	return (&to_return);
+}
+
+static t_arg
+	*get_single_argument2(int arg_idx, int tmp_pc, int opcode, int codage)
+{
+	static t_arg	to_return;
+	int				j;
+
+	to_return.valid = arg_idx >= g_op_tab[opcode - 1].nb_params ? 0 : 1;
+	if (codage & 1 << (7 - 2 * arg_idx))
+	{
+		to_return.size = 4 - 2 * g_op_tab[opcode - 1].dir_size;
+		g_all.arglen += to_return.size;
+		if (!(g_op_tab[opcode - 1].param[arg_idx] & T_DIR))
+			to_return.valid = 0;
+		to_return.type = T_DIR;
+		to_return.value = 0;
+		j = -1;
+		while (++j < to_return.size)
+			to_return.value |= (g_all.arena[calc_pc(tmp_pc++)] & 0xff)
+				<< (to_return.size - j - 1) * 8;
+		if (to_return.size == 2)
+			to_return.value = (short)to_return.value;
+	}
+	else
+		return (get_single_argument3(arg_idx, tmp_pc, opcode, codage));
+	return (&to_return);
+}
+
+static t_arg
+	*get_single_argument(int arg_idx, int tmp_pc, int opcode, int codage)
+{
+	static t_arg	to_return;
+
+	to_return.valid = arg_idx >= g_op_tab[opcode - 1].nb_params ? 0 : 1;
+	if ((codage & 1 << (7 - 2 * arg_idx)) && (codage & 1 << (6 - 2 * arg_idx)))
+	{
+		to_return.size = 2;
+		g_all.arglen += to_return.size;
+		if (!(g_op_tab[opcode - 1].param[arg_idx] & T_IND))
+			to_return.valid = 0;
+		to_return.type = T_IND;
+		to_return.value = get_ind(&tmp_pc, opcode != LLD_OP &&
+			opcode != LLDI_OP, opcode == ST_OP, opcode == STI_OP);
+	}
+	else
+		return (get_single_argument2(arg_idx, tmp_pc, opcode, codage));
+	return (&to_return);
+}
+
+t_arg
+	*get_arguments(t_proces *proces)
 {
 	static t_arg	to_return[MAX_ARGS_NUMBER];
 	int				i;
-	int				j;
 	int				tmp_pc;
 	int				opcode;
 	int				codage;
@@ -59,65 +119,18 @@ t_arg	*get_arguments(t_proces *proces)
 	opcode = proces->opcode;
 	if (opcode < 1 || opcode > NB_OPERATIONS)
 		return (NULL);
-	codage = g_op_tab[opcode - 1].codage ? g_all.arena[calc_pc(tmp_pc++)] : get_codage(opcode);
+	codage = g_op_tab[opcode - 1].codage ? g_all.arena[calc_pc(tmp_pc++)]
+		: get_codage(opcode);
 	i = -1;
 	g_all.arglen = 0;
 	if (opcode)
 		g_all.arglen = g_op_tab[opcode - 1].codage + 1;
 	while (++i < MAX_ARGS_NUMBER)
 	{
-		if ((codage & 1 << (7 - 2 * i)) && (codage & 1 << (6 - 2 * i))) // 11 -> IND
-		{
-			to_return[i].size = 2;
-			g_all.arglen += to_return[i].size;
-			if (i >= g_op_tab[opcode - 1].nb_params || !(g_op_tab[opcode - 1].param[i] & T_IND)) // trop de param ou wrong type
-			{
-				return (NULL);
-			}
-			to_return[i].type = T_IND;
-			to_return[i].value = get_ind(&tmp_pc, opcode != LLD_OP && opcode != LLDI_OP, opcode == ST_OP, opcode == STI_OP);
-		}
-		else if (codage & 1 << (7 - 2 * i)) // 10 -> DIR
-		{
-			to_return[i].size = 4 - 2 * g_op_tab[opcode - 1].dir_size;
-			g_all.arglen += to_return[i].size;
-			if (i >= g_op_tab[opcode - 1].nb_params || !(g_op_tab[opcode - 1].param[i] & T_DIR))
-			{
-				return (NULL);
-			}
-			to_return[i].type = T_DIR;
-			to_return[i].value = 0;
-			j = -1;
-			while (++j < to_return[i].size)
-				to_return[i].value |= (g_all.arena[calc_pc(tmp_pc++)] & 0xff) << (to_return[i].size - j - 1) * 8;
-			if (to_return[i].size == 2)
-				to_return[i].value = (short)to_return[i].value;
-		}
-		else if (codage & 1 << (6 - 2 * i)) // 01 -> REG
-		{
-			to_return[i].size = 1;
-			g_all.arglen += to_return[i].size;
-			if (i >= g_op_tab[opcode - 1].nb_params || !(g_op_tab[opcode - 1].param[i] & T_REG))
-			{
-				return (NULL);
-			}
-			to_return[i].type = T_REG;
-			to_return[i].value = g_all.arena[calc_pc(tmp_pc++)] - 1;
-			if (to_return[i].value >= REG_NUMBER || to_return[i].value < 0)
-			{
-				return (NULL);
-			}
-		}
-		else if (i < g_op_tab[opcode - 1].nb_params) // pas assez d'arguments
-		{
+		ft_memcpy(&(to_return[i]),
+			get_single_argument(i, tmp_pc, opcode, codage), sizeof(t_arg));
+		if (to_return[i].valid == 0)
 			return (NULL);
-		}
-		else
-		{
-			to_return[i].type = 0;
-			to_return[i].size = 0;
-			to_return[i].value = 0;
-		}
 	}
 	return (to_return);
 }

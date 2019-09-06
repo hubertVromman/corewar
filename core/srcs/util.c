@@ -37,17 +37,23 @@ int		read_arena_op(int pc)
 	return (opcode);
 }
 
-int		play_sound(int i)
+char	get_codage(int opcode)
 {
-	if (time(NULL) - g_all.sound > 3)
+	char	codage;
+	int		i;
+
+	codage = 0;
+	i = -1;
+	if (!opcode)
+		return (0);
+	while (++i < g_op_tab[opcode - 1].nb_params)
 	{
-		if (i == 1)
-			system("afplay sound/Ta_da.mp3 &");
-		if (i == 2)
-			system("afplay sound/power_off.mp3 &");
-		time(&g_all.sound);
+		if (g_op_tab[opcode - 1].param[i] & (T_IND | T_DIR))
+			codage |= 1 << (7 - 2 * i);
+		if (g_op_tab[opcode - 1].param[i] & (T_IND | T_REG))
+			codage |= 1 << (6 - 2 * i);
 	}
-	return (0);
+	return (codage);
 }
 
 int		dump_memory(void)

@@ -28,7 +28,7 @@ COR_FILE = corewar.h
 COR_H = $(addprefix $(COR_DIR), $(addprefix $(HEAD), $(COR_FILE)))
 COR_FILES = main.o error.o exit.o util.o arguments.o champ_instance.o lecteur.o \
 visu.o print_info.o util_visu.o thread.o init.o init_visu.o ray.o proces.o init_frame.o \
-io_arena.o print_visu.o filler.o buffer_visu.o
+io_arena.o print_visu.o filler.o buffer_visu.o create_lines.o
 COR_OBJ = $(addprefix $(COR_DIR), $(addprefix $(SRCS), $(COR_FILES)))
 
 OP_DIR = operations/

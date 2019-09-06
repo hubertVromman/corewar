@@ -17,6 +17,7 @@
 ** - illegal hardware instructions
 ** - recheck l'asm
 ** - toujours un soucis avec Gagnant.cor
+** - segv sur update_cps
 ** 				24/28
 **
 ** PIPELINE

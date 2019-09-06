@@ -44,6 +44,19 @@ int		add_name_to_buf(t_printable *strct, char *str, int f_color, int b_color)
 	return (0);
 }
 
+int		play_sound(int i)
+{
+	if (time(NULL) - g_all.sound > 3)
+	{
+		if (i == 1)
+			system("afplay sound/Ta_da.mp3 &");
+		if (i == 2)
+			system("afplay sound/power_off.mp3 &");
+		time(&g_all.sound);
+	}
+	return (0);
+}
+
 int		update_cps(void)
 {
 	char	*tmp;

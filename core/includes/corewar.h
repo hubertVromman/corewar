@@ -148,6 +148,7 @@ typedef struct	s_arg
 	int		size;
 	int		value;
 	int		type;
+	int		valid;
 }				t_arg;
 
 typedef struct s_champ	t_champ;
@@ -273,6 +274,7 @@ int				get_cycle_left(int opcode);
 int				play_sound(int i);
 int				read_arena_op(int pc);
 int				update_cps();
+char			get_codage(int opcode);
 
 /*
 ** proces.c
