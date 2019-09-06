@@ -15,7 +15,8 @@
 int		operation_sub(t_champ *champ, t_proces *proces, t_arg *args)
 {
 	champ = NULL;
-	proces->reg[args[2].value] = proces->reg[args[0].value] - proces->reg[args[1].value];
+	proces->reg[args[2].value] =
+		proces->reg[args[0].value] - proces->reg[args[1].value];
 	proces->carry = proces->reg[args[2].value] == 0 ? 1 : 0;
 	return (1);
 }

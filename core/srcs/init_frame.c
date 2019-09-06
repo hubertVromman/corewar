@@ -12,20 +12,45 @@
 
 #include "corewar.h"
 
-int		fill_instuctions(void)
+static int	fill_instuctions(void)
 {
 	int pos;
 
 	pos = g_all.visu.nb_cols * (HEADER_HEIGHT + 3) - 50;
-	add_str_to_buffer(g_all.visu.current_frame + pos, "- Speed +/-  1 cps          'e' | 'w'", WHITE, 0);
-	add_str_to_buffer(g_all.visu.current_frame + pos + g_all.visu.nb_cols , "- Speed +/- 10 cps          'r' | 'q'", WHITE, 0);
-	add_str_to_buffer(g_all.visu.current_frame + pos + (g_all.visu.nb_cols * 2), "- Speed @ 1000 cps          'm'", WHITE, 0);
-	add_str_to_buffer(g_all.visu.current_frame + pos + (g_all.visu.nb_cols * 3), "- Pause                     'space'", WHITE, 0);
-	add_str_to_buffer(g_all.visu.current_frame + pos + (g_all.visu.nb_cols * 4), "- Display flamme            'f'", WHITE, 0);
+	add_str_to_buf(g_all.visu.current_frame + pos,
+		"- Speed +/-  1 cps          'e' | 'w'", WHITE, 0);
+	add_str_to_buf(g_all.visu.current_frame + pos + g_all.visu.nb_cols,
+		"- Speed +/- 10 cps          'r' | 'q'", WHITE, 0);
+	add_str_to_buf(g_all.visu.current_frame + pos + (g_all.visu.nb_cols * 2),
+		"- Speed @ 1000 cps          'm'", WHITE, 0);
+	add_str_to_buf(g_all.visu.current_frame + pos + (g_all.visu.nb_cols * 3),
+		"- Pause                     'space'", WHITE, 0);
+	add_str_to_buf(g_all.visu.current_frame + pos + (g_all.visu.nb_cols * 4),
+		"- Display flamme            'f'", WHITE, 0);
 	return (0);
 }
 
-int		fill_current_frame(void)
+static int	fill_waves(void)
+{
+	int i;
+
+	i = -1;
+	g_all.visu.previous_bg = 0;
+	g_all.visu.previous_fg = WHITE;
+	g_all.visu.previous_pos = -2;
+	jump_to(g_all.visu.nb_cols - INFO_WIDTH + 4, HEADER_HEIGHT);
+	ft_printf(RGB_PRINT "" RGB_PRINT_BG "%/3S", (WHITE >> 16) & 0xff,
+		(WHITE >> 8) & 0xff, WHITE & 0xff, 0, 0, 0, DECO_1);
+	ft_printf(" { Info Players } ");
+	ft_printf("%/3S", DECO_2);
+	jump_to(g_all.visu.nb_cols - INFO_WIDTH + 4, HEADER_HEIGHT + 19);
+	ft_printf("%/3S", DECO_1);
+	ft_printf(" { All Process } ");
+	ft_printf("%/3S", DECO_2);
+	return (0);
+}
+
+static int	fill_current_frame(void)
 {
 	fill_border();
 	fill_header();
@@ -36,7 +61,7 @@ int		fill_current_frame(void)
 	return (0);
 }
 
-int		invert_fore_and_back(t_printable *printable)
+static int	invert_fore_and_back(t_printable *printable)
 {
 	int		tmp;
 
@@ -46,30 +71,7 @@ int		invert_fore_and_back(t_printable *printable)
 	return (0);
 }
 
-static int		fill_waves()
-{
-	int i;
-
-	i = -1;
-	jump_to(g_all.visu.nb_cols - INFO_WIDTH + 4, HEADER_HEIGHT);
-	while (++i < 3)
-		ft_printf(RESET_COLOR "%S", DECO_1);
-	ft_printf(" { Info Players } ");
-	i = -1;
-	while (++i < 3)
-		ft_printf(RESET_COLOR "%S", DECO_1);
-	i = -1;
-	jump_to(g_all.visu.nb_cols - INFO_WIDTH + 4, HEADER_HEIGHT + 19);
-	while (++i < 3)
-		ft_printf(RESET_COLOR "%S", DECO_1);
-	ft_printf(" { All Process } ");
-	i = -1;
-	while (++i < 3)
-		ft_printf(RESET_COLOR "%S", DECO_1);
-	return (0);
-}
-
-int		init_current_frame(void)
+int			init_current_frame(void)
 {
 	int		pos;
 	int		i;

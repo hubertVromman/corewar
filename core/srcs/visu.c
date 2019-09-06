@@ -34,6 +34,6 @@ int		jump_to_buf(int pc)
 	offset_x = MEMORY_OFFSET_X;
 	offset_y = HEADER_HEIGHT;
 	pc = calc_pc(pc);
-	pos = (g_all.visu.nb_cols * (offset_y + pc / 64)) + (offset_x + pc % 64 * 3);
+	pos = g_all.visu.nb_cols * (offset_y + pc / 64) + offset_x + pc % 64 * 3;
 	return (pos);
 }

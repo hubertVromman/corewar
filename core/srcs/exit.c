@@ -24,18 +24,21 @@ int		free_all(void)
 	free(g_all.visu.next_frame);
 	free(g_all.visu.current_frame_flame);
 	free(g_all.visu.feu);
+	free(g_all.visu.aff_s);
 	return (0);
 }
 
 int		usage(void)
 {
-	ft_printf("usage: corewar [-%s] [-dump dump_period] [[-n player_nb] file.cor] ...\n%>", OP, 2);
-	ft_printf("    -v    : Start game in nCurses, disable -dump option\n%>", 2);
-	ft_printf("            Screen size must be minimum %dx%d\n%>", SCREEN_WIDTH, SCREEN_HEIGHT, 2);
-	ft_printf("    -n    : Set the next player's number "
-	"(default is next available) (number is reduce to < 1000)\n%>", 2);
-	ft_printf("    -dump : Dump memory in hexadecimal every dump_period\n%>", 2);
-	ft_printf("    -i    : Display live and aff informations when not in visu\n%>", 2);
+	ft_printf(
+	"usage: corewar [-%s] [-dump dump_period] [[-n player_nb] file.cor] ...\n"
+	"    -v    : Start game in nCurses, disable -dump option\n"
+	"            Screen size must be minimum %dx%d\n"
+	"    -n    : Set the next player's number "
+	"(default is next available) (number is reduce to < 1000)\n"
+	"    -dump : Dump memory in hexadecimal every dump_period\n"
+	"    -i    : Display live and aff informations when not in visu\n%>",
+		OP, SCREEN_WIDTH, SCREEN_HEIGHT, 2);
 	return (0);
 }
 

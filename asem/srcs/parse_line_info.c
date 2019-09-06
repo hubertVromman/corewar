@@ -44,18 +44,18 @@ label_length(data + 1 + data_size) : nb_digits(data + data_size, &param->base);
 int		get_error(t_file *file, char *data, t_var *var, char *param)
 {
 	if (!strcmp(param, "%") || !ft_strcmp(param, "r"))
-		wrong_char(file, "number", var->sub_off);
+		wrong_char(file, "number", var->s_off);
 	else if (!ft_strcmp(param, "%:") || !ft_strcmp(param, ":"))
-		wrong_char(file, "label_char", var->sub_off);
+		wrong_char(file, "label_char", var->s_off);
 	else if (!var->data_size)
-		wrong_char(file, "param", var->sub_off);
+		wrong_char(file, "param", var->s_off);
 	else if (var->i == file->curr_instr->nb_params)
 	{
-		if (data[var->sub_off] != '\n')
-			wrong_char(file, "\\n", var->sub_off);
+		if (data[var->s_off] != '\n')
+			wrong_char(file, "\\n", var->s_off);
 	}
-	else if (data[var->sub_off] != SEPARATOR_CHAR)
-		wrong_char(file, ",", var->sub_off);
+	else if (data[var->s_off] != SEPARATOR_CHAR)
+		wrong_char(file, ",", var->s_off);
 	else
 		return (0);
 	return (-1);
@@ -63,31 +63,29 @@ int		get_error(t_file *file, char *data, t_var *var, char *param)
 
 int		get_params(t_file *file, char *data)
 {
-	t_var	var;
+	t_var	v;
 
-	ft_bzero(&var, sizeof(var));
+	ft_bzero(&v, sizeof(v));
 	while (1)
 	{
-		var.extend_size = 0;
-		var.sub_off += skip_spaces(data, var.sub_off);
-		var.data_size = encode_type(file, data + var.sub_off,
-			&file->curr_instr->params[var.i], &var.extend_size);
-		if (!(g_op_tab[file->curr_instr->index].param[var.i]
-			& file->curr_instr->params[var.i].kind))
+		v.extend_size = 0;
+		v.s_off += skip_spaces(data, v.s_off);
+		v.data_size = encode_type(file, data + v.s_off,
+			&file->curr_instr->params[v.i], &v.extend_size);
+		if (!(g_op_tab[file->curr_instr->index].param[v.i]
+			& file->curr_instr->params[v.i].kind))
 		{
 			error_func_ln(file, WRONG_TYPE, NULL, 0);
-			return (var.sub_off);
+			return (v.s_off);
 		}
-		file->curr_instr->params[var.i].line_off = file->line_off + var.sub_off;
-		if (!(file->curr_instr->params[var.i].data =
-			ft_strsub(data, var.sub_off, var.data_size)))
+		file->curr_instr->params[v.i].line_off = file->line_off + v.s_off;
+		if (!(file->curr_instr->params[v.i].data =
+			ft_strsub(data, v.s_off, v.data_size)))
 			exit_func(-2, 0);
-		var.sub_off += skip_spaces(data,
-			var.sub_off += var.data_size + var.extend_size);
-		if (get_error(file, data, &var,
-			file->curr_instr->params[var.i++].data))
-			return (var.sub_off);
-		var.sub_off++;
+		v.s_off += skip_spaces(data, v.s_off += v.extend_size + v.data_size);
+		if (get_error(file, data, &v, file->curr_instr->params[v.i++].data))
+			return (v.s_off);
+		v.s_off++;
 	}
 }
 

@@ -12,7 +12,7 @@
 
 #include "corewar.h"
 
-static int		get_prog_size(char *file_content)
+static int	get_prog_size(char *file_content)
 {
 	int		size;
 
@@ -20,7 +20,7 @@ static int		get_prog_size(char *file_content)
 	return (change_endianness(size));
 }
 
-static int		read_file(t_champ *champ)
+static int	read_file(t_champ *champ)
 {
 	int ret;
 	int fd;
@@ -37,7 +37,7 @@ static int		read_file(t_champ *champ)
 	return (ret < 0 ? -1 : 0);
 }
 
-static int		get_file(char *file_name, t_champ *new)
+static int	get_file(char *file_name, t_champ *new)
 {
 	int		ret;
 
@@ -57,11 +57,33 @@ static int		get_file(char *file_name, t_champ *new)
 	return (0);
 }
 
-int				get_champ(char *file_name)
+static int	set_player_nb(int player_nb)
+{
+	int		j;
+
+	if (player_nb >= 1000)
+		player_nb = 0;
+	while (++player_nb && (j = -1))
+	{
+		if (player_nb >= 1000)
+			player_nb = 1;
+		while (++j < g_all.nb_champ)
+		{
+			if (player_nb == g_all.champ[j].player_nb)
+				break ;
+		}
+		if (j == g_all.nb_champ)
+		{
+			g_all.champ[g_all.nb_champ].player_nb = player_nb;
+			break ;
+		}
+	}
+	return (0);
+}
+
+int			get_champ(char *file_name)
 {
 	int		ret;
-	int		i;
-	int		j;
 	t_champ	*current;
 
 	current = &(g_all.champ[g_all.nb_champ]);
@@ -69,24 +91,7 @@ int				get_champ(char *file_name)
 		error_func(current, READ_ERROR);
 	if (ret < 0 && !(g_all.flags[FORCE_LAUNCH]))
 		exit_func(-1, 0);
-	i = g_all.next_champ_nb ? g_all.next_champ_nb - 1 : 0;
-	if (i >= 1000)
-		i = 0;
-	while (++i && (j = -1))
-	{
-		if (i >= 1000)
-			i = 1;
-		while (++j < g_all.nb_champ)
-		{
-			if (i == g_all.champ[j].player_nb)
-				break ;
-		}
-		if (j == g_all.nb_champ)
-		{
-			g_all.champ[g_all.nb_champ].player_nb = i;
-			break ;
-		}
-	}
+	set_player_nb(g_all.next_champ_nb ? g_all.next_champ_nb - 1 : 0);
 	current->player_name = current->file + 4;
 	current->comment = current->file + PROG_NAME_LENGTH + 12;
 	g_all.next_champ_nb = 0;

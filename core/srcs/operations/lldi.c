@@ -26,7 +26,8 @@ int		operation_lldi(t_champ *champ, t_proces *proces, t_arg *args)
 		ind_2 = proces->reg[args[1].value];
 	else
 		ind_2 = args[1].value;
-	proces->reg[args[2].value] = read_byte(calc_pc(proces->pc + (ind_1 + ind_2)), 4);
+	proces->reg[args[2].value] =
+		read_byte(calc_pc(proces->pc + (ind_1 + ind_2)), 4);
 	proces->carry = proces->reg[args[0].value] == 0 ? 1 : 0;
 	return (1);
 }

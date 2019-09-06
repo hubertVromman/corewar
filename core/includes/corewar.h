@@ -20,11 +20,14 @@
 # include <termios.h>
 # include <pthread.h>
 
-enum	e_error_code { NOT_COR_FILE = 1, OPEN_FAIL, TOO_LARGE, READ_ERROR, INVALID_NB};
+enum	e_error_code { NOT_COR_FILE = 1, OPEN_FAIL, TOO_LARGE, READ_ERROR,
+	INVALID_NB};
 
 enum	e_flag_nb {FORCE_LAUNCH, VISU, INFORMATION};
 
-enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP, ZJMP_OP, LDI_OP, STI_OP, FORK_OP, LLD_OP, LLDI_OP, LFORK_OP, AFF_OP };
+enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP,
+	XOR_OP, ZJMP_OP, LDI_OP, STI_OP, FORK_OP, LLD_OP, LLDI_OP,
+	LFORK_OP, AFF_OP };
 
 # define RESET_COLOR "\e[0m"
 # define HIDE_CURSOR "\e[?25l"
@@ -44,12 +47,12 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP
 # define P2_COLOR 0x800000
 # define P3_COLOR 0xEB34DB
 # define P4_COLOR 0x000080
-# define COLOR_INCREMENT 0x00010101
+# define COLOR_INCREMENT 0x010101
 
 # define BORDER_COLOR 0xA8A8A8
 # define VM_COLOR 0x787878
-# define WHITE 0xffffff
-# define COREWAR_COLOR 0x999999
+# define WHITE 0xff0000
+# define COREWAR_COLOR 0xEB34DB
 
 # define OP "fvi"
 
@@ -86,7 +89,7 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP, XOR_OP
 # define SIZE_ANIM_X 20
 # define SIZE_ANIM_Y 8
 # define DECO_1 L"°º¤ø,¸¸,ø¤º°`"
-# define DECO_2 L"¸,ø¤º°`°º¤ø,¸,ø¤°º¤ø,¸¸,ø¤"
+# define DECO_2 L"`°º¤ø,¸¸,ø¤º°"
 
 typedef struct	s_endscreen
 {
@@ -147,7 +150,7 @@ typedef struct	s_arg
 	int		type;
 }				t_arg;
 
-typedef struct	s_champ	t_champ;
+typedef struct s_champ	t_champ;
 
 typedef struct	s_proces
 {
@@ -156,7 +159,7 @@ typedef struct	s_proces
 	int			cycle_left;
 	int			id_proces;
 	int			opcode;
-	int 		arguments[4];
+	int			arguments[4];
 	int			lives_period;
 	int			color_rgb;
 	int			reg[REG_NUMBER];
@@ -199,8 +202,8 @@ typedef struct	s_visu
 	int			previous_pos;
 	int			previous_fg;
 	int			previous_bg;
-	int			size_aff;
-	char		*aff_string;
+	char		*aff_s;
+	int			size_s;
 	t_printable	*flame_buf;
 	t_printable	*current_frame;
 	t_printable	*current_frame_flame;
@@ -236,7 +239,8 @@ typedef struct	s_a
 	int			pause_changed;
 	char		*buf;
 	int			player_last_live;
-	int			(*func[NB_OPERATIONS]) (t_champ *champ, t_proces *proces, t_arg *args);
+	int			(*func[NB_OPERATIONS])
+		(t_champ *champ, t_proces *proces, t_arg *args);
 	char		flags[sizeof(OP)];
 	char		arena[MEM_SIZE];
 	int			color[MEM_SIZE];
@@ -247,8 +251,6 @@ typedef struct	s_a
 }				t_a;
 
 t_a				g_all;
-
-int fd;
 
 /*
 ** error.c
@@ -276,9 +278,7 @@ int				update_cps();
 ** proces.c
 */
 int				create_proces(int pc, t_proces *parent, t_champ *champ);
-int				delete_proces(t_champ *champ, int id_proces);
 int				reset_proc();
-
 
 /*
 ** main.c
@@ -307,9 +307,9 @@ int				get_champ(char *file_name);
 /*
 ** lecteur.c
 */
-int 			add_to_que(t_proces *proces, int player);
+int				add_to_que(t_proces *proces, int player);
 int				beg_battle();
-int	 			read_proces();
+int				read_proces();
 int				read_arena_op(int pc);
 
 /*
@@ -351,15 +351,13 @@ int				print_frame_diff();
 /*
 ** print_info.c
 */
-int				print_player_info(int k);
-int				print_init_info(int i, int lives);
 int				print_vm_info();
 
 /*
 ** util_visu.c
 */
-int				add_str_to_buffer(t_printable *strct, char *str, int f_color, int b_color);
-int				add_name_to_buffer(t_printable *strct, char *str, int f_color, int b_color);
+int				add_str_to_buf(t_printable *strct, char *str, int f_color, int b_color);
+int				add_name_to_buf(t_printable *strct, char *str, int f_color, int b_color);
 int				write_to_buf(t_printable *strct, char c, int f_color, int b_color);
 
 /*
@@ -399,10 +397,6 @@ int				display_ray();
 /*
 ** init_frame.c
 */
-
-int				fill_current_frame(void);
-int				invert_fore_and_back(t_printable *printable);
 int				init_current_frame(void);
-
 
 #endif

@@ -118,8 +118,8 @@ int		display_winner(void)
 	pos_x = rand() % (g_all.visu.nb_cols - len_player);
 	pos_y = rand() % (g_all.visu.nb_lines - 1);
 	color = rand() % WHITE;
-	add_str_to_buffer(g_all.visu.flame_buf + pos_y * g_all.visu.nb_cols + pos_x + (len_player - 8) / 2, "WINNER :", color, 0);
-	add_str_to_buffer(g_all.visu.flame_buf + (pos_y + 1) * g_all.visu.nb_cols + pos_x, g_all.champ[g_all.player_last_live].player_name, color, 0);
+	add_str_to_buf(g_all.visu.flame_buf + pos_y * g_all.visu.nb_cols + pos_x + (len_player - 8) / 2, "WINNER :", color, 0);
+	add_str_to_buf(g_all.visu.flame_buf + (pos_y + 1) * g_all.visu.nb_cols + pos_x, g_all.champ[g_all.player_last_live].player_name, color, 0);
 	return (0);
 }
 

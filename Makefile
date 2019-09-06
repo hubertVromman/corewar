@@ -28,7 +28,7 @@ COR_FILE = corewar.h
 COR_H = $(addprefix $(COR_DIR), $(addprefix $(HEAD), $(COR_FILE)))
 COR_FILES = main.o error.o exit.o util.o arguments.o champ_instance.o lecteur.o \
 visu.o print_info.o util_visu.o thread.o init.o init_visu.o ray.o proces.o init_frame.o \
-IO_arena.o print_visu.o filler.o
+io_arena.o print_visu.o filler.o buffer_visu.o
 COR_OBJ = $(addprefix $(COR_DIR), $(addprefix $(SRCS), $(COR_FILES)))
 
 OP_DIR = operations/
@@ -65,11 +65,11 @@ $(ASM): $(ASM_OBJ) $(OBJ)
 
 clean:
 	@make -C $(LIB) clean
-	@rm -f $(OBJ) $(COR_OBJ) $(ASM_OBJ)
+	@rm -f $(OBJ) $(COR_OBJ) $(ASM_OBJ) $(OP_OBJ)
 	@echo "$(RED)$(ASM) and $(COR) cleaned$(NC)"
 
 fclean: clean
-	@rm -f $(ASM) $(COR)
+	@rm -f $(ASM) $(COR) debug_asm debug_corewar
 	@make -C $(LIB) fclean
 	@echo "$(RED)$(ASM) and $(COR) fcleaned$(NC)"
 

@@ -26,6 +26,7 @@ int		operation_sti(t_champ *champ, t_proces *proces, t_arg *args)
 		third_arg = proces->reg[args[2].value];
 	else
 		third_arg = args[2].value;
-	write_int(proces, calc_pc(proces->pc + (second_arg + third_arg) % IDX_MOD), proces->reg[args[0].value]);
+	write_int(proces, calc_pc(proces->pc + (second_arg + third_arg) % IDX_MOD),
+		proces->reg[args[0].value]);
 	return (1);
 }

@@ -12,10 +12,10 @@
 
 #include "corewar.h"
 
-int		operation_add(t_champ *champ, t_proces *proces, t_arg *args)
+int		operation_add(t_champ *champ, t_proces *pro, t_arg *args)
 {
 	champ = NULL;
-	proces->reg[args[2].value] = proces->reg[args[0].value] + proces->reg[args[1].value];
-	proces->carry = proces->reg[args[2].value] == 0 ? 1 : 0;
+	pro->reg[args[2].value] = pro->reg[args[0].value] + pro->reg[args[1].value];
+	pro->carry = pro->reg[args[2].value] == 0 ? 1 : 0;
 	return (1);
 }

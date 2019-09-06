@@ -95,7 +95,7 @@ typedef struct	s_a
 typedef struct	s_var
 {
 	int	i;
-	int	sub_off;
+	int	s_off;
 	int	data_size;
 	int	extend_size;
 }				t_var;

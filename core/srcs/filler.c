@@ -46,21 +46,21 @@ int		fill_header(void)
 	t_printable	*st_point;
 
 	st_point = g_all.visu.current_frame + g_all.visu.nb_cols / 2 - 21;
-	add_str_to_buffer(st_point + 1 * g_all.visu.nb_cols,
+	add_str_to_buf(st_point + 1 * g_all.visu.nb_cols,
 		"   _____                                  ", COREWAR_COLOR, 0);
-	add_str_to_buffer(st_point + 2 * g_all.visu.nb_cols,
+	add_str_to_buf(st_point + 2 * g_all.visu.nb_cols,
 		"  / ____|                                 ", COREWAR_COLOR, 0);
-	add_str_to_buffer(st_point + 3 * g_all.visu.nb_cols,
+	add_str_to_buf(st_point + 3 * g_all.visu.nb_cols,
 		" | |     ___  _ __ _____      ____ _ _ __ ", COREWAR_COLOR, 0);
-	add_str_to_buffer(st_point + 4 * g_all.visu.nb_cols,
+	add_str_to_buf(st_point + 4 * g_all.visu.nb_cols,
 		" | |    / _ \\| '__/ _ \\ \\ /\\ / / _` | '__|", COREWAR_COLOR, 0);
-	add_str_to_buffer(st_point + 5 * g_all.visu.nb_cols,
+	add_str_to_buf(st_point + 5 * g_all.visu.nb_cols,
 		" | |___| (_) | | |  __/\\ V  V / (_| | |   ", COREWAR_COLOR, 0);
-	add_str_to_buffer(st_point + 6 * g_all.visu.nb_cols,
+	add_str_to_buf(st_point + 6 * g_all.visu.nb_cols,
 		"  \\_____\\___/|_|  \\___| \\_/\\_/ \\__,_|_|   ", COREWAR_COLOR, 0);
-	add_str_to_buffer(st_point + 6 * g_all.visu.nb_cols +
+	add_str_to_buf(st_point + 6 * g_all.visu.nb_cols +
 		g_all.visu.nb_cols / 2 - 5, "By Hvromman, Sofchami", WHITE, 0);
-	add_str_to_buffer(g_all.visu.next_frame + (g_all.visu.nb_cols * 6) + 5,
+	add_str_to_buf(g_all.visu.next_frame + (g_all.visu.nb_cols * 6) + 5,
 		"Pause  ", WHITE, 0);
 	return (0);
 }
@@ -82,13 +82,13 @@ int		fill_memory(void)
 			{
 				if (ft_printf(CHAR_HEX_PRINT "%#>", g_all.arena[i], &buf) == -1)
 					exit_func(MERROR, 0);
-				add_str_to_buffer(g_all.visu.current_frame +
+				add_str_to_buf(g_all.visu.current_frame +
 					jump_to_buf(i++), buf, g_all.champ[p].proces->color_rgb, 0);
 				free(buf);
 			}
 			p < g_all.nb_champ - 1 && p++;
 		}
-		add_str_to_buffer(g_all.visu.current_frame +
+		add_str_to_buf(g_all.visu.current_frame +
 			jump_to_buf(i), "00", VM_COLOR, 0);
 	}
 	return (0);
@@ -107,33 +107,33 @@ int		fill_player_info(void)
 		* g_all.visu.nb_cols + g_all.visu.nb_cols - INFO_WIDTH + 4 + i / 2 * 49;
 		if (ft_printf("PLAYER %3d :%#>", g_all.champ[i].player_nb, &tmp) == -1)
 			exit_func(MERROR, 0);
-		add_str_to_buffer(st_point + 8 * g_all.visu.nb_cols, tmp, WHITE, 0);
-		add_name_to_buffer(st_point + 8 * g_all.visu.nb_cols + 13,
+		add_str_to_buf(st_point + 8 * g_all.visu.nb_cols, tmp, WHITE, 0);
+		add_name_to_buf(st_point + 8 * g_all.visu.nb_cols + 13,
 			g_all.champ[i].player_name, g_all.champ[i].color_rgb, 0);
 		free(tmp);
-		add_str_to_buffer(st_point + 9 * g_all.visu.nb_cols + 5,
+		add_str_to_buf(st_point + 9 * g_all.visu.nb_cols + 5,
 			"Last live                    :", WHITE, 0);
-		add_str_to_buffer(st_point + 10 * g_all.visu.nb_cols + 5,
+		add_str_to_buf(st_point + 10 * g_all.visu.nb_cols + 5,
 			"Lives period                 :", WHITE, 0);
-		add_str_to_buffer(st_point + 11 * g_all.visu.nb_cols + 5,
+		add_str_to_buf(st_point + 11 * g_all.visu.nb_cols + 5,
 			"Nbr of process               :", WHITE, 0);
 	}
 	return (0);
 }
-#include <stdio.h>
+
 int		fill_process_info(void)
 {
 	t_printable	*st_point;
 	int			width;
 
 	width = g_all.visu.nb_cols;
-	st_point = g_all.visu.current_frame + (HEADER_HEIGHT + 1) * width
-		+ width - INFO_WIDTH + 4;
-	add_str_to_buffer(st_point + 1 * width, "Cycles              :", WHITE, 0);
-	add_str_to_buffer(st_point + 2 * width, "Cycles/second limit :", WHITE, 0);
-	add_str_to_buffer(st_point + 3 * width, "Nbr of process      :", WHITE, 0);
-	add_str_to_buffer(st_point + 4 * width, "Lives period        :", WHITE, 0);
-	add_str_to_buffer(st_point + 5 * width, "Cycle to die        :", WHITE, 0);
-	add_str_to_buffer(st_point + 6 * width, "Aff :", WHITE, 0);
+	st_point = g_all.visu.current_frame + (HEADER_HEIGHT + 2) * width
+		- INFO_WIDTH + 4;
+	add_str_to_buf(st_point + 1 * width, "Cycles              :", WHITE, 0);
+	add_str_to_buf(st_point + 2 * width, "Cycles/second limit :", WHITE, 0);
+	add_str_to_buf(st_point + 3 * width, "Nbr of process      :", WHITE, 0);
+	add_str_to_buf(st_point + 4 * width, "Lives period        :", WHITE, 0);
+	add_str_to_buf(st_point + 5 * width, "Cycle to die        :", WHITE, 0);
+	add_str_to_buf(st_point + 6 * width, "Aff :", WHITE, 0);
 	return (0);
 }

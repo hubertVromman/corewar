@@ -12,14 +12,15 @@
 
 #include "corewar.h"
 
-int		operation_st(t_champ *champ, t_proces *proces, t_arg *args) // idem copie 1 ou 4 bytes ?
+int		operation_st(t_champ *champ, t_proces *proces, t_arg *args)
 {
 	champ = NULL;
 	if (args[1].type & T_REG)
 		proces->reg[args[1].value] = proces->reg[args[0].value];
 	else
 	{
-		write_int(proces, calc_pc(proces->pc + args[1].value % IDX_MOD), proces->reg[args[0].value]);
+		write_int(proces, calc_pc(proces->pc + args[1].value % IDX_MOD),
+			proces->reg[args[0].value]);
 	}
 	return (1);
 }

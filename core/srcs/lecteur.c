@@ -143,7 +143,8 @@ int		beg_battle()
 			if (g_all.ctd == g_all.cycle_to_die)
 			{
 				g_all.ctd = 0;
-				if (reset_proc() >= NBR_LIVE || g_all.check == MAX_CHECKS)
+				reset_proc();
+				if (g_all.lives_period_tot >= NBR_LIVE || g_all.check == MAX_CHECKS)
 				{
 					g_all.cycle_to_die -= CYCLE_DELTA;
 					g_all.check = 0;

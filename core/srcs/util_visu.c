@@ -15,12 +15,12 @@
 int		write_to_buf(t_printable *strct, char c, int f_color, int b_color)
 {
 	strct->to_print = c;
-	strct->fore_color = f_color & WHITE;
-	strct->back_color = b_color & WHITE;
+	strct->fore_color = f_color & 0xffffff;
+	strct->back_color = b_color & 0xffffff;
 	return (0);
 }
 
-int		add_str_to_buffer(t_printable *strct, char *str, int f_color, int b_color)
+int		add_str_to_buf(t_printable *strct, char *str, int f_color, int b_color)
 {
 	int		i;
 
@@ -32,7 +32,7 @@ int		add_str_to_buffer(t_printable *strct, char *str, int f_color, int b_color)
 	return (0);
 }
 
-int		add_name_to_buffer(t_printable *strct, char *str, int f_color, int b_color)
+int		add_name_to_buf(t_printable *strct, char *str, int f_color, int b_color)
 {
 	int		i;
 
@@ -41,5 +41,34 @@ int		add_name_to_buffer(t_printable *strct, char *str, int f_color, int b_color)
 	{
 		write_to_buf(strct + i, str[i], f_color, b_color);
 	}
+	return (0);
+}
+
+int		update_cps(void)
+{
+	char	*tmp;
+	char	*s;
+	int		pos;
+
+	if (g_all.pause_changed)
+	{
+		if (g_all.visu.pause)
+		{
+			s = "Pause  ";
+			system("pkill afplay");
+		}
+		else
+			s = "Running";
+		pos = g_all.visu.nb_cols * 6 + 5;
+		add_str_to_buf(g_all.visu.next_frame + pos, s, WHITE, 0);
+		insta_print_string(s, WHITE, 0, pos);
+		g_all.pause_changed = 0;
+	}
+	if (ft_printf("%*d%#>", NUM_WIDTH, g_all.visu.max_cps, &tmp) == -1)
+		exit_func(MERROR, 0);
+	pos = (4 + HEADER_HEIGHT) * g_all.visu.nb_cols - INFO_WIDTH + 26;
+	add_str_to_buf(g_all.visu.next_frame + pos, tmp, WHITE, 0);
+	insta_print_string(tmp, WHITE, 0, pos);
+	free(tmp);
 	return (0);
 }

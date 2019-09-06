@@ -26,9 +26,11 @@ int		operation_live(t_champ *champ, t_proces *proces, t_arg *args)
 			g_all.champ[i].last_live = g_all.cycle;
 			g_all.player_last_live = i;
 			if (!g_all.flags[VISU] && g_all.flags[INFORMATION])
-				ft_printf("Player %d (%s) is said to be alive\n", g_all.champ[i].player_nb, g_all.champ[i].player_name);
+				ft_printf("Player %d (%s) is said to be alive\n",
+					g_all.champ[i].player_nb, g_all.champ[i].player_name);
 		}
 	}
 	proces->lives_period++;
+	g_all.lives_period_tot++;
 	return (1);
 }

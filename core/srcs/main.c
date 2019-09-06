@@ -17,17 +17,17 @@
 ** - illegal hardware instructions
 ** - recheck l'asm
 ** - toujours un soucis avec Gagnant.cor
-** 	 Gagnant qui bouge dans l'ecran (avec une couleur random ?) --> pas ok du tout
-** 				21/26
+** 				24/28
 **
 ** PIPELINE
 ** - Norme
-** - afficher indicateur pour "Pause" --> ok changer de place ?
-** - Verifier qu'on kill les thread --> ok jusqu'au prochain double free / heap use after free / etc et ctrc-c qui marche pas tout le temps quand pause
 **
 ** DEJA FAIT
+** 	 Gagnant qui bouge dans l'ecran (avec une couleur random ?) --> ok
+** - Verifier qu'on kill les thread --> ok
+** - afficher indicateur pour "Pause" --> ok
 ** - Information alignees a droite --> ok
-** - Dans create proces lecture des OP de la Queu et zjmp --> ok (toutes les operations effectué vont lire l'op a la fin du cycle)
+** - Dans create proces lecture des OP de la Queu et zjmp --> ok
 ** - Gerer son --> ok
 ** - Why else dans le lecteur ? --> ok
 ** - Remplacer printf dans visu par insta_print_char --> ok
@@ -49,45 +49,58 @@
 ** - error_func pour player nb a chequer --> ok
 */
 
+int		check_normal_option(char **av, int i)
+{
+	int		j;
+	int		k;
+
+	j = 0;
+	while (av[i][++j])
+	{
+		if ((k = ft_indexof(OP, av[i][j])) == -1)
+			exit_func(-1, 1);
+		g_all.flags[k] = 1;
+	}
+	return (0);
+}
+
+int		check_option(char **av, int ac, int i)
+{
+	if (!ft_strcmp(av[i] + 1, "n"))
+	{
+		if (i + 1 == ac)
+			exit_func(-1, 1);
+		if ((g_all.next_champ_nb = ft_atoi(av[++i])) <= 0)
+		{
+			error_func(NULL, INVALID_NB);
+			g_all.next_champ_nb = 0;
+		}
+	}
+	else if (!ft_strcmp(av[i] + 1, "dump"))
+	{
+		if (i + 1 == ac || g_all.dump_period)
+			exit_func(-1, 1);
+		g_all.dump_period = ft_atoi(av[++i]);
+		if (g_all.dump_period < 1)
+			exit_func(-1, 1);
+	}
+	else
+	{
+		check_normal_option(av, i);
+	}
+	return (i);
+}
+
 int		parse_arg(int ac, char **av)
 {
 	int		i;
-	int		j;
-	int		k;
 
 	i = 0;
 	while (++i < ac)
 	{
 		if (av[i][0] == '-')
 		{
-			if (!ft_strcmp(av[i] + 1, "n"))
-			{
-				if (i + 1 == ac)
-					exit_func(-1, 1);
-				if ((g_all.next_champ_nb = ft_atoi(av[++i])) <= 0)
-				{
-					error_func(NULL, INVALID_NB);
-					g_all.next_champ_nb = 0;
-				}
-			}
-			else if (!ft_strcmp(av[i] + 1, "dump"))
-			{
-				if (i + 1 == ac || g_all.dump_period)
-					exit_func(-1, 1);
-				g_all.dump_period = ft_atoi(av[++i]);
-				if (g_all.dump_period < 1)
-					exit_func(-1, 1);
-			}
-			else
-			{
-				j = 0;
-				while (av[i][++j])
-				{
-					if ((k = ft_indexof(OP, av[i][j])) == -1)
-						exit_func(-1, 1);
-					g_all.flags[k] = 1;
-				}
-			}
+			i = check_option(av, ac, i);
 		}
 		else
 		{
@@ -98,15 +111,16 @@ int		parse_arg(int ac, char **av)
 	return (0);
 }
 
-int		display_start()
+int		display_start(void)
 {
 	int		i;
 
 	if (g_all.flags[VISU])
 	{
-		if (g_all.visu.nb_cols < SCREEN_WIDTH || g_all.visu.nb_lines < SCREEN_HEIGHT - 1)
+		if (g_all.visu.nb_cols < SCREEN_WIDTH
+			|| g_all.visu.nb_lines < SCREEN_HEIGHT - 1)
 			exit_func(-1, 1);
-		ft_printf(HIDE_CURSOR SAVE_SCREEN HOME_CURSOR);
+		ft_printf(HIDE_CURSOR "" SAVE_SCREEN "" HOME_CURSOR);
 		init_current_frame();
 	}
 	else
@@ -115,7 +129,9 @@ int		display_start()
 		i = -1;
 		while (++i < g_all.nb_champ)
 		{
-			ft_printf("* Player %d, weighing %d bytes, \"%s\" (\"%s\") !\n", g_all.champ[i].player_nb, g_all.champ[i].exec_size, g_all.champ[i].player_name, g_all.champ[i].comment);
+			ft_printf("* Player %d, weighing %d bytes, \"%s\" (\"%s\") !\n",
+				g_all.champ[i].player_nb, g_all.champ[i].exec_size,
+				g_all.champ[i].player_name, g_all.champ[i].comment);
 		}
 	}
 	return (0);

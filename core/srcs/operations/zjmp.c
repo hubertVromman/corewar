@@ -15,7 +15,6 @@
 int		operation_zjmp(t_champ *champ, t_proces *proces, t_arg *args)
 {
 	champ = NULL;
-
 	if (proces->carry == 1 && args[0].type & T_DIR)
 	{
 		increment_pc(proces, args[0].value);

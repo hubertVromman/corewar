@@ -26,6 +26,7 @@ int		operation_ldi(t_champ *champ, t_proces *proces, t_arg *args)
 		ind_2 = proces->reg[args[1].value];
 	else
 		ind_2 = args[1].value;
-	proces->reg[args[2].value] = read_byte(calc_pc(proces->pc + (ind_1 + ind_2) % IDX_MOD), 4);
+	proces->reg[args[2].value] =
+		read_byte(calc_pc(proces->pc + (ind_1 + ind_2) % IDX_MOD), 4);
 	return (1);
 }
