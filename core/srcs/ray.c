@@ -41,7 +41,7 @@ static int	print_ray(int *first_column, int *second_column, int ray_idx)
 	i = -1;
 	while (++i < g_all.end_screen.cy)
 	{
-		pos = first_column[j] + (j + (ray_idx >= 3 && ray_idx <= 6 ?
+		pos = first_column[i] + (i + (ray_idx >= 3 && ray_idx <= 6 ?
 			g_all.end_screen.cy : 0)) * g_all.visu.nb_cols;
 		j = -1;
 		while (++j < second_column[i] - first_column[i])
