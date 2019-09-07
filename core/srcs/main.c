@@ -17,8 +17,8 @@
 ** - illegal hardware instructions
 ** - recheck l'asm
 ** - toujours un soucis avec Gagnant.cor
-** - segv sur update_cps
 ** - io_arena a changer dans git
+** - r19 ? increment arglen ?
 ** 				24/28
 **
 ** PIPELINE

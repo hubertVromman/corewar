@@ -44,7 +44,7 @@ char	get_codage(int opcode)
 
 	codage = 0;
 	i = -1;
-	if (!opcode)
+	if (opcode < 1 || opcode >= NB_OPERATIONS)
 		return (0);
 	while (++i < g_op_tab[opcode - 1].nb_params)
 	{

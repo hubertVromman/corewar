@@ -28,16 +28,17 @@ int		do_actions(int i, int k)
 	t_arg *arg;
 
 	arg = get_arguments(&g_all.champ[i].proces[k]);
-	if (arg && (g_all.champ[i].proces[k].opcode > 0 && g_all.champ[i].proces[k].opcode < 17 ) && g_all.func[g_all.champ[i].proces[k].opcode - 1](&g_all.champ[i], &g_all.champ[i].proces[k], arg) != 0)
+	if (arg)
 	{
-		increment_pc(&g_all.champ[i].proces[k], g_all.champ[i].proces[k].opcode == ZJMP_OP ? 0 : arg[0].size + arg[1].size + arg[2].size + arg[3].size + g_op_tab[g_all.champ[i].proces[k].opcode - 1].codage + 1);
+		g_all.func[g_all.champ[i].proces[k].opcode - 1](&g_all.champ[i], &g_all.champ[i].proces[k], arg);
+		increment_pc(&g_all.champ[i].proces[k], g_all.champ[i].proces[k].opcode == ZJMP_OP ? 0 : g_all.arglen);
 		add_to_que(g_all.champ[i].proces + k, i);
 	}
 	else
 	{
 		if (g_all.champ[i].proces[k].opcode > 0 && g_all.champ[i].proces[k].opcode < 17)
 		{
-			increment_pc(&g_all.champ[i].proces[k], g_all.arglen + 1);
+			increment_pc(&g_all.champ[i].proces[k], g_all.arglen);
 			add_to_que(g_all.champ[i].proces + k, i);
 		}
 		else
