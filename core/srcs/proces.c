@@ -111,6 +111,8 @@ int			reset_proc(void)
 		g_all.nb_proces_tot -= deleted;
 	}
 	if (g_all.lives_period_tot == 0)
+	{
 		g_all.end = g_all.cycle;
+	}
 	return (0);
 }

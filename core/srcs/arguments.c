@@ -34,12 +34,12 @@ static t_arg
 {
 	static t_arg	to_return;
 
-	to_return.valid = arg_idx >= g_op_tab[opcode - 1].nb_params ? 0 : 1;
+	to_return.valid = 1;
 	if (codage & 1 << (6 - 2 * arg_idx))
 	{
 		to_return.size = 1;
 		g_all.arglen += to_return.size;
-		if (!(g_op_tab[opcode - 1].param[arg_idx] & T_REG))
+		if (arg_idx >= g_op_tab[opcode - 1].nb_params || !(g_op_tab[opcode - 1].param[arg_idx] & T_REG))
 			to_return.valid = 0;
 		to_return.type = T_REG;
 		to_return.value = g_all.arena[calc_pc(tmp_pc++)] - 1;
@@ -63,12 +63,12 @@ static t_arg
 	static t_arg	to_return;
 	int				j;
 
-	to_return.valid = arg_idx >= g_op_tab[opcode - 1].nb_params ? 0 : 1;
+	to_return.valid = 1;
 	if (codage & 1 << (7 - 2 * arg_idx))
 	{
 		to_return.size = 4 - 2 * g_op_tab[opcode - 1].dir_size;
 		g_all.arglen += to_return.size;
-		if (!(g_op_tab[opcode - 1].param[arg_idx] & T_DIR))
+		if (arg_idx >= g_op_tab[opcode - 1].nb_params || !(g_op_tab[opcode - 1].param[arg_idx] & T_DIR))
 			to_return.valid = 0;
 		to_return.type = T_DIR;
 		to_return.value = 0;
@@ -78,10 +78,10 @@ static t_arg
 				<< (to_return.size - j - 1) * 8;
 		if (to_return.size == 2)
 			to_return.value = (short)to_return.value;
+		return (&to_return);
 	}
 	else
 		return (get_single_argument3(arg_idx, tmp_pc, opcode, codage));
-	return (&to_return);
 }
 
 static t_arg
@@ -89,20 +89,20 @@ static t_arg
 {
 	static t_arg	to_return;
 
-	to_return.valid = arg_idx >= g_op_tab[opcode - 1].nb_params ? 0 : 1;
+	to_return.valid = 1;
 	if ((codage & 1 << (7 - 2 * arg_idx)) && (codage & 1 << (6 - 2 * arg_idx)))
 	{
 		to_return.size = 2;
 		g_all.arglen += to_return.size;
-		if (!(g_op_tab[opcode - 1].param[arg_idx] & T_IND))
+		if (arg_idx >= g_op_tab[opcode - 1].nb_params || !(g_op_tab[opcode - 1].param[arg_idx] & T_IND))
 			to_return.valid = 0;
 		to_return.type = T_IND;
 		to_return.value = get_ind(&tmp_pc, opcode != LLD_OP &&
 			opcode != LLDI_OP, opcode == ST_OP, opcode == STI_OP);
+		return (&to_return);
 	}
 	else
 		return (get_single_argument2(arg_idx, tmp_pc, opcode, codage));
-	return (&to_return);
 }
 
 t_arg

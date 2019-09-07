@@ -18,6 +18,7 @@
 ** - recheck l'asm
 ** - toujours un soucis avec Gagnant.cor
 ** - segv sur update_cps
+** - io_arena a changer dans git
 ** 				24/28
 **
 ** PIPELINE
