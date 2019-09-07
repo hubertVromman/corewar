@@ -19,6 +19,12 @@ int		free_all(void)
 	i = -1;
 	while (++i < 16)
 		free(g_all.end_screen.ray_lines[i]);
+	i = -1;
+	while (++i < 4)
+	{
+		free(g_all.champ[i].file);
+		free(g_all.champ[i].proces);
+	}
 	free(g_all.visu.flame_buf);
 	free(g_all.visu.current_frame);
 	free(g_all.visu.next_frame);

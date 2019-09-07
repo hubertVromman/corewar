@@ -149,7 +149,6 @@ void	*th_calcul()
 			g_all.check++;
 		}
 	}
-	// update_cps();
 	print_vm_info();
 	pthread_exit(NULL);
 }

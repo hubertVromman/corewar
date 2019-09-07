@@ -37,10 +37,14 @@ static int	init_proces_var(t_proces *new, t_proces *parent, t_champ *champ)
 int			create_proces(int pc, t_proces *parent, t_champ *champ)
 {
 	t_proces *new;
+	long int tmp;
 
+	tmp = parent - champ->proces;
 	if (!(champ->proces = realloc(champ->proces, sizeof(t_proces) *
 		(champ->nb_proces + 1))))
 		exit_func(MERROR, 0);
+	if (parent)
+		parent = champ->proces + tmp;
 	new = &(champ->proces[champ->nb_proces]);
 	ft_bzero(new, sizeof(t_proces));
 	new->pc = pc;

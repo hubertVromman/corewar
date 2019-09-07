@@ -74,14 +74,14 @@ int		update_cps(void)
 			s = "Running";
 		pos = g_all.visu.nb_cols * 6 + 5;
 		add_str_to_buf(g_all.visu.next_frame + pos, s, WHITE, 0);
-		// insta_print_string(s, WHITE, 0, pos);
+		insta_print_string(s, WHITE, 0, pos);
 		g_all.pause_changed = 0;
 	}
 	if (ft_printf("%*d%#>", NUM_WIDTH, g_all.visu.max_cps, &tmp) == -1)
 		exit_func(MERROR, 0);
 	pos = (4 + HEADER_HEIGHT) * g_all.visu.nb_cols - INFO_WIDTH + 26;
 	add_str_to_buf(g_all.visu.next_frame + pos, tmp, WHITE, 0);
-	// insta_print_string(tmp, WHITE, 0, pos);
+	insta_print_string(tmp, WHITE, 0, pos);
 	free(tmp);
 	return (0);
 }

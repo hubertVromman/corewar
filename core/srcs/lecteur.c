@@ -74,7 +74,7 @@ int		read_proces()
 	int i;
 	int k;
 
-	g_all.queu = ft_memalloc(sizeof(t_queu) *  g_all.nb_proces_tot);
+	g_all.queu = ft_memalloc(sizeof(t_queu) * g_all.nb_proces_tot);
 	i = g_all.nb_champ;
 	while (i--)
 	{
@@ -101,7 +101,7 @@ static int		do_visu_stuff()
 	int			has_frame;
 
 	has_frame = 1;
-	// update_cps();
+	update_cps();
 	if (g_all.end)
 		pthread_create(&g_all.visu.thread_calcul, NULL, th_calcul, NULL);
 	else if (!g_all.visu.pause)
