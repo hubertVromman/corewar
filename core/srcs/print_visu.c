@@ -14,7 +14,7 @@
 
 int		insta_print_char(char c, int f_color, int b_color, int pos)
 {
-	pos = pos % g_all.visu.screen_size;
+	pos = (pos + g_all.visu.screen_size) % g_all.visu.screen_size;
 	if (g_all.visu.previous_pos + 1 != pos)
 	{
 		jump_to(pos % g_all.visu.nb_cols, pos / g_all.visu.nb_cols);

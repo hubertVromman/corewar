@@ -31,6 +31,7 @@ int		free_all(void)
 	free(g_all.visu.current_frame_flame);
 	free(g_all.visu.feu);
 	free(g_all.visu.aff_s);
+	free(g_all.queu);
 	return (0);
 }
 
@@ -43,6 +44,7 @@ int		usage(void)
 	"    -n    : Set the next player's number "
 	"(default is next available) (number is reduce to < 1000)\n"
 	"    -dump : Dump memory in hexadecimal every dump_period\n"
+	"    -s    : Silence all sound when in visu\n"
 	"    -i    : Display live and aff informations when not in visu\n%>",
 		OP, SCREEN_WIDTH, SCREEN_HEIGHT, 2);
 	return (0);

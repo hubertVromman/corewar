@@ -14,6 +14,9 @@
 
 int 	add_to_que(t_proces *proces, int player)
 {
+	if (!(g_all.queu = realloc(g_all.queu, sizeof(t_queu) *
+		(g_all.len_queu + 1))))
+		exit_func(MERROR, 0);
 	g_all.queu[g_all.len_queu].player = player;
 	g_all.queu[g_all.len_queu].id = proces->id_proces;
 	g_all.len_queu++;
@@ -74,25 +77,19 @@ int		read_proces()
 	int i;
 	int k;
 
-	g_all.queu = ft_memalloc(sizeof(t_queu) * g_all.nb_proces_tot);
 	i = g_all.nb_champ;
 	while (i--)
 	{
 		k = g_all.champ[i].nb_proces;
 		while (k--)
 		{
-			if (g_all.champ[i].proces[k].cycle_left)
-			{
+			if (g_all.champ[i].proces[k].cycle_left > 1)
 				g_all.champ[i].proces[k].cycle_left--;
-				if (!g_all.champ[i].proces[k].cycle_left)
-				{
-					do_actions(i, k);
-				}
-			}
+			else
+				do_actions(i, k);
 		}
 	}
 	read_opcode();
-	free(g_all.queu);
 	return (0);
 }
 
@@ -121,7 +118,7 @@ static int		do_visu_stuff()
 		print_frame_diff();
 	if (g_all.visu.flame)
 	{
-		if (!g_all.visu.thread_sound)
+		if (!g_all.visu.thread_sound && !g_all.flags[SILENCE])
 			pthread_create(&g_all.visu.thread_sound, NULL, sound_feu, NULL);
 	}
 	return (0);
@@ -162,7 +159,7 @@ int		beg_battle()
 			}
 			if (g_all.end)
 			{
-				ft_printf("Contestant %d, %s, has won !", g_all.champ[g_all.player_last_live].index_player + 1, g_all.champ[g_all.player_last_live].player_name);
+				ft_printf("Contestant %d, %s, has won !\n", g_all.champ[g_all.player_last_live].index_player + 1, g_all.champ[g_all.player_last_live].player_name);
 				break;
 			}
 		}

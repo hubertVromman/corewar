@@ -54,7 +54,11 @@ void	*reader_func(void *rien)
 		else if (buf[0] == 'f')
 		{
 			g_all.visu.flame = !g_all.visu.flame;
-			system("pkill afplay");
+			if (!g_all.visu.flame)
+			{
+				pthread_cancel(g_all.visu.thread_sound);
+				system("pkill afplay");
+			}
 		}
 		else if (buf[0] == '\e')
 		{

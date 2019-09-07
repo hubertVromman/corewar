@@ -23,11 +23,13 @@
 enum	e_error_code { NOT_COR_FILE = 1, OPEN_FAIL, TOO_LARGE, READ_ERROR,
 	INVALID_NB};
 
-enum	e_flag_nb {FORCE_LAUNCH, VISU, INFORMATION};
+enum	e_flag_nb {FORCE_LAUNCH, VISU, INFORMATION, SILENCE};
 
 enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP,
 	XOR_OP, ZJMP_OP, LDI_OP, STI_OP, FORK_OP, LLD_OP, LLDI_OP,
 	LFORK_OP, AFF_OP };
+
+# define OP "fvis"
 
 # define RESET_COLOR "\e[0m"
 # define HIDE_CURSOR "\e[?25l"
@@ -53,8 +55,6 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP,
 # define VM_COLOR 0x787878
 # define WHITE 0xff0000
 # define COREWAR_COLOR 0xEB34DB
-
-# define OP "fvi"
 
 # define NC "\e[0m"
 # define RED "\e[31m"

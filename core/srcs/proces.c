@@ -19,9 +19,6 @@ static int	init_proces_var(t_proces *new, t_proces *parent, t_champ *champ)
 	{
 		ft_memcpy(new->reg, parent->reg, sizeof(int) * REG_NUMBER);
 		new->carry = parent->carry;
-		if (!(g_all.queu = realloc(g_all.queu, sizeof(t_queu) *
-			(g_all.nb_proces_tot + 1))))
-			exit_func(MERROR, 0);
 		add_to_que(new, champ->index_player);
 	}
 	else
@@ -53,7 +50,7 @@ int			create_proces(int pc, t_proces *parent, t_champ *champ)
 		increment_pc(new, 0);
 	champ->nb_proces++;
 	g_all.nb_proces_tot++;
-	if (g_all.flags[VISU] && g_all.cycle)
+	if (g_all.flags[VISU] && g_all.cycle && !g_all.flags[SILENCE])
 		play_sound(S_LIVE);
 	return (0);
 }
@@ -74,7 +71,7 @@ static int	delete_proces(t_champ *champ, int id_proces)
 			g_all.color[champ->proces[id_proces].pc], 0);
 		free(g_all.buf);
 	}
-	if (g_all.flags[VISU])
+	if (g_all.flags[VISU] && !g_all.flags[SILENCE])
 		play_sound(S_DEATH);
 	return (0);
 }
