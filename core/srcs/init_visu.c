@@ -70,7 +70,7 @@ static int	init_visu2(void)
 	g_all.visu.screen_size = g_all.visu.nb_lines * g_all.visu.nb_cols;
 	super_screen = sizeof(t_printable) * g_all.visu.screen_size;
 	if (!(g_all.visu.flame_buf = malloc(super_screen))
-		|| !(g_all.visu.current_frame = ft_memalloc(super_screen))
+		|| !(g_all.visu.current_frame = malloc(super_screen))
 		|| !(g_all.visu.current_frame_flame = malloc(super_screen))
 		|| !(g_all.visu.next_frame = malloc(super_screen))
 		|| !(g_all.visu.feu = malloc(g_all.visu.screen_size)))

@@ -30,7 +30,7 @@ static int
 }
 
 static t_arg
-	*get_single_argument3(int arg_idx, int tmp_pc, int opcode, int codage)
+	*get_single_argument3(int arg_idx, int *tmp_pc, int opcode, int codage)
 {
 	static t_arg	to_return;
 
@@ -39,10 +39,11 @@ static t_arg
 	{
 		to_return.size = 1;
 		g_all.arglen += to_return.size;
-		if (arg_idx >= g_op_tab[opcode - 1].nb_params || !(g_op_tab[opcode - 1].param[arg_idx] & T_REG))
+		if (arg_idx >= g_op_tab[opcode - 1].nb_params
+			|| !(g_op_tab[opcode - 1].param[arg_idx] & T_REG))
 			to_return.valid = 0;
 		to_return.type = T_REG;
-		to_return.value = g_all.arena[calc_pc(tmp_pc++)] - 1;
+		to_return.value = g_all.arena[calc_pc((*tmp_pc)++)] - 1;
 		if (to_return.value >= REG_NUMBER || to_return.value < 0)
 			to_return.valid = 0;
 	}
@@ -58,7 +59,7 @@ static t_arg
 }
 
 static t_arg
-	*get_single_argument2(int arg_idx, int tmp_pc, int opcode, int codage)
+	*get_single_argument2(int arg_idx, int *tmp_pc, int opcode, int codage)
 {
 	static t_arg	to_return;
 	int				j;
@@ -68,13 +69,14 @@ static t_arg
 	{
 		to_return.size = 4 - 2 * g_op_tab[opcode - 1].dir_size;
 		g_all.arglen += to_return.size;
-		if (arg_idx >= g_op_tab[opcode - 1].nb_params || !(g_op_tab[opcode - 1].param[arg_idx] & T_DIR))
+		if (arg_idx >= g_op_tab[opcode - 1].nb_params
+			|| !(g_op_tab[opcode - 1].param[arg_idx] & T_DIR))
 			to_return.valid = 0;
 		to_return.type = T_DIR;
 		to_return.value = 0;
 		j = -1;
 		while (++j < to_return.size)
-			to_return.value |= (g_all.arena[calc_pc(tmp_pc++)] & 0xff)
+			to_return.value |= (g_all.arena[calc_pc((*tmp_pc)++)] & 0xff)
 				<< (to_return.size - j - 1) * 8;
 		if (to_return.size == 2)
 			to_return.value = (short)to_return.value;
@@ -85,7 +87,7 @@ static t_arg
 }
 
 static t_arg
-	*get_single_argument(int arg_idx, int tmp_pc, int opcode, int codage)
+	*get_single_argument(int arg_idx, int *tmp_pc, int opcode, int codage)
 {
 	static t_arg	to_return;
 
@@ -94,10 +96,11 @@ static t_arg
 	{
 		to_return.size = 2;
 		g_all.arglen += to_return.size;
-		if (arg_idx >= g_op_tab[opcode - 1].nb_params || !(g_op_tab[opcode - 1].param[arg_idx] & T_IND))
+		if (arg_idx >= g_op_tab[opcode - 1].nb_params
+			|| !(g_op_tab[opcode - 1].param[arg_idx] & T_IND))
 			to_return.valid = 0;
 		to_return.type = T_IND;
-		to_return.value = get_ind(&tmp_pc, opcode != LLD_OP &&
+		to_return.value = get_ind(tmp_pc, opcode != LLD_OP &&
 			opcode != LLDI_OP, opcode == ST_OP, opcode == STI_OP);
 		return (&to_return);
 	}
@@ -128,7 +131,7 @@ t_arg
 	while (++i < MAX_ARGS_NUMBER)
 	{
 		ft_memcpy(&(to_return[i]),
-			get_single_argument(i, tmp_pc, opcode, codage), sizeof(t_arg));
+			get_single_argument(i, &tmp_pc, opcode, codage), sizeof(t_arg));
 		if (to_return[i].valid == 0)
 			return (NULL);
 	}
