@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/16 15:51:38 by hvromman          #+#    #+#             */
-/*   Updated: 2019/09/03 19:39:09 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/09/09 00:06:26 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,13 @@ static t_arg
 {
 	static t_arg	to_return;
 
+	ft_bzero(&to_return, sizeof(to_return));
 	to_return.valid = 1;
 	if (codage & 1 << (6 - 2 * arg_idx))
 	{
 		to_return.size = 1;
 		if (arg_idx >= g_op_tab[opcode - 1].nb_params)
-		{
 			to_return.valid = 0;
-		}
 		else if (!(g_op_tab[opcode - 1].param[arg_idx] & T_REG))
 		{
 			g_all.arglen += to_return.size;
@@ -56,12 +55,6 @@ static t_arg
 	}
 	else if (arg_idx < g_op_tab[opcode - 1].nb_params)
 		to_return.valid = 0;
-	else
-	{
-		to_return.type = 0;
-		to_return.size = 0;
-		to_return.value = 0;
-	}
 	return (&to_return);
 }
 
@@ -76,16 +69,10 @@ static t_arg
 	{
 		to_return.size = 4 - 2 * g_op_tab[opcode - 1].dir_size;
 		if (arg_idx >= g_op_tab[opcode - 1].nb_params)
-		{
 			to_return.valid = 0;
-		}
-		else if (!(g_op_tab[opcode - 1].param[arg_idx] & T_DIR))
-		{
-			g_all.arglen += to_return.size;
-			to_return.valid = 0;
-		}
-		else
-			g_all.arglen += to_return.size;
+		else if (g_all.arglen += to_return.size)
+			if (!(g_op_tab[opcode - 1].param[arg_idx] & T_DIR))
+				to_return.valid = 0;
 		to_return.type = T_DIR;
 		to_return.value = 0;
 		j = -1;
