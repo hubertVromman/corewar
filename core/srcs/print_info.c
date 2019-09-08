@@ -6,7 +6,7 @@
 /*   By: sofchami <sofchami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 02:28:56 by sofchami          #+#    #+#             */
-/*   Updated: 2019/09/04 23:19:06 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/09/09 01:36:57 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ static int	print_proces_info2(int player_nb, int proc, int proc_tot)
 
 	offset_y = HEADER_HEIGHT + 22;
 	str = "->  proces_id %6d  |  pc %4d  |  opcode " CHAR_HEX_PRINT
-		"  |  Name OP %5s  |  cycle_left %4d%#>";
+		"  |  Name OP %5s  |  cycle_left %4d | Carry %d%#>";
 	opcode = g_all.champ[player_nb].proces[proc].opcode;
 	if (ft_printf(str, g_all.champ[player_nb].proces[proc].id_proces,
 		g_all.champ[player_nb].proces[proc].pc, opcode, opcode > 0 &&
 		opcode <= NB_OPERATIONS ? g_op_tab[opcode - 1].name : "null",
-		g_all.champ[player_nb].proces[proc].cycle_left, &g_all.buf) < 0)
+		g_all.champ[player_nb].proces[proc].cycle_left, g_all.champ[player_nb].proces[proc].carry, &g_all.buf) < 0)
 		exit_func(MERROR, 0);
 	add_str_to_buf(g_all.visu.next_frame +
 		(g_all.visu.nb_cols * (offset_y + proc_tot + proc)) - INFO_WIDTH
