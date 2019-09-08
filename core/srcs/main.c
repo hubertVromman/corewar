@@ -16,8 +16,7 @@
 ** TO DO or !Not to do
 ** - recheck l'asm
 ** - toujours un soucis avec Gagnant.cor
-** - io_arena a changer dans git
-** - r19 ? increment arglen ?
+** - champion + auteur ?
 ** 				24/28
 **
 ** PIPELINE
