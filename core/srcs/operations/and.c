@@ -26,7 +26,7 @@ int		operation_and(t_champ *champ, t_proces *proces, t_arg *args)
 		second_arg = args[1].value;
 	else
 		second_arg = proces->reg[args[1].value];
-	proces->reg[args[2].value] = (short)(first_arg & second_arg);
+	proces->reg[args[2].value] = first_arg & second_arg;
 	proces->carry = proces->reg[args[2].value] == 0 ? 1 : 0;
 	return (1);
 }
