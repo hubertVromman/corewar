@@ -14,7 +14,6 @@
 
 /*
 ** TO DO or !Not to do
-** - illegal hardware instructions
 ** - recheck l'asm
 ** - toujours un soucis avec Gagnant.cor
 ** - io_arena a changer dans git

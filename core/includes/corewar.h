@@ -235,8 +235,6 @@ typedef struct	s_a
 	int			lives_period_tot;
 	int			dump_period;
 	int			next_champ_nb;
-	int			*id_queu;
-	int			*player_queu;
 	int			pause_changed;
 	char		*buf;
 	int			player_last_live;
