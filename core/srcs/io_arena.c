@@ -14,7 +14,6 @@
 
 int		erase_or_not(int pc)
 {
-	char	*buf;
 	int		pos;
 	int		i;
 	int		j;
@@ -26,20 +25,18 @@ int		erase_or_not(int pc)
 	{
 		j = -1;
 		while (++j < g_all.champ[i].nb_proces)
-			if (g_all.champ[i].proces[j].pc == pc)
-				nb_proces++;
+			g_all.champ[i].proces[j].pc == pc && nb_proces++;
 	}
 	if (nb_proces == 1)
 	{
-		buf = NULL;
 		pos = jump_to_buf(pc);
-		if (ft_printf(CHAR_HEX_PRINT "%#>", g_all.arena[pc], &buf) == -1)
+		if (ft_printf(CHAR_HEX_PRINT "%#>", g_all.arena[pc], &g_all.buf) == -1)
 			exit_func(MERROR, 0);
-		write_to_buf(g_all.visu.next_frame + pos, buf[0],
+		write_to_buf(g_all.visu.next_frame + pos, g_all.buf[0],
 			g_all.color[pc], 0);
-		write_to_buf(g_all.visu.next_frame + pos + 1, buf[1],
+		write_to_buf(g_all.visu.next_frame + pos + 1, g_all.buf[1],
 			g_all.color[pc], 0);
-		free(buf);
+		free(g_all.buf);
 	}
 	return (0);
 }
@@ -55,7 +52,7 @@ int		increment_pc(t_proces *proces, int nb_byte)
 		erase_or_not(proces->pc);
 		proces->pc = calc_pc(proces->pc + nb_byte);
 		pos = jump_to_buf(proces->pc);
-		if (ft_printf(CHAR_HEX_PRINT "%#>", g_all.arena[proces->pc], &buf) == -1)
+		if (ft_printf(CHAR_HEX_PRINT"%#>", g_all.arena[proces->pc], &buf) == -1)
 			exit_func(MERROR, 0);
 		write_to_buf(g_all.visu.next_frame + pos, buf[0], 0, proces->color_rgb);
 		write_to_buf(g_all.visu.next_frame + pos + 1, buf[1],
@@ -78,7 +75,7 @@ int		write_byte(t_proces *proces, int address, char to_write)
 	if (g_all.flags[VISU])
 	{
 		pos = jump_to_buf(address);
-		if (ft_printf(CHAR_HEX_PRINT "%#>", g_all.arena[address], &buf) == -1)
+		if (ft_printf(CHAR_HEX_PRINT"%#>", g_all.arena[address], &buf) == -1)
 			exit_func(MERROR, 0);
 		write_to_buf(g_all.visu.next_frame + pos, buf[0], proces->color_rgb, 0);
 		write_to_buf(g_all.visu.next_frame + pos + 1, buf[1],

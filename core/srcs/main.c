@@ -16,7 +16,7 @@
 ** TO DO or !Not to do
 ** - recheck l'asm
 ** - toujours un soucis avec Gagnant.cor
-** - champion + auteur ?
+** - champion
 ** 				24/28
 **
 ** PIPELINE

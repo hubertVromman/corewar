@@ -19,14 +19,15 @@ static int
 	int		second_char;
 	int		initial_pc;
 
+	one_byte = 0;
 	initial_pc = *pc;
 	first_char = (g_all.arena[calc_pc((*pc)++)] & 0xff) << 8;
 	second_char = g_all.arena[calc_pc((*pc)++)] & 0xff;
 	if (no_go)
 		return ((short)(first_char | second_char));
-	return (read_byte(calc_pc(initial_pc - (one_byte ? 4 : 2) +
-		(mod ? (short)(first_char | second_char) % IDX_MOD :
-		(short)(first_char | second_char))), one_byte ? 1 : 4));
+	return (read_byte(calc_pc(initial_pc - 3 +
+		(mod ? ((short)(first_char | second_char)) % IDX_MOD :
+		(short)(first_char | second_char))), 4));
 }
 
 static t_arg
