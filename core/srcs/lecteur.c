@@ -110,6 +110,7 @@ int			single_cycle(void)
 				g_all.end = g_all.cycle;
 			}
 		}
+		g_all.lives_period_tot = 0;
 		g_all.check++;
 	}
 	return (0);
