@@ -6,7 +6,7 @@
 /*   By: sofchami <sofchami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/07 02:28:56 by sofchami          #+#    #+#             */
-/*   Updated: 2019/09/09 01:36:57 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/09/09 03:06:47 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ static int	print_proces_info(void)
 
 	n = -1;
 	proc_tot = 0;
-	while (++n < g_all.nb_champ && proc_tot <= PROCES_HEIGHT)
+	while (++n < g_all.nb_champ && proc_tot < PROCES_HEIGHT)
 	{
 		k = -1;
-		while (++k < g_all.champ[n].nb_proces && proc_tot + k <= PROCES_HEIGHT)
+		while (++k < g_all.champ[n].nb_proces && proc_tot + k < PROCES_HEIGHT)
 		{
 			print_proces_info2(n, k, proc_tot);
 		}
