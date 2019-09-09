@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 01:33:01 by hvromman          #+#    #+#             */
-/*   Updated: 2019/09/03 19:37:43 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/09/09 04:09:57 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static int	init_proces_var(t_proces *new, t_proces *parent, t_champ *champ)
 	{
 		ft_memcpy(new->reg, parent->reg, sizeof(int) * REG_NUMBER);
 		new->carry = parent->carry;
+		new->lives_period = parent->lives_period;
 		add_to_que(new, champ->index_player);
 	}
 	else
