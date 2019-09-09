@@ -20,7 +20,8 @@ static int	init_proces_var(t_proces *new, t_proces *parent, t_champ *champ)
 		ft_memcpy(new->reg, parent->reg, sizeof(int) * REG_NUMBER);
 		new->carry = parent->carry;
 		new->lives_period = parent->lives_period;
-		add_to_que(new, champ->index_player);
+		add_to_que(champ->index_player,
+			(new - champ->proces) / sizeof(t_proces));
 	}
 	else
 	{

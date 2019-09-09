@@ -12,13 +12,13 @@
 
 #include "corewar.h"
 
-int			add_to_que(t_proces *proces, int player)
+int			add_to_que(int player, int proces)
 {
 	if (!(g_all.queu = realloc(g_all.queu, sizeof(t_queu) *
 		(g_all.len_queu + 1))))
 		exit_func(MERROR, 0);
 	g_all.queu[g_all.len_queu].player = player;
-	g_all.queu[g_all.len_queu].id = proces->id_proces;
+	g_all.queu[g_all.len_queu].proces = proces;
 	g_all.len_queu++;
 	return (0);
 }
@@ -33,7 +33,7 @@ static int	do_actions(int i, int k)
 			&g_all.champ[i].proces[k], arg);
 		increment_pc(&g_all.champ[i].proces[k],
 			g_all.champ[i].proces[k].opcode == ZJMP_OP ? 0 : g_all.arglen);
-		add_to_que(g_all.champ[i].proces + k, i);
+		add_to_que(i, k);
 	}
 	else
 	{
@@ -41,12 +41,12 @@ static int	do_actions(int i, int k)
 			&& g_all.champ[i].proces[k].opcode < 17)
 		{
 			increment_pc(&g_all.champ[i].proces[k], g_all.arglen);
-			add_to_que(g_all.champ[i].proces + k, i);
+			add_to_que(i, k);
 		}
 		else
 		{
 			increment_pc(&g_all.champ[i].proces[k], 1);
-			add_to_que(g_all.champ[i].proces + k, i);
+			add_to_que(i, k);
 		}
 	}
 	return (0);
@@ -54,26 +54,19 @@ static int	do_actions(int i, int k)
 
 static int	read_opcode(void)
 {
-	int i;
 	int player;
+	int proces;
 
-	i = -1;
 	player = g_all.queu[g_all.len_queu - 1].player;
+	proces = g_all.queu[g_all.len_queu - 1].proces;
 	if (g_all.len_queu)
 	{
-		while (++i < g_all.champ[player].nb_proces)
-		{
-			if (g_all.champ[player].proces[i].id_proces
-				== g_all.queu[g_all.len_queu - 1].id)
-			{
-				g_all.champ[player].proces[i].opcode =
-					read_arena_op(g_all.champ[player].proces[i].pc);
-				g_all.champ[player].proces[i].cycle_left =
-					get_cycle_left(g_all.champ[player].proces[i].opcode);
-				g_all.len_queu--;
-				return (g_all.len_queu ? read_opcode() : 0);
-			}
-		}
+		g_all.champ[player].proces[proces].opcode =
+			read_arena_op(g_all.champ[player].proces[proces].pc);
+		g_all.champ[player].proces[proces].cycle_left =
+			get_cycle_left(g_all.champ[player].proces[proces].opcode);
+		g_all.len_queu--;
+		return (g_all.len_queu ? read_opcode() : 0);
 	}
 	return (0);
 }

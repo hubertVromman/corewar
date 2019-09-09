@@ -132,8 +132,8 @@ typedef struct	s_endscreen
 
 typedef struct	s_queu
 {
-	int			id;
 	int			player;
+	int			proces;
 }				t_queu;
 
 typedef struct	s_printable
@@ -307,7 +307,7 @@ int				get_champ(char *file_name);
 /*
 ** lecteur.c
 */
-int				add_to_que(t_proces *proces, int player);
+int				add_to_que(int player, int proces);
 int				beg_battle();
 int				read_arena_op(int pc);
 int				single_cycle();
