@@ -15,9 +15,7 @@
 int		get_cycle_left(int opcode)
 {
 	if (opcode < 1 || opcode > NB_OPERATIONS)
-	{
 		return (1);
-	}
 	else
 		return (g_op_tab[opcode - 1].cycle_op);
 }

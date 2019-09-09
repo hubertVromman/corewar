@@ -13,13 +13,12 @@
 #include "corewar.h"
 
 static int
-	get_ind(int *pc, int mod, int no_go, int one_byte)
+	get_ind(int *pc, int mod, int no_go)
 {
 	int		first_char;
 	int		second_char;
 	int		initial_pc;
 
-	one_byte = 0;
 	initial_pc = *pc;
 	first_char = (g_all.arena[calc_pc((*pc)++)] & 0xff) << 8;
 	second_char = g_all.arena[calc_pc((*pc)++)] & 0xff;
@@ -110,7 +109,7 @@ static t_arg
 			g_all.arglen += to_return.size;
 		to_return.type = T_IND;
 		to_return.value = get_ind(tmp_pc, opcode != LLD_OP &&
-			opcode != LLDI_OP, opcode == ST_OP, opcode == STI_OP);
+			opcode != LLDI_OP, opcode == ST_OP);
 		return (&to_return);
 	}
 	else

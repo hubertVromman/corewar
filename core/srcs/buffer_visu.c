@@ -60,7 +60,7 @@ int		print_frame_diff(void)
 	if (g_all.end && g_all.end != g_all.cycle)
 		ft_memcpy(g_all.visu.next_frame, g_all.visu.flame_buf,
 			sizeof(t_printable) * g_all.visu.screen_size);
-	else if (g_all.visu.flame)
+	else if (g_all.visu.flame && g_all.cycle)
 		print_frame_diff_flame();
 	copy_and_print_buffer(g_all.visu.current_frame_flame, g_all.visu.next_frame,
 		g_all.visu.screen_size);

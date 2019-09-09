@@ -37,3 +37,40 @@ int		jump_to_buf(int pc)
 	pos = g_all.visu.nb_cols * (offset_y + pc / 64) + offset_x + pc % 64 * 3;
 	return (pos);
 }
+
+int		kill_feu(void)
+{
+	pthread_cancel(g_all.visu.thread_sound);
+	system("pkill afplay");
+	g_all.visu.thread_sound = 0;
+	return (0);
+}
+
+int		do_visu_stuff(void)
+{
+	int			has_frame;
+
+	has_frame = 1;
+	update_cps();
+	if (g_all.end)
+		pthread_create(&g_all.visu.thread_calcul, NULL, th_calcul, NULL);
+	else if (!g_all.visu.pause)
+	{
+		pthread_create(&g_all.visu.thread_calcul, NULL, th_calcul, NULL);
+		if (g_all.visu.flame)
+			pthread_create(&g_all.visu.thread_flamme, NULL, th_feu, NULL);
+	}
+	else if (!g_all.cycle)
+		print_vm_info();
+	else
+		has_frame = 0;
+	usleep(1000 * 1000 / g_all.visu.max_cps);
+	pthread_join(g_all.visu.thread_calcul, NULL);
+	pthread_join(g_all.visu.thread_flamme, NULL);
+	if (has_frame)
+		print_frame_diff();
+	if (!g_all.visu.pause && g_all.visu.flame && !g_all.visu.thread_sound
+		&& !g_all.flags[SILENCE])
+		pthread_create(&g_all.visu.thread_sound, NULL, sound_feu, NULL);
+	return (0);
+}

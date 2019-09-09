@@ -309,8 +309,8 @@ int				get_champ(char *file_name);
 */
 int				add_to_que(t_proces *proces, int player);
 int				beg_battle();
-int				read_proces();
 int				read_arena_op(int pc);
+int				single_cycle();
 
 /*
 ** operations
@@ -338,6 +338,8 @@ int				operation_zjmp(t_champ *champ, t_proces *proces, t_arg *args);
 void			exit_ctrl_c(int c);
 int				jump_to(int x, int y);
 int				jump_to_buf(int pc);
+int				do_visu_stuff(void);
+int				kill_feu(void);
 
 /*
 ** print_visu.c
@@ -369,7 +371,7 @@ int				init_all(int ac, char **av, int i);
 ** thread.c
 */
 
-void			*reader_func(void *rien);
+void			*reader_func();
 void			*sound_feu();
 void			*th_feu();
 void			*th_calcul();

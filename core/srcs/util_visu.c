@@ -66,10 +66,7 @@ int		update_cps(void)
 	if (g_all.pause_changed)
 	{
 		if (g_all.visu.pause)
-		{
 			s = "Pause  ";
-			system("pkill afplay");
-		}
 		else
 			s = "Running";
 		pos = g_all.visu.nb_cols * 6 + 5;
