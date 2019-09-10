@@ -6,22 +6,11 @@
 /*   By: sofchami <sofchami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/18 19:57:39 by sofchami          #+#    #+#             */
-/*   Updated: 2019/09/08 18:28:55 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/09/10 05:46:38 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
-
-int			add_to_que(int player, int proces)
-{
-	if (!(g_all.queu = realloc(g_all.queu, sizeof(t_queu) *
-		(g_all.len_queu + 1))))
-		exit_func(MERROR, 0);
-	g_all.queu[g_all.len_queu].player = player;
-	g_all.queu[g_all.len_queu].proces = proces;
-	g_all.len_queu++;
-	return (0);
-}
 
 static int	do_actions(int i, int k)
 {
@@ -57,16 +46,15 @@ static int	read_opcode(void)
 	int player;
 	int proces;
 
-	player = g_all.queu[g_all.len_queu - 1].player;
-	proces = g_all.queu[g_all.len_queu - 1].proces;
-	if (g_all.len_queu)
+	while (g_all.len_queu > 0)
 	{
+		player = g_all.queu[g_all.len_queu - 1].player;
+		proces = g_all.queu[g_all.len_queu - 1].proces;
 		g_all.champ[player].proces[proces].opcode =
 			read_arena_op(g_all.champ[player].proces[proces].pc);
 		g_all.champ[player].proces[proces].cycle_left =
 			get_cycle_left(g_all.champ[player].proces[proces].opcode);
 		g_all.len_queu--;
-		return (g_all.len_queu ? read_opcode() : 0);
 	}
 	return (0);
 }
@@ -74,18 +62,20 @@ static int	read_opcode(void)
 static int	read_proces(void)
 {
 	int i;
-	int k;
+	int player;
+	int proces;
 
-	i = g_all.nb_champ;
+	i = g_all.tracker_size;
 	while (i--)
 	{
-		k = g_all.champ[i].nb_proces;
-		while (k--)
+		player = g_all.process_tracker[i].player;
+		if (player != -1)
 		{
-			if (g_all.champ[i].proces[k].cycle_left > 1)
-				g_all.champ[i].proces[k].cycle_left--;
+			proces = g_all.process_tracker[i].proces;
+			if (g_all.champ[player].proces[proces].cycle_left > 1)
+				g_all.champ[player].proces[proces].cycle_left--;
 			else
-				do_actions(i, k);
+				do_actions(player, proces);
 		}
 	}
 	read_opcode();
@@ -95,8 +85,6 @@ static int	read_proces(void)
 int			single_cycle(void)
 {
 	g_all.cycle++;
-	read_proces();
-	g_all.ctd++;
 	if (g_all.ctd == g_all.cycle_to_die)
 	{
 		g_all.ctd = 0;
@@ -113,6 +101,8 @@ int			single_cycle(void)
 		g_all.lives_period_tot = 0;
 		g_all.check++;
 	}
+	g_all.ctd++;
+	read_proces();
 	return (0);
 }
 

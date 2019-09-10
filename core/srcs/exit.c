@@ -6,11 +6,22 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/14 17:22:58 by hvromman          #+#    #+#             */
-/*   Updated: 2019/09/04 18:13:57 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/09/10 05:48:01 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
+
+int		add_to_que(int player, int proces)
+{
+	if (!(g_all.queu = realloc(g_all.queu, sizeof(t_pp) *
+		(g_all.len_queu + 1))))
+		exit_func(MERROR, 0);
+	g_all.queu[g_all.len_queu].player = player;
+	g_all.queu[g_all.len_queu].proces = proces;
+	g_all.len_queu++;
+	return (0);
+}
 
 int		free_all(void)
 {

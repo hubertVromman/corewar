@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:31:13 by hvromman          #+#    #+#             */
-/*   Updated: 2019/09/09 04:08:51 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/09/10 05:51:57 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ enum	e_opcode { LIVE_OP = 1, LD_OP, ST_OP, ADD_OP, SUB_OP, AND_OP, OR_OP,
 # define MEMORY_OFFSET_X 4
 # define FLAME_HEIGHT 18
 # define MAX_NAME_LENGTH 34
-# define PROCES_HEIGHT (MEMORY_HEIGHT - 21) // a changer
+# define PROCES_HEIGHT (MEMORY_HEIGHT - 21)
 
 # define INFO_WIDTH 104
 # define EFFECTIVE_INFO_WIDTH (INFO_WIDTH - 8)
@@ -130,11 +130,11 @@ typedef struct	s_endscreen
 	int		*ray_lines[16];
 }				t_endscreen;
 
-typedef struct	s_queu
+typedef struct	s_pp
 {
 	int			player;
 	int			proces;
-}				t_queu;
+}				t_pp;
 
 typedef struct	s_printable
 {
@@ -244,7 +244,9 @@ typedef struct	s_a
 	char		arena[MEM_SIZE];
 	int			color[MEM_SIZE];
 	time_t		sound;
-	t_queu		*queu;
+	t_pp		*queu;
+	t_pp		*process_tracker;
+	int			tracker_size;
 	t_visu		visu;
 	t_endscreen	end_screen;
 }				t_a;
@@ -344,7 +346,8 @@ int				kill_feu(void);
 /*
 ** print_visu.c
 */
-int				copy_and_print_buffer(t_printable *dst, t_printable *src, int size);
+int				copy_and_print_buffer(t_printable *dst, t_printable *src,
+	int size);
 int				insta_print_char(char c, int f_color, int b_color, int pos);
 int				print_char(t_printable printable, int pos);
 int				insta_print_string(char *s, int f_color, int b_color, int pos);
@@ -358,9 +361,12 @@ int				print_vm_info();
 /*
 ** util_visu.c
 */
-int				add_str_to_buf(t_printable *strct, char *str, int f_color, int b_color);
-int				add_name_to_buf(t_printable *strct, char *str, int f_color, int b_color);
-int				write_to_buf(t_printable *strct, char c, int f_color, int b_color);
+int				add_str_to_buf(t_printable *strct, char *str, int f_color,
+	int b_color);
+int				add_name_to_buf(t_printable *strct, char *str, int f_color,
+	int b_color);
+int				write_to_buf(t_printable *strct, char c, int f_color,
+	int b_color);
 
 /*
 ** init.c

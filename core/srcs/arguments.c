@@ -6,14 +6,14 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/16 15:51:38 by hvromman          #+#    #+#             */
-/*   Updated: 2019/09/09 00:06:26 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/09/10 05:28:36 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
 
 static int
-	get_ind(int *pc, int mod, int no_go)
+	get_ind(int *pc, int mod, int no_go, int sti)
 {
 	int		first_char;
 	int		second_char;
@@ -24,7 +24,7 @@ static int
 	second_char = g_all.arena[calc_pc((*pc)++)] & 0xff;
 	if (no_go)
 		return ((short)(first_char | second_char));
-	return (read_byte(calc_pc(initial_pc - 3 +
+	return (read_byte(calc_pc(initial_pc - (sti ? 3 : 2) +
 		(mod ? ((short)(first_char | second_char)) % IDX_MOD :
 		(short)(first_char | second_char))), 4));
 }
@@ -109,7 +109,7 @@ static t_arg
 			g_all.arglen += to_return.size;
 		to_return.type = T_IND;
 		to_return.value = get_ind(tmp_pc, opcode != LLD_OP &&
-			opcode != LLDI_OP, opcode == ST_OP);
+			opcode != LLDI_OP, opcode == ST_OP, opcode == STI_OP);
 		return (&to_return);
 	}
 	else

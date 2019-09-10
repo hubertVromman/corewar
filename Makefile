@@ -6,14 +6,14 @@
 #    By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/05 15:14:07 by hvromman          #+#    #+#              #
-#    Updated: 2019/08/07 02:31:50 by sofchami         ###   ########.fr        #
+#    Updated: 2019/09/10 02:35:03 by sofchami         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 COR = corewar
 ASM = asm
 
-CFLAGS = -Wall -Wextra -Werror -O3
+CFLAGS = -Wall -Wextra -Werror
 SRCS = srcs/
 HEAD = includes/
 LIB = libft/

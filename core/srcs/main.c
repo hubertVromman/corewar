@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 14:28:49 by hvromman          #+#    #+#             */
-/*   Updated: 2019/09/08 23:59:31 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/09/10 05:53:37 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,14 @@
 
 /*
 ** TO DO or !Not to do
-** - recheck l'asm
-** - toujours un soucis avec Gagnant.cor
-** - champion
-** 				24/28
-**
 ** PIPELINE
-** - Norme
+** - recheck l'asm && corewar
+** - champion
+** 				26/28
 **
 ** DEJA FAIT
+** - Norme --> ok
+** - toujours un soucis avec Gagnant.cor --> ok
 ** 	 Gagnant qui bouge dans l'ecran (avec une couleur random ?) --> ok
 ** - Verifier qu'on kill les thread --> ok
 ** - afficher indicateur pour "Pause" --> ok

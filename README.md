@@ -114,7 +114,7 @@ direct ::= label_ref_direct | number_direct
 ```
 indirect ::= label_ref_indirect | number_indirect
 ```
-
+01010100
 ```
 champion_name ::= .name string
 ```
