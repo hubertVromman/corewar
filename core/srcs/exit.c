@@ -6,7 +6,7 @@
 /*   By: hvromman <hvromman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/14 17:22:58 by hvromman          #+#    #+#             */
-/*   Updated: 2019/09/10 05:48:01 by sofchami         ###   ########.fr       */
+/*   Updated: 2019/09/21 14:36:43 by sofchami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int		exit_func(int exit_code, int dp_usage)
 		pthread_cancel(g_all.visu.thread_reader);
 		pthread_cancel(g_all.visu.thread_sound);
 	}
-	if (!dp_usage && g_all.flags[VISU])
+	if (!dp_usage && g_all.flags[VISU] && g_all.nb_champ)
 	{
 		ft_printf(RESTORE_SCREEN);
 		ft_printf(RESET_COLOR);
